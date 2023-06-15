@@ -1,0 +1,152 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: Dosis-light;
+    src: url("Fonts/Dosis-Light.ttf");
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(228, 228, 221);
+}
+
+
+nav {
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px;
+    height: 80px;
+    background-color: #2d3633;
+}
+
+.header_logo {
+    display: flex;
+    width: 141px;
+}
+
+.header_logo img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+}
+
+
+.container_tasks {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin: auto;
+    padding: 20px 10px;
+
+    width: 70%;
+}
+
+
+
+.item_task,
+.button_addNewTask {
+    position: relative;
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+
+    width: 300px;
+    height: 220px;
+    margin: 10px;
+
+    background-image: url("Images/card_newTask.png");
+
+    background-size: 90% 88%;
+    background-position: center;
+    background-repeat: no-repeat;
+
+
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.item_task {
+    background-image: url("Images/card_task.png");
+}
+
+.item_task p {
+    max-width: 90%;
+    max-height: 88%;
+
+    font-family: Dosis-Light;
+    font-size: xx-large;
+    text-align: center;
+}
+
+.button_taskSettings {
+    visibility: hidden;
+    position: absolute;
+    bottom: 25px;
+    max-width: 20px;
+    max-height: 20px;
+    border: 0;
+    background: none;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+
+}
+
+.item_task:hover .button_taskSettings {
+    opacity: 1;
+    visibility: visible;
+}
+
+.button_taskSettings:hover+.prority_dropDown ul,.prority_dropDown:hover {
+    visibility: visible;
+}
+
+.button_taskSettings img {
+    width: 100%;
+    height: 100%;
+    opacity: 60%;
+}
+
+.prority_dropDown ul {
+    visibility: hidden;
+    position: absolute;
+    bottom: 0;
+    right: 37%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-align: center;
+    list-style-type: none;
+}
+
+.prority_dropDown li {
+    padding: 5px 10px;
+
+    width: 100%;
+    background-color: rgb(245, 243, 229);
+}
+
+.prority_dropDown li:hover {
+    background-color: rgb(228, 228, 228);
+}
+
+.button_addNewTask input {
+    border: 0;
+    width: 90%;
+    height: 88%;
+
+    text-align: center;
+    font-size: xx-large;
+    font-family: Dosis-Light;
+
+    background-color: #9da3a03a;
+}
