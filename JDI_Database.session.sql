@@ -1,5 +1,5 @@
 -- @block
-DROP table user;
+DROP table users;
 
 --@block
 create table users(
@@ -19,3 +19,5 @@ values(
 
 --@block
 select * from users;
+select * from projects;
+select * from tasks;
