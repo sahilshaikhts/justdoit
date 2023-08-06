@@ -1,11 +1,10 @@
-const { TryCatch } = require("../Utils/try-catch");
-const database = require("./connect-db");
+const database = require("../connect-db");
 
 const FindUserByEmail = async (email) => {
     try {
-        const [rows] = await database.query('select * from jdi.users where email=?', [email]);
+        const [rows] = await database.query('select * from jdi.users where email=?', email);
         if (!rows || rows.length == 0) {
-            throw new Error("User with given email not found");
+            throw new Error("Record with given email not found");
         } else {
             return rows;
         }

@@ -1,0 +1,62 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: Dosis-light;
+    src: url('../FrontEnd/Fonts/Dosis-Light.ttf');
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(228, 228, 221);
+    overflow: hidden;
+}
+
+
+
+nav {
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px;
+    height: 56.25px;
+    background-color: #2d3633;
+}
+
+.header_logo {
+    position: fixed;
+
+    display: flex;
+    width: 100px;
+}
+
+.header_logo img {
+    display: flex;
+    right: 40%;
+
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+}
+
+.header_links {
+    display: flex; /* Added */
+    width: 100%;
+    align-items: center; /* Vertically center the links */
+    justify-content: right;
+}
+.header_links a{
+    margin-right: 20px;
+    text-decoration: none;
+
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: rgb(220, 245, 226);
+
+}

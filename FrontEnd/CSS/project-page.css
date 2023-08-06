@@ -1,45 +1,3 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-@font-face {
-    font-family: Dosis-light;
-    src: url("Fonts/Dosis-Light.ttf");
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-    background-color: rgb(228, 228, 221);
-}
-
-
-nav {
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0px;
-    height: 80px;
-    background-color: #2d3633;
-}
-
-.header_logo {
-    display: flex;
-    width: 141px;
-}
-
-.header_logo img {
-    max-width: 100%;
-    height: auto;
-    object-fit: contain;
-    object-position: center;
-}
-
-
 .container_tasks {
     display: flex;
     flex-wrap: wrap;
@@ -62,11 +20,11 @@ nav {
 
     border: 0;
 
-    width: 300px;
-    height: 220px;
+    width: 280px;
+    height: 200px;
     margin: 10px;
 
-    background-image: url("Images/card_newTask.png");
+    background-image: url("/FrontEnd/Images/card_newTask.png");
 
     background-size: 90% 88%;
     background-position: center;
@@ -78,7 +36,7 @@ nav {
 }
 
 .item_task {
-    background-image: url("Images/card_task.png");
+    background-image: url("/FrontEnd/Images/card_task.png");
 }
 
 .item_task p {
@@ -108,7 +66,8 @@ nav {
     visibility: visible;
 }
 
-.button_taskSettings:hover+.prority_dropDown ul,.prority_dropDown:hover {
+.button_taskSettings:hover+.prority_dropDown ul,
+.prority_dropDown:hover {
     visibility: visible;
 }
 

@@ -18,6 +18,10 @@ values(
     )
 
 --@block
+select * from jdi.jt_users_projects;
+--@block
 select * from users;
+--@block
 select * from projects;
-select * from tasks;
+
+--@block delete from jdi.projects projects.id = 12;

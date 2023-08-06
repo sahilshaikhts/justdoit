@@ -1,20 +1,19 @@
 const jwt = require("jsonwebtoken");
 const TryCatch = require("../Utils/try-catch");
 
-const VerifyToken = TryCatch((req, res, next) => {
-    const req_token = req.headers.Authorization || req.headers.authorization;
-    console.log("verrifying "+req_token);
-    if (req_token && req_token.startsWith("Bearer")) {
-        const token = req_token.split(' ')[1];
-
-        jwt.verify(token, process.env.SECRET_JKEY,
+const VerifyAccessToken = TryCatch((req, res, next) => {
+    const token = req.cookies.token_access;
+    console.log(token);
+    if (token) {
+        jwt.verify(token, process.env.SECRET_ACCESS_KEY,
             (error, decoded) => {
                 if (error) {
                     res.status(401);
                     throw new Error("Access token invalid!")
                 }
-                req.userid=decoded.id;
-                console.log("Authorized\n" + req.userid);
+                req.user = decoded.user;
+
+                console.log("Authorized: " + decoded.user.username);
                 next();
             });
     } else {
@@ -23,4 +22,25 @@ const VerifyToken = TryCatch((req, res, next) => {
     }
 });
 
-module.exports = VerifyToken;
+const VerifyRefreshToken = TryCatch((req, res, next) => {
+    const token = req.cookies.token_refresh;
+    console.log("verrifying ref_token");
+    
+    if (token) {
+        jwt.verify(token, process.env.SECRET_REFRESH_KEY,
+            (error, decoded) => {
+                if (error) {
+                    res.status(401).json({message:"Refresh token expired or doesn't exists!"})
+                    throw new Error("Refresh token not valid!");
+                }
+                console.log("verrifed: ", decoded.user.username);
+                req.user = decoded.user;
+                next();
+            });
+    } else {
+        res.status(401).json({message:"Refresh token doesn't exists!"})
+        throw new Error("Refresh token doesn't exists!");
+    }
+});
+
+module.exports = { VerifyAccessToken, VerifyRefreshToken };
