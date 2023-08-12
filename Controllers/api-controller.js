@@ -6,7 +6,7 @@ const GetAccessToken = TryCatch(async (req, res, next) => {
     if (id && username && email) {
         const accessToken = await GenerateJWT({ user: { 'id': id, 'username': username, 'email': email } }, process.env.SECRET_ACCESS_KEY, process.env.AGE_ACCESSTOKEN);
         if (accessToken) {
-            console.log("success!"+accessToken);
+            console.log("Generated new access token!");
             res.cookie("token_access", accessToken, JSON.parse(process.env.CONFIG_COKI_ACCESSTOKEN)).status(200);//Age: 10 min
             res.send();
         }

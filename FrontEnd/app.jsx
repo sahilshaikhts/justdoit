@@ -19,7 +19,6 @@ export default function App() {
     const [bUserLoggedIn, SetIsUserLoggedIn] = useState(false);
 
     useEffect(() => {
-        console.log("effect")
         CheckIfUserLoggedIn();
     }, []);//Check when user open the site for the first time.
 

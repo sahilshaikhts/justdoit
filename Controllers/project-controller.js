@@ -2,7 +2,7 @@ const DB_projects_handler = require("../Database/TableQueries/project-queries");
 const TryCatch = require("../Utils/try-catch");
 
 const GetProjects = TryCatch(async (req, res) => {
-    console.log(req.user);
+
     if (!req.user.id) {
         res.status(400);
         throw new Error("Missing user.id");
@@ -35,16 +35,17 @@ const GetProject = TryCatch(async (req, res) => {
 });
 
 const CreateProject = TryCatch(async (req, res) => {
-    const { project_name, user_role } = req.body;
-
-    if (!req.user.id || !user_role || !project_name) {
+    const { name, user_role } = req.body;
+    if (!req.user.id || !user_role || !name) {
         res.status(400);
         ThrowErrorMissingField();
     }
 
-    const result = await DB_projects_handler.CreateUserProject(project_name, req.user.id, user_role);
+    const result = await DB_projects_handler.CreateUserProject(name, req.user.id, user_role);
+    const newProject = await DB_projects_handler.GetUserProject(req.user.id, result[0].insertId);
+
     if (result) {
-        res.status(201).json(result);
+        res.status(201).json(newProject);
     } else {
         throw new Error("Couldn't create project!");
     }

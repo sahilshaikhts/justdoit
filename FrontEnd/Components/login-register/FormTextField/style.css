@@ -13,11 +13,7 @@ input {
 }
 
 .login-register {
-    position: fixed;
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+    display: block;
 }
 
 .Form-section {
@@ -28,7 +24,7 @@ input {
     align-items: center;
     justify-content: center;
 
-    min-height: 100vh;
+    min-height: 100%;
     min-width: 30%;
     margin-left: 70%;
 

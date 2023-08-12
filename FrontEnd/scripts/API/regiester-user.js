@@ -14,7 +14,6 @@ export async function RegisterUser(name, email, password) {
         );
         if (response && response.ok) {
             const rcvData = await response.json();
-            console.log("yes@")
         }
     } catch (error) {
         console.error(error);

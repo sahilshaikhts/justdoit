@@ -3,7 +3,7 @@ const TryCatch = require("../Utils/try-catch");
 
 const VerifyAccessToken = TryCatch((req, res, next) => {
     const token = req.cookies.token_access;
-    console.log(token);
+    console.log("Verifying access token");
     if (token) {
         jwt.verify(token, process.env.SECRET_ACCESS_KEY,
             (error, decoded) => {
