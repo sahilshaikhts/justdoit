@@ -4,59 +4,32 @@ import {
     Route,
     Routes
 } from "react-router-dom";
+
 import Header from './Components/Header';
+import Home from "./Components/Home-page/Home";
 import LoginForm from './Components/login-register/FormTextField/Form-login';
 import ProjectPage from './Components/Project/project-page';
 
-import Home from "./Components/Home-page/Home";
 import PrivateRoute from "./Components/Utility/PrivateRoute";
-import { FetchAccessToken } from "./scripts/API/fetch-acessToken";
 
-import AuthorizedContext from "./Context/AuthorizedContext";
-import { Logout } from "./scripts/API/user-sessionHandler";
+import { useAuthContext } from "./Context/AuthorizationContext";
 
 export default function App() {
-    const [bUserLoggedIn, SetIsUserLoggedIn] = useState(false);
+    const { bLoggedIn, LoginWithToken } = useAuthContext();
 
     useEffect(() => {
-        CheckIfUserLoggedIn();
+        LoginWithToken();
     }, []);//Check when user open the site for the first time.
-
-    async function CheckIfUserLoggedIn() {
-        try {
-            const response = await FetchAccessToken();
-            if (response && response.ok) {
-                console.log("logged")
-                HandleOnLogin();
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    function HandleOnLogin() {
-        console.log("onlogout")
-        SetIsUserLoggedIn(true);
-    }
-    function HandleOnLogout() {
-        const bResponse = Logout();
-        if (bResponse) {
-            console.log("onlogout");
-            SetIsUserLoggedIn(false);
-        }
-        else
-            console.log("error")
-    }
 
     return (
         <>
             <Router>
-                <AuthorizedContext.Provider value={bUserLoggedIn}><Header bLoggedIn={bUserLoggedIn} OnLogout={HandleOnLogout} /></AuthorizedContext.Provider>
+                <Header />
                 <Routes>
-                    <Route path='/' element={<AuthorizedContext.Provider value={bUserLoggedIn}><Home /></AuthorizedContext.Provider>} />
-                    <Route path='/login' element={<LoginForm bLoggedIn={bUserLoggedIn} OnLogin={HandleOnLogin} />} />
+                    <Route path='/' element={<Home />}></Route>
+                    <Route path='/login' element={<LoginForm />} />
                     <Route path='/user/projects' element={
-                        <PrivateRoute bCondition={bUserLoggedIn} fallbackRoute="/login">
+                        <PrivateRoute bCondition={bLoggedIn} fallbackRoute="/login">
                             <ProjectPage />
                         </PrivateRoute>
                     } />

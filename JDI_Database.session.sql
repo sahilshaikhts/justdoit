@@ -1,5 +1,7 @@
 -- @block
 DROP table users;
+--@block
+ALTER table user_files ADD FOREIGN KEY(userID) REFERENCES users(id);
 
 --@block
 create table users(
@@ -22,6 +24,6 @@ select * from jdi.jt_users_projects;
 --@block
 select * from users;
 --@block
-select * from projects;
+select * from user_files;
 
 --@block delete from jdi.projects projects.id = 12;

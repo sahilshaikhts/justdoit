@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import RegisterForm from "../login-register/FormTextField/Form-register";
-import AuthorizedContext  from "../../Context/AuthorizedContext";
 
-export default function Home() {
-    const bUserLoggedIn = useContext(AuthorizedContext);
-    console.log(bUserLoggedIn)
+
+export default function Home({IsLoggedIn,OnLogin}) {
+   const [bLoggedIn,setLoggedIn]=useState(false);
+  
     return (
         <>
-            {bUserLoggedIn == false && <RegisterForm />}
+            {bLoggedIn == false && <RegisterForm/>}
         </>
     );
 }

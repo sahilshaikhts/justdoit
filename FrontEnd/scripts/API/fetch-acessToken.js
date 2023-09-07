@@ -6,7 +6,11 @@ export async function FetchAccessToken() {
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' }
         });
-        return response;
+        if (response && response.ok)
+            return true;
+        else
+            return false;
+        
     } catch (error) {
         console.error(error);
         throw error;

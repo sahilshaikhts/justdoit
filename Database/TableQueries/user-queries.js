@@ -4,9 +4,9 @@ const FindUserByEmail = async (email) => {
     try {
         const [rows] = await database.query('select * from jdi.users where email=?', email);
         if (!rows || rows.length == 0) {
-            throw new Error("Record with given email not found");
+            return null;
         } else {
-            return rows;
+            return rows[0];
         }
     } catch (error) {
         console.log(error);
@@ -18,17 +18,32 @@ const CreateUser = async (username, email, hashedPassowrd) => {
         if (!username || !email || !hashedPassowrd) {
             throw new Error("Missing fields!")
         } else {
-            const queryData = await database.query(
+            const [result] = await database.query(
                 'insert into jdi.users (username,email,hashed_password) values(?,?,?)',
                 [username, email, hashedPassowrd]);
 
-                console.log(queryData);
-            return queryData;
+            if (result.affectedRows === 1)
+                return result;
+            else
+                return null;
         }
     } catch (error) {
         console.log(error);
     }
 };
 
+const UploadUsersPP = async (aUserID, aFileName) => {
+    try {
+        const [queryData] = await database.query("insert into jdi.user_files(userID,fileName,fileType)values(?,?,?)", [aUserID, aFileName, "Image"])
+        if (queryData.affectedRows === 1)
+            return queryData;
+        else
+            return null;
 
-module.exports = { FindUserByEmail, CreateUser };
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+module.exports = { FindUserByEmail, CreateUser, UploadUsersPP };

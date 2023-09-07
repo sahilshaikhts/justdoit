@@ -16,16 +16,15 @@
 }
 .project_page {
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
+    justify-content: left;
 }
 
 .container_projects {
     display: flex;
-    flex-grow: 1;
+    flex-wrap: wrap;
     padding: 20px 10px;
 
-    width: 60%;
+    width: 80%;
 }
 
 

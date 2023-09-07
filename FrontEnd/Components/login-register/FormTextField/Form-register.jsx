@@ -1,39 +1,39 @@
 import React, { useState } from "react";
-import FormTextField from "./Form-textField";
-import { Login } from "../../../scripts/API/user-sessionHandler";
 import { RegisterUser } from "../../../scripts/API/regiester-user";
+import { Navigate } from "react-router-dom";
+import { useAuthContext } from "../../../Context/AuthorizationContext";
 
 export default function RegisterForm() {
-    const [imageSrc, setImageSrc] = useState(null);
-    const [bFailedLogin, setFailedLogin] = useState(false);
+    const [userPicture, setUserPicture] = useState(null);
+    const [bFailedRegistration, setFailedRegistration] = useState(false);
+    const { bLoggedIn, LoginUser } = useAuthContext();
 
     async function OnRegister(event) {
         event.preventDefault()
+        const form = new FormData(event.target);
+        //Add a saftey check for userPicture, check if what's stored is an image.
+        const bSuccesful = await RegisterUser(form, userPicture);
 
-        const name = document.getElementById("field_name").value;
-        const email = document.getElementById("field_email").value;
-        const password = document.getElementById("field_password").value;
-
-        const bSuccesful = await RegisterUser(name, email, password);
-
-        if (bSuccesful) {
-            await Login(email, password);
-        } else {
-            setFailedLogin(true);
-        }
+        if (bSuccesful)
+            await LoginUser(form.get("email"), form.get("password"));
+        else
+            setFailedRegistration(true)
     }
-    return <section className='login-register'>
+  
 
+    return <section className='login-register'>
+        {bLoggedIn && <Navigate to="/user/projects"></Navigate>}
         <div className="Form-section">
-            <form>
+            <form onSubmit={OnRegister} encType="multipartmultipart/form-data">
                 <h1>Welcome to just do it!</h1>
                 <p>Create an account. Already have one? </p>
                 <a href="/login" style={{ marginBottom: "20px", fontSize: "12px" }}>login here</a>
-                <FormTextField id="field_name" default_text="Username"></FormTextField>
-                <FormTextField id="field_email" default_text="Email"></FormTextField>
-                <FormTextField id="field_password" default_text="Password" type="password"></FormTextField>
-                <button onClick={OnRegister}>Register</button>
-                {bFailedLogin && <a style={{ color: "red", marginLeft: "10px", fontFamily: "arial", fontSize: "13px" }}>Incorrect email or password!</a>}
+                <input name="image" type="file" accept="image" onChange={setUserPicture(e.target.files[0])}></input>
+                <input name="username" placeholder="Username"></input>
+                <input name="email" placeholder="Email"></input>
+                <input name="password" placeholder="Password" type="password"></input>
+                <button type="submit">Register</button>
+                {bFailedRegistration && <a style={{ color: "red", marginLeft: "10px", fontFamily: "arial", fontSize: "13px" }}>Error registering ,email may already be in use.</a>}
             </form>
         </div>
     </section>

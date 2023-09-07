@@ -2,37 +2,30 @@ import React, { useEffect, useState } from "react";
 import FormTextField from "./Form-textField";
 import { Login } from "../../../scripts/API/user-sessionHandler";
 import { Navigate } from "react-router-dom";
+import { useAuthContext } from "../../../Context/AuthorizationContext";
 
 export default function LoginForm(props) {
     //TODOL: implement handling invalid email and passowrd
+    const {bLoggedIn,LoginUser}=useAuthContext();
     const [err_login, Set_err_login] = useState(false);
-    const [token, setToken] = useState(false);
 
     async function OnLogin(event) {
         event.preventDefault()
 
         const emailId = document.getElementById("field_email").value;
         const password = document.getElementById("field_password").value;
-        const bResponded = await Login(emailId, password);
+        const bResponded = await LoginUser(emailId, password);
 
         if (bResponded) {
+            console.lgo
             Set_err_login(false);
-            setToken(true);
-            console.log("loggedin", token)
         } else {
             Set_err_login(true);
         }
     }
 
-    useEffect((event) => {
-        if (token) {
-            props.OnLogin();
-            console.log("Token updated:", token);
-        }
-    }, [token]);
-
     return <section className='login-register'>
-        {token && <Navigate to={"/user/projects"}></Navigate>}
+        {bLoggedIn && <Navigate to={"/user/projects"}></Navigate>}
         <div className="Form-section">
             <form>
                 <h1>Welcome back!</h1>

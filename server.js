@@ -1,5 +1,5 @@
-const express = require("express")
-const {VerifyAccessToken,VerifyRefreshToken} = require("./Middleware/ValidateToken")
+const express = require("express");
+const {VerifyAccessToken,VerifyRefreshToken} = require("./Middleware/ValidateToken");
 require('dotenv').config();
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
@@ -10,8 +10,9 @@ app.use(cors({
     credentials: true,
   }));
 
-app.use(cookieParser());
+app.use(express.urlencoded({extended:true}));
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/api",require("./Routes/api-routes.js"));
 app.use("/user", require("./Routes/user-routes.js"));
