@@ -20,9 +20,9 @@ export async function Login(email, password) {
     }
 }
 export async function Logout() {
-    const loginURL = "http://localhost:8383/user/logout";
+    const logoutURL = "http://localhost:8383/user/logout";
     try {
-        const response = await fetch(loginURL, {
+        const response = await fetch(logoutURL, {
             method: 'DELETE',
             credentials: 'include',
             headers: {

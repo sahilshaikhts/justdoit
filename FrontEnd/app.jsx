@@ -26,7 +26,7 @@ export default function App() {
             <Router>
                 <Header />
                 <Routes>
-                    <Route path='/' element={<Home />}></Route>
+                    <Route path='/' element={<Home/>}></Route>
                     <Route path='/login' element={<LoginForm />} />
                     <Route path='/user/projects' element={
                         <PrivateRoute bCondition={bLoggedIn} fallbackRoute="/login">

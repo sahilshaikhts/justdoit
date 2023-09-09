@@ -9,12 +9,13 @@ export default function Header() {
     return <>
         <header>
             <nav>
-                <Link className="header_logo" to='/'><img role="button" src="../FrontEnd\Images\WebsiteLogo_taskSite.jpg"
-                    alt="Just do it! {ಠʖಠ}" /></Link>
-                <div className="header_links">
-                    {bLoggedIn && <Link to={'/user/projects'}>Projects</Link>}
-                    {bLoggedIn && <a onClick={LogoutUser}>Logout</a>}
-                </div>
+                <div className="header_logo" to='/'>
+                    <img role="button" src="../FrontEnd\Images\WebsiteLogo_taskSite.jpg"
+                        alt="Just do it! {ಠʖಠ}" /></div>
+                <ul className="header_links">
+                    {bLoggedIn && <li><Link to={'/user/projects'}>Projects</Link></li>}
+                    {bLoggedIn && <li><a onClick={LogoutUser}>Logout</a></li>}
+                </ul>
             </nav>
         </header>
     </>

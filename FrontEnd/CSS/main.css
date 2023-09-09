@@ -1,76 +1,146 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 @font-face {
     font-family: Dosis-light;
     src: url('../FrontEnd/Fonts/Dosis-Light.ttf');
 }
+
 @font-face {
     font-family: RobotoCondensed-Regular;
     src: url('../Fonts/RobotoCondensed-Regular.ttf');
 }
+
+:root {
+    --font-title: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    --font-secondary: RobotoCondensed-Regular;
+    --text-color-light: rgb(220, 245, 226);
+}
+
+html {
+    font-size: 12px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font: inherit;
+}
+
+ul {
+    list-style-type: none;
+}
+
 body {
-    display: flex;
-    flex-direction: column;
+    text-rendering: optimizeSpeed;
     background-color: rgb(228, 228, 221);
 }
 
 
 nav {
     display: flex;
-    padding: 0px;
-    height: 8.25vh;
-
-    justify-content: space-between;
-    align-items: center;
-    
+    position: fixed;
+    width: 100%;
+    max-height: 70px;
     background-color: #2d3633;
 }
 
 .header_logo {
-    display: flex;
+    max-width: 125px;
     height: 100%;
 }
 
 .header_logo img {
-    display: flex;
-    right: 40%;
-
     max-width: 100%;
-    height: auto;
     object-fit: contain;
-    object-position: center;
 }
 
 .header_links {
-    display: flex; /* Added */
+    display: flex;
+    user-select: none;
+    justify-content: flex-end;
+    align-items: center;
     width: 100%;
-    align-items: center; /* Vertically center the links */
-    justify-content: right;
-    user-select:none;
-
 }
-.header_links a{
-    margin-right: 20px;
+
+.header_links a {
     text-decoration: none;
-
-    font-family:RobotoCondensed-Regular;
-    letter-spacing: 1px;
-    color: rgb(220, 245, 226);
-
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0);
-    transition: box-shadow 0.3s ease-in-out ;
-
+    font-family: var(--font-secondary);
+    color: var(--text-color-light);
+    font-size: 1.4rem;
+    padding-right: 1em;
 }
-.header_links a:hover{
+
+.header_links a:hover {
     cursor: pointer;
     color: rgb(103, 173, 62);
 }
 
-.loading-icon{
-    border: 10px rgb(189, 180, 182);
+.container {
+    display: flex;
+    width:100%;
+}
+.column
+{
+    min-height: 100vh;
+}
+.col-70 {
+    flex: 0 0 70%;
+}
 
+.col-30 {
+    flex: 0 0 30%;
+}
+
+.login-register {
+    display: flex;
+    background-color: #c6ccc5;
+    min-height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+input {
+    display: flex;
+    margin-top: 15px;
+    background-color: #e3e3d6;
+    color: #39422a;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    padding-left: 15px;
+    border: 0;
+    min-height: 70px;
+    min-width: 290px;
+    flex-grow: 0;
+}
+.Form-section h1 {
+    margin-bottom: 20px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 40px;
+    font-style: normal;
+    color: #2d3633;
+}
+
+.Form-section p {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    color: #2d3633;
+}
+
+.Form-section form {
+    margin-bottom: 30%;
+}
+
+.Form-section button {
+    margin-top: 10px;
+    min-width: 100px;
+    min-height: 50px;
+    background-color: #2d3633;
+    border: 0;
+    color: azure;
+    font-size: 15px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.Form-section button:hover {
+    background-color: #58625f;
 }

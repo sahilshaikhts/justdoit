@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import React from "react";
-import { Login } from "../scripts/API/user-sessionHandler";
+import { Login, Logout } from "../scripts/API/user-sessionHandler";
 import { FetchAccessToken } from "../scripts/API/fetch-acessToken";
 
 const AuthorizationContext = createContext();
@@ -27,8 +27,12 @@ function UserAuthProvider({ children }) {
             setLoggedIn(false);
     }
 
-    function LogoutUser() {
-        console.log("logging uut..")
+    async function LogoutUser() {
+        const bLoggedOut = await Logout();
+        if (bLoggedOut) {
+            setLoggedIn(false);
+        } else
+            setLoggedIn(true);
     }
 
     return (

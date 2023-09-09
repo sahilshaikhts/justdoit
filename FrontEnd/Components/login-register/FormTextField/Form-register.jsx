@@ -19,22 +19,20 @@ export default function RegisterForm() {
         else
             setFailedRegistration(true)
     }
-  
+
 
     return <section className='login-register'>
         {bLoggedIn && <Navigate to="/user/projects"></Navigate>}
-        <div className="Form-section">
-            <form onSubmit={OnRegister} encType="multipartmultipart/form-data">
-                <h1>Welcome to just do it!</h1>
-                <p>Create an account. Already have one? </p>
-                <a href="/login" style={{ marginBottom: "20px", fontSize: "12px" }}>login here</a>
-                <input name="image" type="file" accept="image" onChange={setUserPicture(e.target.files[0])}></input>
-                <input name="username" placeholder="Username"></input>
-                <input name="email" placeholder="Email"></input>
-                <input name="password" placeholder="Password" type="password"></input>
-                <button type="submit">Register</button>
-                {bFailedRegistration && <a style={{ color: "red", marginLeft: "10px", fontFamily: "arial", fontSize: "13px" }}>Error registering ,email may already be in use.</a>}
-            </form>
-        </div>
+        <form className="Form-section" onSubmit={OnRegister} encType="multipartmultipart/form-data">
+            <h1>Welcome to just do it!</h1>
+            <p>Create an account. Already have one? </p>
+            <a href="/login" style={{ marginBottom: "20px", fontSize: "12px" }}>login here</a>
+            <input name="image" type="file" accept="image" onChange={(e) => setUserPicture(e.target.files[0])}></input>
+            <input name="username" placeholder="Username"></input>
+            <input name="email" placeholder="Email"></input>
+            <input name="password" placeholder="Password" type="password"></input>
+            <button type="submit">Register</button>
+            {bFailedRegistration && <a style={{ color: "red", marginLeft: "10px", fontFamily: "arial", fontSize: "13px" }}>Error registering ,email may already be in use.</a>}
+        </form>
     </section>
 }

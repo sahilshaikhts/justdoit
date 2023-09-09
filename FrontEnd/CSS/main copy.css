@@ -1,0 +1,77 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font:inherit;
+}
+
+@font-face {
+    font-family: Dosis-light;
+    src: url('../FrontEnd/Fonts/Dosis-Light.ttf');
+}
+@font-face {
+    font-family: RobotoCondensed-Regular;
+    src: url('../Fonts/RobotoCondensed-Regular.ttf');
+}
+body {
+    display: flex;
+    flex-direction: column;
+    text-rendering: optimizeSpeed;
+    background-color: rgb(228, 228, 221);
+}
+
+
+nav {
+    display: flex;
+    height: 8.25vh;
+
+    justify-content: space-between;
+    align-items: center;
+    
+    background-color: #2d3633;
+}
+
+.header_logo {
+    display: flex;
+    height: 100%;
+}
+
+.header_logo img {
+    display: flex;
+    right: 40%;
+
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+}
+
+.header_links {
+    display: flex; /* Added */
+    width: 100%;
+    align-items: center; /* Vertically center the links */
+    justify-content: right;
+    user-select:none;
+
+}
+.header_links a{
+    margin-right: 20px;
+    text-decoration: none;
+
+    font-family:RobotoCondensed-Regular;
+    letter-spacing: 1px;
+    color: rgb(220, 245, 226);
+
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0);
+    transition: box-shadow 0.3s ease-in-out ;
+
+}
+.header_links a:hover{
+    cursor: pointer;
+    color: rgb(103, 173, 62);
+}
+
+.loading-icon{
+    border: 10px rgb(189, 180, 182);
+
+}
