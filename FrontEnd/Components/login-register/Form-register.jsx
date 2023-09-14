@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import { RegisterUser } from "../../../scripts/API/regiester-user";
-import { Navigate } from "react-router-dom";
-import { useAuthContext } from "../../../Context/AuthorizationContext";
+import { RegisterUser } from "../../scripts/API/regiester-user";
 
 export default function RegisterForm() {
     const [userPicture, setUserPicture] = useState(null);
     const [bFailedRegistration, setFailedRegistration] = useState(false);
-    const { bLoggedIn, LoginUser } = useAuthContext();
 
     async function OnRegister(event) {
         event.preventDefault()
@@ -21,12 +18,8 @@ export default function RegisterForm() {
     }
 
 
-    return <section className='login-register'>
-        {bLoggedIn && <Navigate to="/user/projects"></Navigate>}
-        <form className="Form-section" onSubmit={OnRegister} encType="multipartmultipart/form-data">
-            <h1>Welcome to just do it!</h1>
-            <p>Create an account. Already have one? </p>
-            <a href="/login" style={{ marginBottom: "20px", fontSize: "12px" }}>login here</a>
+    return <>
+        <form  className="Form-section"  onSubmit={OnRegister} encType="multipartmultipart/form-data">
             <input name="image" type="file" accept="image" onChange={(e) => setUserPicture(e.target.files[0])}></input>
             <input name="username" placeholder="Username"></input>
             <input name="email" placeholder="Email"></input>
@@ -34,5 +27,5 @@ export default function RegisterForm() {
             <button type="submit">Register</button>
             {bFailedRegistration && <a style={{ color: "red", marginLeft: "10px", fontFamily: "arial", fontSize: "13px" }}>Error registering ,email may already be in use.</a>}
         </form>
-    </section>
+    </>
 }

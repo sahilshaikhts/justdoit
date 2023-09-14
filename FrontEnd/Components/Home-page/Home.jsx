@@ -1,19 +1,27 @@
 import React, { useContext, useState } from "react";
-import RegisterForm from "../login-register/FormTextField/Form-register";
-import { useAuthContext } from "../../Context/AuthorizationContext";
+import FormloginRegister from "../login-register/Form-login-register";
 
 
-export default function Home({ IsLoggedIn, OnLogin }) {
-    const { bLoggedIn } = useAuthContext();
-
+export default function Home() {
     return (
-        <div className="container">
-            <div className="column col-70">
-                <img src="../FrontEnd\Images\temp_homebanner.png" alt="" />
-            </div>
-            <div className="column col-30">
-                {bLoggedIn == false && <RegisterForm />}
-            </div>
+        <div className="home-page">
+            <section className="container">
+                <div className="column col-70">
+                    <div className="img-display">
+                        <img src="../FrontEnd\Images\temp_homebanner.jpg" alt="" />
+                    </div>
+                </div>
+                <div className="column col-30">
+                    <FormloginRegister/>
+                </div>
+            </section>
+            <section className="container">
+                <div className="column col-100">
+                    <div className="img-display">
+                        <img src="../FrontEnd\Images\temp_homebanner.jpg" alt="" />
+                    </div>
+                </div>
+            </section>
         </div>
     );
 }

@@ -11,18 +11,22 @@
 :root {
     --font-title: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     --font-secondary: RobotoCondensed-Regular;
-    --text-color-light: rgb(220, 245, 226);
+    --color-primary: #2d3633;
+    --color-secondary:#f4f5f7;
+    --color-secondary-light: #e1e3e8;
+
+    --text-color-light: var(--color-secondary-light);
+    --text-color-faded: #39422a;
+
 }
 
-html {
-    font-size: 12px;
-}
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font: inherit;
+    color: var(--text-color-light);
 }
 
 ul {
@@ -30,30 +34,29 @@ ul {
 }
 
 body {
+    display: block;
     text-rendering: optimizeSpeed;
-    background-color: rgb(228, 228, 221);
+    background-color: var(--color-secondary);
+    overflow-x: hidden;
 }
-
 
 nav {
     display: flex;
-    position: fixed;
-    width: 100%;
-    max-height: 70px;
-    background-color: #2d3633;
+    max-height: 5rem;
+    z-index: 1;
+    background-color: var(--color-primary);
 }
 
 .header_logo {
-    max-width: 125px;
-    height: 100%;
+    display: flex;
 }
 
 .header_logo img {
-    max-width: 100%;
+    height: 100%;
     object-fit: contain;
 }
 
-.header_links {
+.nav_links {
     display: flex;
     user-select: none;
     justify-content: flex-end;
@@ -61,27 +64,135 @@ nav {
     width: 100%;
 }
 
-.header_links a {
+.nav_links a {
     text-decoration: none;
     font-family: var(--font-secondary);
     color: var(--text-color-light);
-    font-size: 1.4rem;
+    font-size: 1rem;
     padding-right: 1em;
 }
 
-.header_links a:hover {
+.nav_links a:hover {
     cursor: pointer;
     color: rgb(103, 173, 62);
 }
 
+footer {
+    width: 100%;
+    padding: 2em;
+    background-color: var(--color-primary);
+}
+footer a{
+    font-size: 2rem;
+}
+
+.img-display img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+    
+    border-radius: 30% 70% 70% 30% / 26% 30% 70% 74% ;
+    transition: 0.8s ease-in-out ;
+}
+.img-display :hover {
+    border-radius:62% 38% 74% 26% / 41% 71% 29% 59% ;
+    box-shadow: 0 4px 50px 0 rgba(51, 71, 37, 0.3);
+}
+
+.login-register {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    padding-bottom: 5em;
+    justify-content: center;
+    align-items: center;
+}
+.login-register h1 {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    padding: 1.5rem;
+    text-align: center;
+    color: #2d3633;
+}
+
+.login-register p {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 1rem;
+    font-style: normal;
+    color: #2d3633;
+}
+.login-register a{
+    font-size: 1rem;
+    color:#7fa86b
+}
+.Form-section{
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    align-items: center;
+    justify-content: center;
+
+}
+
+input {
+    display: flex;
+    width: 80%;
+    height: 2.5em;
+    margin-top: 1em;
+    padding-left: .5em;
+    border: 0;
+
+    background-color: var(--color-secondary-light);
+
+    color: var(--text-color-faded);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.5rem;
+}
+
+
+
+
+.Form-section button {
+    margin-top: 2em;
+    min-width: 7em;
+    min-height: 4em;
+    background-color: #2d3633;
+    border: 0;
+    font-size: 1rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.Form-section button:hover {
+    background-color: #58625f;
+}
+
+
+
+@media screen and (orientation: landscape) {
+    
+html {
+    font-size: 16px;
+}
+.footer a{
+    font-size: 1rem;
+}
+.home-page {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .container {
     display: flex;
-    width:100%;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
 }
-.column
-{
-    min-height: 100vh;
+
+.col-100 {
+    flex: 0 0 100%;
 }
+
 .col-70 {
     flex: 0 0 70%;
 }
@@ -90,57 +201,9 @@ nav {
     flex: 0 0 30%;
 }
 
-.login-register {
+.img-display {
     display: flex;
-    background-color: #c6ccc5;
-    min-height: 100%;
-    align-items: center;
-    justify-content: center;
+    max-width: 100%;
+    max-height: 100%;
 }
-
-input {
-    display: flex;
-    margin-top: 15px;
-    background-color: #e3e3d6;
-    color: #39422a;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
-    padding-left: 15px;
-    border: 0;
-    min-height: 70px;
-    min-width: 290px;
-    flex-grow: 0;
-}
-.Form-section h1 {
-    margin-bottom: 20px;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: 40px;
-    font-style: normal;
-    color: #2d3633;
-}
-
-.Form-section p {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: 20px;
-    font-style: normal;
-    color: #2d3633;
-}
-
-.Form-section form {
-    margin-bottom: 30%;
-}
-
-.Form-section button {
-    margin-top: 10px;
-    min-width: 100px;
-    min-height: 50px;
-    background-color: #2d3633;
-    border: 0;
-    color: azure;
-    font-size: 15px;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-}
-
-.Form-section button:hover {
-    background-color: #58625f;
 }

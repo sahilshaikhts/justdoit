@@ -7,12 +7,13 @@ import {
 
 import Header from './Components/Header';
 import Home from "./Components/Home-page/Home";
-import LoginForm from './Components/login-register/FormTextField/Form-login';
+import LoginForm from './Components/login-register/Form-login';
 import ProjectPage from './Components/Project/project-page';
 
 import PrivateRoute from "./Components/Utility/PrivateRoute";
 
 import { useAuthContext } from "./Context/AuthorizationContext";
+import Footer from "./Components/Footer";
 
 export default function App() {
     const { bLoggedIn, LoginWithToken } = useAuthContext();
@@ -27,14 +28,13 @@ export default function App() {
                 <Header />
                 <Routes>
                     <Route path='/' element={<Home/>}></Route>
-                    <Route path='/login' element={<LoginForm />} />
                     <Route path='/user/projects' element={
-                        <PrivateRoute bCondition={bLoggedIn} fallbackRoute="/login">
+                        <PrivateRoute bCondition={bLoggedIn} fallbackRoute="/">
                             <ProjectPage />
                         </PrivateRoute>
                     } />
-
                 </Routes>
+                <Footer/>
             </Router>
         </>
     )
