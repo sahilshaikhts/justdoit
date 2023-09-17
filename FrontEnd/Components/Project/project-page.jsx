@@ -28,13 +28,13 @@ export default function ProjectPage() {
         const newProject = await CreateNewProject(textfield_projectName.value);
 
         if (newProject) {
-            console.log("ke " ,newProject.id)
+            console.log("ke ", newProject.id)
             SetProjectList((currentprojects) => {
-                return [...currentprojects, { id:newProject.id,name: newProject.name, user_role: newProject.user_role }]
+                return [...currentprojects, { id: newProject.id, name: newProject.name, user_role: newProject.user_role }]
             })
         }
         button.style.visibility = "visible";
-        nameInput.value="";
+        nameInput.value = "";
         nameInput.style.visibility = "hidden";
     }
 
@@ -50,19 +50,23 @@ export default function ProjectPage() {
     function OnTaskNameEntered() {
         AddNewTask();
     }
-
-    return (
+    /**{
+        projectList.map((project) => <ProjectCard key={project.id} title={project.name}></ProjectCard>)
+    } */
+    return (<>
+        <Filter_project></Filter_project>
         <div className="project_page">
-            <Filter_project></Filter_project>
             <div className="container_projects">
-                {
-                    projectList.map((project) => <ProjectCard key={project.id} title={project.name}></ProjectCard>)
-                }
+                <ProjectCard title={"TEST"}></ProjectCard>
+                <ProjectCard title={"TEST-2123123"}></ProjectCard>
+                <ProjectCard title={"TEST"}></ProjectCard>
+                <ProjectCard title={"TEST-2312312333"}></ProjectCard>
+                <ProjectCard title={"TEST"}></ProjectCard>
                 <div id="button_addNewProject" onClick={OnClickAddTask}>
                     <input id="textfield_projectName" type="text" onKeyDown={(event) => { if (event.key === "Enter") OnTaskNameEntered(); }} placeholder="Project's name.." style={{ visibility: "hidden" }} />
                 </div>
-
             </div>
         </div>
+    </>
     );
 }

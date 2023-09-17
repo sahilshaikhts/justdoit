@@ -4,19 +4,24 @@ import { useAuthContext } from "../Context/AuthorizationContext";
 
 export default function Header() {
     const { bLoggedIn, LogoutUser } = useAuthContext();
-
+    function OnClickMenu(e) {
+        const navbarLinks = document.getElementsByClassName('nav_links')[0];
+        navbarLinks.classList.toggle("active");
+    }
     console.log(bLoggedIn)
     return <>
-        <header>
-            <nav>
-                <div className="header_logo" to='/'>
-                    <img role="button" src="../FrontEnd\Images\WebsiteLogo_taskSite.jpg"
-                        alt="Just do it! {ಠʖಠ}" /></div>
-                <ul className="nav_links">
+        <nav>
+            <div className="header_logo" to='/'>
+                <img role="button" src="../FrontEnd\Images\WebsiteLogo_taskSite.jpg"
+                    alt="Just do it! {ಠʖಠ}" /></div>
+
+            {bLoggedIn && <a onClick={OnClickMenu} className="button_navMenu" ><img src="../FrontEnd\Images\icon_menu.svg" /></a>}
+            <div className="nav_links">
+                <ul>
                     {bLoggedIn && <li><Link to={'/user/projects'}>Projects</Link></li>}
-                    {bLoggedIn && <li><a onClick={()=>{LogoutUser();redirect("/")}}>Logout</a></li>}
+                    {bLoggedIn && <li><a onClick={() => { LogoutUser(); redirect("/") }}>Logout</a></li>}
                 </ul>
-            </nav>
-        </header>
+            </div>
+        </nav>
     </>
 }
