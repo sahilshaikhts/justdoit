@@ -1,6 +1,6 @@
 @font-face {
     font-family: Dosis-light;
-    src: url('../FrontEnd/Fonts/Dosis-Light.ttf');
+    src: url('../Fonts/Dosis-Light.ttf');
 }
 
 @font-face {
@@ -15,8 +15,8 @@
     --font-title: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     --font-secondary: RobotoCondensed-Regular;
     --color-primary: #2d3633;
-    --color-primary-variation: #212726;
-    --color-secondary: #f4f5f7;
+    --color-primary-variation:  #363f3a;
+    --color-secondary: #c3c6bd;
     --color-secondary-light: #e1e3e8;
 
     --text-color-light: var(--color-secondary-light);
@@ -51,6 +51,7 @@ nav {
     flex-direction: column;
     align-items: flex-start;
     background-color: var(--color-primary);
+    z-index: 1;
 }
 
 .header_logo {
@@ -83,7 +84,7 @@ nav {
     justify-content: center;
     background-color:#69805e;
     padding: 1em;
-
+    z-index: 1;
 }
 
 .nav ul {
@@ -127,9 +128,7 @@ footer a {
     font-size: 2rem;
 }
 
-
 /*Home page*/
-
 
 .img-display img {
     max-width: 100%;

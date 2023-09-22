@@ -25,12 +25,15 @@
     margin: auto;
     flex-direction: column;
     align-items: center;
+    
 }
 
 .filter_project {
     display: flex;
     flex-direction: row;
     width: 100%;
+    z-index: 1;
+
 }
 
 .button_filter {
@@ -53,6 +56,8 @@
     list-style-type: none;
     user-select: none;
     background-color: #242a28;
+    z-index: 1;
+
 }
 
 .filter_project_list.active {
@@ -89,18 +94,14 @@
 /*Project display*/
 .container_projects {
     display: flex;
+    width: 100%;
+    margin: auto;
+    padding: 5em 0 5em 0;
     flex-wrap: wrap;
-    width: fit-content;
+
     border-style: solid;
 }
-.projects
-{
-    display: flex;
-    width: 100%;
 
-    justify-content: center;
-    align-items: center;
-}
 
 .project-card {
     align-items: top;
@@ -266,7 +267,9 @@
     }
 
     .container_projects {
+        margin: 0;
         padding: 0;
+        width: 100%;
     }
     
     .project-card {
