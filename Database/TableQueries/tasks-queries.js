@@ -14,12 +14,12 @@ async function CreateTask(user_id, project_id, priority, title, description) {
 
 async function GetProjectsTasks(project_id) {
     try {
-        const result = await database.query("select * from jdi.tasks where jdi.tasks.project_id=?", [project_id]);
+        const [result] = await database.query("select * from jdi.tasks where jdi.tasks.project_id=?", [project_id]);
 
         if (!result) {
             throw new Error("Error fetching tasks!");
         }
-        return result[0];
+        return result;
 
     } catch (error) {
         console.log(error);

@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import Filter_project from "./Filter-project";
 import ProjectCard from "./project-card";
 import { FetchUsersProject, CreateNewProject } from "../../scripts/API/user-projects";
+import { useNavigate } from "react-router-dom";
 
 
 export default function ProjectPage() {
     const [projectList, SetProjectList] = useState([]);
-
+    const navigate = useNavigate();
     //Load user's projects
     useEffect(() => {
         let pageActive = true;
@@ -20,6 +21,10 @@ export default function ProjectPage() {
         fetchProjects();
         return () => pageActive = false;
     }, []);
+
+    function OnClickProject(aProjectID) {
+        navigate("/user/project/" + aProjectID + "/task")
+    }
 
     async function AddNewTask() {
         const button = document.getElementById("button_addNewProject");
@@ -39,31 +44,25 @@ export default function ProjectPage() {
     }
 
     function OnClickAddTask() {
-        const button = document.getElementById("button_addNewProject");
+        const button = document.getElementsByClassName("button_addNewProject")[0];
 
-        const nameInput = document.getElementById("textfield_projectName");
+        const nameInput = document.getElementsByClassName("textfield_projectName")[0];
 
-        button.style.visibility = "hidden";
         nameInput.style.visibility = "visible";
     }
 
     function OnTaskNameEntered() {
         AddNewTask();
     }
-    /**{
-        projectList.map((project) => <ProjectCard key={project.id} title={project.name}></ProjectCard>)
-    } */
+
     return (<>
         <Filter_project></Filter_project>
         <div className="project_page">
             <div className="container_projects">
-                <ProjectCard title={"TEST"}></ProjectCard>
-                <ProjectCard title={"TEST-2123123"}></ProjectCard>
-                <ProjectCard title={"TEST"}></ProjectCard>
-                <ProjectCard title={"TEST-2312312333"}></ProjectCard>
-                <ProjectCard title={"TEST"}></ProjectCard>
-                <div id="button_addNewProject" onClick={OnClickAddTask}>
-                    <input id="textfield_projectName" type="text" onKeyDown={(event) => { if (event.key === "Enter") OnTaskNameEntered(); }} placeholder="Project's name.." style={{ visibility: "hidden" }} />
+                {projectList.map((project) => <ProjectCard onClickCard={() => OnClickProject(project.id)} key={project.id} title={project.name + project.id}></ProjectCard>)}
+
+                <div className="button_addNewProject" onClick={OnClickAddTask}>
+                    <input className="textfield_projectName" type="text" onKeyDown={(event) => { if (event.key === "Enter") OnTaskNameEntered(); }} placeholder="Project's name.." style={{ visibility: "hidden" }} />
                 </div>
             </div>
         </div>

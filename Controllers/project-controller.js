@@ -10,7 +10,7 @@ const GetProjects = TryCatch(async (req, res) => {
     const result = await DB_projects_handler.GetUserProjects(req.user.id);
 
     if (result) {
-        res.status(200).json(result[0]);
+        res.status(200).json(result);
     } else {
         throw new Error("Couldn't retrive user's projects");
     }
@@ -42,7 +42,7 @@ const CreateProject = TryCatch(async (req, res) => {
     }
 
     const result = await DB_projects_handler.CreateUserProject(name, req.user.id, user_role);
-    const newProject = await DB_projects_handler.GetUserProject(req.user.id, result[0].insertId);
+    const newProject = await DB_projects_handler.GetUserProject(req.user.id, result.insertId);
 
     if (result) {
         res.status(201).json(newProject);

@@ -11,22 +11,20 @@ const CheckIfUserHaveAccess = (requiredRole, bAllowIfEqualOrHigher = false) => T
     const user_id = req.user.id;
     const project_id = req.params.project_id;
 
-    if (!user_id  || !project_id) {
+    if (!user_id || !project_id) {
         throw new Error("Missing data!");
     } else {
         const user_role = await GetUserProjectRole(user_id, project_id);
-        console.log("role: ",user_role);
-        if (user_role == requiredRole) {
+
+        if (bAllowIfEqualOrHigher === true && user_role >= requiredRole) {
             next();
             return;
-        } else {
-            if (bAllowIfEqualOrHigher === true) {
-                if (user_role > requiredRole) {
-                    next();
-                    return;
-                }
+        } else
+            if (user_role == requiredRole) {
+                next();
+                return;
             }
-        }
+
         //After all checks fail,throw error.
         HandleOnNotAuthorized(res);
     }

@@ -14,7 +14,8 @@ where jt_users_projects.user_id = ?`
 async function GetUserProjects(userId) {
     try {
         [result] = await database.query(qr_getUsersProjects, userId);
-        if (result.affectedRows===1) {
+        console.log(result)
+        if (result.length>0) {
             return result;
         } else {
             console.log("Error findind user's project!");
@@ -28,7 +29,7 @@ async function GetUserProject(user_id, project_id) {
     try {
         const [result] = await database.query(qr_getUsersProjects + " && jt_users_projects.project_id=?", [user_id, project_id]);
         console.log(result)
-        if (result.affectedRows===1) {
+        if (result.length>0) {
             return result;
         } else {
             throw Error("Error finding user's project!");
@@ -41,10 +42,9 @@ async function GetUserProject(user_id, project_id) {
 async function CreateUserProject(project_name, user_id, user_role = UserRoles.Admin) {
     try {
         const [newProject] = await database.query("insert into jdi.projects (name) values(?)", project_name);
-
         if (newProject.affectedRows===1) {
-            const projectRecord = await database.query("insert into jdi.jt_users_projects (user_id,project_id,user_role) values(?,?,?)", [user_id, newProject.insertId, user_role]);
-
+            const [projectRecord] = await database.query("insert into jdi.jt_users_projects (user_id,project_id,user_role) values(?,?,?)", [user_id, newProject.insertId, user_role]);
+           
             if (projectRecord.affectedRows===1) {
                 return newProject;
             } else {

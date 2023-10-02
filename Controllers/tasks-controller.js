@@ -24,14 +24,14 @@ const CreateTask = TryCatch(async (req, res) => {
 
 const GetTasks = TryCatch(async (req, res) => {
     const project_id = req.params.project_id;
-    console.log(req.params)
+    console.log("project_id ",project_id)
 
     if (!project_id) {
         res.status(400);
         ThrowErrorMissingField();
     }
     const tasks = await DB_tasks_handler.GetProjectsTasks(project_id);
-
+    console.log(tasks)
     if (tasks) {
         res.status(200).json(tasks);
     } else {

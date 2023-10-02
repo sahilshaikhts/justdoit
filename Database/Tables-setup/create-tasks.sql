@@ -1,4 +1,4 @@
-create table taskss(
+create table tasks(
     id INT AUTO_INCREMENT UNIQUE PRIMARY KEY NOT NULL,
     user_id int,
     project_id int NOT NULL,

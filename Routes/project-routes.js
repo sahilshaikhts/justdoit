@@ -6,5 +6,5 @@ const router=express.Router();
 router.route("/").post(CreateProject).get(GetProjects);
 
 router.route("/:project_id/settings").put(ModifyProjectName).delete(DeleteProject);
-
+router.use(require("./task-routes.js"))
 module.exports=router;

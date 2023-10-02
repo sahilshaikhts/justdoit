@@ -4,12 +4,13 @@ const {CheckIfUserHaveAccess,CheckIfUserTaskOwner} = require("../Middleware/User
 const { UserRoles } = require("../constants");
 
 
-router.route("/").get(CheckIfUserHaveAccess(UserRoles.Viewer,true),GetTasks).post(CheckIfUserHaveAccess(UserRoles.Viewer,true),CreateTask);
+router.route("/:project_id/tasks").get(CheckIfUserHaveAccess(UserRoles.Viewer,true),GetTasks).post(CheckIfUserHaveAccess(UserRoles.Viewer,true),CreateTask);
 router.route("/:task_id").get(CheckIfUserHaveAccess(UserRoles.Viewer,true),GetTask);
 
 router.route("/:task_id/Edit-title").put(CheckIfUserHaveAccess(UserRoles.Moderator,true),SetTaskTitle);
 router.route("/:task_id/Edit-description").put(CheckIfUserHaveAccess(UserRoles.Moderator,true),SetTaskDescription);
 router.route("/:task_id/Edit-priority").put(CheckIfUserHaveAccess(UserRoles.Moderator,true),SetTaskPriority);
+//Todo: switch checkAcesse with checktaskowner and test
 router.route("/:task_id/Edit-progress").put(CheckIfUserHaveAccess(UserRoles.Member,true),CheckIfUserTaskOwner,SetTaskProgress);
 
 router.route("/:task_id/Edit-user").put(CheckIfUserHaveAccess(UserRoles.Admin),SetTaskUser);
