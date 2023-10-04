@@ -366,9 +366,6 @@ footer a {
     .dropdown {
         width: 100%;
     }
-    .button_dropdownmenu img {
-        max-width: 5rem;
-    }
 
     .dropdownmenu_list {
         width: auto;

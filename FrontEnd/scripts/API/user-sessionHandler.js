@@ -16,7 +16,7 @@ export async function Login(email, password) {
             return false;
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }
 export async function Logout() {
@@ -35,6 +35,6 @@ export async function Logout() {
             return false;
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }

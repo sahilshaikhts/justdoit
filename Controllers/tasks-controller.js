@@ -24,14 +24,12 @@ const CreateTask = TryCatch(async (req, res) => {
 
 const GetTasks = TryCatch(async (req, res) => {
     const project_id = req.params.project_id;
-    console.log("project_id ",project_id)
 
     if (!project_id) {
         res.status(400);
         ThrowErrorMissingField();
     }
     const tasks = await DB_tasks_handler.GetProjectsTasks(project_id);
-    console.log(tasks)
     if (tasks) {
         res.status(200).json(tasks);
     } else {
@@ -58,57 +56,16 @@ const GetTask = TryCatch(async (req, res) => {
     }
 });
 
-const SetTaskTitle = TryCatch(async (req, res) => {
+const UpdateTask = TryCatch(async (req, res) => {
     const project_id = req.params.project_id;
     const task_id = req.params.task_id;
-    const title = req.body.task_title;
-
-
+    const {title,description,priority,progress,assignedUserID}=req.body;
+ 
     if (!project_id || !title) {
         res.status(400);
         ThrowErrorMissingField();
     }
-    const result = await DB_tasks_handler.SetTasksTitle(project_id, task_id, title);
-
-    if (result) {
-        res.status(200).json(result);
-    } else {
-        res.status(400);
-        throw new Error("Error fetching project's tasks.")
-    }
-});
-
-const SetTaskDescription = TryCatch(async (req, res) => {
-    const project_id = req.params.project_id;
-    const task_id = req.params.task_id;
-    const description = req.body.task_description;
-
-
-    if (!task_id || !project_id || !description) {
-        res.status(400);
-        ThrowErrorMissingField();
-    }
-    const result = await DB_tasks_handler.SetTasksDescription(project_id, task_id, description);
-
-    if (result) {
-        res.status(200).json(result);
-    } else {
-        res.status(400);
-        throw new Error("Error fetching project's tasks.")
-    }
-});
-
-const SetTaskPriority = TryCatch(async (req, res) => {
-    const project_id = req.params.project_id;
-    const task_id = req.params.task_id;
-    const priority = req.body.task_priority;//[int] 0:low. 1: Med. 2: High.
-
-
-    if (!task_id || !project_id || !priority) {
-        res.status(400);
-        ThrowErrorMissingField();
-    }
-    const result = await DB_tasks_handler.SetTasksPriority(project_id, task_id, priority);
+    const result = await DB_tasks_handler.UpdateTask(project_id, task_id,title,description,progress,priority,req.user.id);
 
     if (result) {
         res.status(200).json(result);
@@ -121,7 +78,7 @@ const SetTaskPriority = TryCatch(async (req, res) => {
 const SetTaskProgress = TryCatch(async (req, res) => {
     const project_id = req.params.project_id;
     const task_id = req.params.task_id;
-    const progress = req.body.task_progress;//[int] 0:low. 1: Med. 2: High.
+    const progress = req.body.progress;//[int] 0:low. 1: Med. 2: High.
 
     if (!task_id || !project_id || !progress) {
         res.status(400);
@@ -138,28 +95,8 @@ const SetTaskProgress = TryCatch(async (req, res) => {
     }
 });
 
-const SetTaskUser = TryCatch(async (req, res) => {
-    const project_id = req.params.project_id;
-    const task_id = req.params.task_id;
-    const newUser_id = req.body.task_newUser;
-
-    if (!newUser_id || !project_id || !task_id) {
-        res.status(400);
-        ThrowErrorMissingField();
-    }
-
-    const result = await DB_tasks_handler.SetTasksUser(project_id, task_id, newUser_id);
-
-    if (result) {
-        res.status(200).json(result);
-    } else {
-        res.status(400);
-        throw new Error("Error fetching project's tasks.")
-    }
-});
-
 function ThrowErrorMissingField() {
     throw new Error("Missing required data!");
 }
 
-module.exports = { CreateTask, GetTasks, GetTask, SetTaskTitle, SetTaskDescription, SetTaskPriority, SetTaskProgress, SetTaskUser };
+module.exports = { CreateTask, GetTasks, GetTask,UpdateTask,SetTaskProgress  };

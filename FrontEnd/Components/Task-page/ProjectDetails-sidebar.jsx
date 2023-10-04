@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function ProjectDetailsSideBar() {
+export default function ProjectDetailsSideBar({oMemberList}) {
 
     function ToggleElementActive(className) {
         const element = document.getElementsByClassName(className)[0];

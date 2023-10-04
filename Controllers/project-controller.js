@@ -34,6 +34,23 @@ const GetProject = TryCatch(async (req, res) => {
 
 });
 
+const GetProjectMembers = TryCatch(async (req, res) => {
+    const project_id = req.params.project_id;
+    if (!project_id) {
+        res.status(400);
+        throw new Error("No project_id found!");
+    }
+    const members = await DB_projects_handler.GetProjectsUsers(project_id);
+    console.log(members,project_id)
+    if(members && members.length>0)
+    {
+        res.status(200).json(members);
+    }else
+    {
+        res.status(400).json({message:"Error finding project's users."});
+    }
+});
+
 const CreateProject = TryCatch(async (req, res) => {
     const { name, user_role } = req.body;
     if (!req.user.id || !user_role || !name) {
@@ -93,4 +110,4 @@ function ThrowErrorMissingField()
     throw new Error("Missing field data!");
 }
 
-module.exports = { GetProject, GetProjects, CreateProject, ModifyProjectName,DeleteProject };
+module.exports = { GetProject, GetProjects,GetProjectMembers, CreateProject, ModifyProjectName,DeleteProject };
