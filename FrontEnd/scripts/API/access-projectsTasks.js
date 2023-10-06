@@ -8,7 +8,7 @@ export async function FetchProjectTasks(aProjectID) {
                 headers: { "content-Type": "application/json" }
             });
 
-        if (response && response.ok) {
+        if (response.ok) {
             const tasks = await response.json();
             return tasks;
         }
@@ -32,7 +32,7 @@ export async function AddNewTask(aProjectID, aTitle, aDescription, aPiority, aAs
             }
 
         );
-        if (response && response.ok)
+        if (response.ok)
             return true
         else
             return false;
@@ -55,7 +55,7 @@ export async function UpdateTask(aTaskId, aProjectID, aTitle, aDescription, aPio
                 body: JSON.stringify(data),
             }
         );
-        if (response && response.ok) {
+        if (response.ok) {
             return true;
         } else {
             return false;
@@ -71,16 +71,14 @@ export async function FetchProjectMembers(aProjectID) {
     try {
         const response = await fetch(url,
             {
-                method:"GET",
-                credentials:"include",
+                method: "GET",
+                credentials: "include",
             });
-            if(response && response.ok)
-            {
-                return await response.json();
-            }else
-            {
-                return null;
-            }
+        if (response.ok) {
+            return await response.json();
+        } else {
+            return null;
+        }
     } catch (error) {
         console.error(error);
     }

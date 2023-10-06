@@ -119,6 +119,7 @@ footer {
     position: static;
     width: 100%;
     padding: 2em;
+    
     background-color: var(--color-primary);
 }
 
@@ -215,14 +216,6 @@ footer a {
     background-color: #58625f;
 }
 
-.filter_project {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    z-index: 1;
-
-}
-
 .dropdown {
     position: relative;
     width: 100%;
@@ -237,11 +230,6 @@ footer a {
     display: flex;
     width: 100%;
     background-color: #242a28;
-}
-
-.button_dropdownmenu img {
-    padding: 1.5rem;
-    max-width: 8rem;
 }
 
 .dropdownmenu_list {

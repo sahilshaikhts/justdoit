@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { RegisterUser } from "../../scripts/API/regiester-user";
+import { Login } from "../../scripts/API/user-sessionHandler.js";
+import { RegisterUser } from "../../scripts/API/user-data-api.js";
 
 export default function RegisterForm() {
     const [userPicture, setUserPicture] = useState(null);
@@ -11,12 +12,11 @@ export default function RegisterForm() {
         //Add a saftey check for userPicture, check if what's stored is an image.
         const bSuccesful = await RegisterUser(form, userPicture);
 
-        if (bSuccesful)
-            await LoginUser(form.get("email"), form.get("password"));
+        if (bSuccesful) 
+            await Login(form.get("email"), form.get("password"));
         else
             setFailedRegistration(true)
     }
-
 
     return <>
         <form  className="Form-section"  onSubmit={OnRegister} encType="multipartmultipart/form-data">

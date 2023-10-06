@@ -95,7 +95,7 @@ button {
     align-items: center;
     border-left: solid 1rem;
     border-color: rgba(229, 255, 229, 0.107);
-
+    font-size: 2rem;
     font-family: var(--font-title);
     z-index: 2;
 }
@@ -118,13 +118,13 @@ button {
 .button-closeSideBar span {
     position: relative;
     width: 100%;
-    font-size: 2.5rem;
+    font-size: 1.25em;
     text-align: center;
     margin-left: 10%;
 }
 
 .button-closeSideBar img {
-    width: 2.5rem;
+    width: 1.25em;
 }
 
 .button-closeSideBar img:hover {
@@ -137,59 +137,90 @@ button {
 
 .details {
     width: 100%;
-    margin-top: 2em;
+    margin-top: 1em;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-
 }
 
-.card-header {
+
+.details .button_dropdownmenu {
     display: flex;
     position: relative;
 
     width: 100%;
     padding: 1em;
 
-    font-size: 3rem;
+    font-size: 1.5em;
 
     flex-direction: row;
-    justify-content: space-between;
+    align-items: center;
 
     border-top: solid .05em;
     border-bottom: solid .05em;
     border-color: rgba(255, 255, 255, 0.3);
 }
 
-.card-header:hover {
+.details .button_dropdownmenu {
     background-color: rgb(58, 66, 57);
     cursor: pointer;
-
+    max-height: 3em;
 }
-
-.card-header img {
-    width: 2rem;
+.details .button_dropdownmenu button
+{
+    width: 1em;
+    margin-left: 1.5em;
+    margin-top: .3em;
 }
-
-.details ul {
-    display: none;
-    background-color: rgb(22, 25, 20);
-    padding: 1em;
-    border-bottom: solid .1rem;
-    border-color: rgba(255, 255, 255, 0.229);
-}
-
-.list_userStatus.active>ul {
-    display: block;
-}
-
-.list_memebers.active>ul {
-    display: block;
-}
-
-.list_userStatus li {
-    list-style: none;
+.details .button_dropdownmenu img {
     width: 100%;
-    padding: .5em;
-    font-size: 2rem;
+}
+
+.details .button_dropdownmenu img:hover {
+    cursor: pointer;
+    filter: brightness(.6) sepia(1) hue-rotate(60deg);
+}
+
+.details .button_dropdownmenu::after {
+    content: '';
+    position: absolute;
+    left: 90%;
+    top: 40%;
+    background-image: url('/FrontEnd/Images/icon_arrow_down.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 1em;
+    height: 1em;
+    pointer-events: none;
+}
+
+.details .list_members {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1em 0 1em;
+}
+
+.details .dropDown_item {
+    background-color: rgb(24, 25, 23);
+    border-bottom: solid .05em;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.details .list_members span {
+    font-size: 1.25em;
+    margin-right: 50%;
+}
+
+.details .list_members img {
+    width: 2.5em;
+}
+
+.details .btn_kickUser {
+    width: 2.5em;
+}
+
+.details .btn_kickUser img {
+    width: 100%;
 }
 
 .button-leave {
@@ -221,6 +252,109 @@ button {
     padding-left: .5em;
 }
 
+/*Add member diplay*/
+.display_addMember
+{
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    
+    width: 50rem;
+    height:30rem;
+    padding: 2em;
+    
+    left: 50%;
+    top: 300%;
+
+    transform: translate(-50%,0);
+    z-index: 2;
+    align-items: center;
+    background-color: #a8b3a4;
+    
+    font-size: 1.5rem;
+    border-radius: 2rem;
+}
+.display_addMember .row{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1em;
+}
+
+.display_addMember input
+{
+    width: 15em;
+    height: 2.5em;
+    appearance: none;
+    
+    border: none;
+    border-radius: .4em;
+    
+    font-size: 2.25rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin-left: 1em;
+    padding: 1em;
+    text-align: start;
+    background-color: #909d8c;
+
+}
+.display_addMember input:focus {
+    border: 3px solid rgb(65, 79, 59); 
+}
+.display_addMember .btn_search
+{
+    width: 5rem;
+    margin-left: 1em;
+}
+.display_addMember .btn_search img
+{
+    width: 100%;
+}
+.display_addMember .btn_search img:hover {
+    cursor: pointer;
+}
+.display_addMember .msg_searchEmail
+{
+    font-size: 2.5rem;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #242a28;
+}
+.searchedMember {
+    display: flex;
+    width: 80%;
+    
+    padding: 0 1em 0 1em;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: rgb(88, 99, 77);
+    
+    font-size: 2rem;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.searchedMember  img {
+width: 2.5em;
+margin: .5em;
+border-radius: 3em;
+}
+
+.searchedMember span {
+    font-size: 1.25em;
+    margin-right: 20%;
+}
+
+.searchedMember button {
+    width: 1.5em;
+}
+.searchedMember button:hover {
+cursor: pointer;
+}
+.searchedMember button img {
+    width: 100%;
+}
+
+/*Task page containers*/
 .task-sections-container {
     display: flex;
     width: 100%;
@@ -276,7 +410,7 @@ button {
 
 .task-title {
     display: flex;
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-family: JosefinSans-reg;
 
     overflow: hidden;
@@ -319,15 +453,15 @@ button {
     transition: width 0.25s ease-out;
 }
 
-.priority_indicator.red {
+.priority_indicator.high {
     background-color: rgb(255, 97, 97);
 }
 
-.priority_indicator.orange {
+.priority_indicator.normal {
     background-color: rgb(255, 176, 85);
 }
 
-.priority_indicator.green {
+.priority_indicator.low {
     background-color: rgb(173, 255, 97);
 }
 
@@ -390,8 +524,8 @@ button {
     text-overflow: ellipsis;
 }
 
-.field_description
-,.taskDisplay-section p {
+.field_description,
+.taskDisplay-section p {
     width: 80%;
     height: 10em;
     padding: 1em;
@@ -402,17 +536,18 @@ button {
     min-width: 70%;
     text-align: start;
 }
-.field_title
-{
+
+.field_title {
+    height: 2rem;
     font-size: 1.5em;
     font-family: JosefinSans-reg;
     white-space: nowrap;
     text-overflow: ellipsis;
-    
-    background-color: rgba(255, 255, 255, 0);
-    
+
+    background-color: #202423;
+
     border: none;
-    border-radius: 0;
+    border-radius: .25em;
     outline: none;
 }
 
@@ -511,8 +646,7 @@ button {
     color: var(--text-color-light);
 }
 
-.listItem_members
-{
+.listItem_members {
     display: flex;
     width: 100%;
     justify-content: space-between;
@@ -590,6 +724,7 @@ button {
     .details-sidebar {
         width: 20%;
         border-left: solid .1rem;
+        font-size: 1rem;
     }
 
     .details-sidebar span {
@@ -597,6 +732,15 @@ button {
         width: 100%;
         text-align: center;
         font-size: 1rem;
+    }
+
+    .list_members span {
+        font-size: 1rem;
+    }
+
+    .list_members img {
+        width: 2em;
+        margin-right: 1em;
     }
 
     .card-header {
@@ -614,15 +758,6 @@ button {
 
     .card-header img {
         width: 1.3rem;
-    }
-
-    .details ul {
-        padding: .5em;
-    }
-
-    .list_userStatus li {
-        padding: .5em;
-        font-size: 1rem;
     }
 
     .button-leave button {
@@ -738,12 +873,13 @@ button {
         font-size: 1em;
         padding: .5em;
     }
-    
+
     .taskDisplayButton-section {
         display: flex;
         margin-top: 10%;
     }
-    .taskDisplay-userInfo .dropdown{
+
+    .taskDisplay-userInfo .dropdown {
         width: 100%;
     }
 }

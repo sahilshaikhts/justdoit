@@ -7,48 +7,43 @@ import { useNavigate } from "react-router-dom";
 
 export default function ProjectPage() {
     const [projectList, SetProjectList] = useState([]);
+    const [bAddProject, SetAddProject] = useState(false);
     const navigate = useNavigate();
     //Load user's projects
     useEffect(() => {
-        let pageActive = true;
 
-        const fetchProjects = async () => {
-            const projects = await FetchUsersProject();
-            if (projects && pageActive) {
-                SetProjectList(projects);
-            }
-        }
         fetchProjects();
-        return () => pageActive = false;
     }, []);
+
+    async function fetchProjects() {
+        const projects = await FetchUsersProject();
+        if (projects) {
+            SetProjectList(projects);
+        }
+    }
 
     function OnClickProject(aProjectID) {
         navigate("/user/project/" + aProjectID + "/task")
     }
 
     async function AddNewTask() {
-        const button = document.getElementById("button_addNewProject");
-        const nameInput = document.getElementById("textfield_projectName");
-
-        const newProject = await CreateNewProject(textfield_projectName.value);
+        const nameInput = document.getElementsByClassName("textfield_projectName")[0];
+        const newProject = await CreateNewProject(nameInput.value);
 
         if (newProject) {
-            console.log("ke ", newProject.id)
-            SetProjectList((currentprojects) => {
-                return [...currentprojects, { id: newProject.id, name: newProject.name, user_role: newProject.user_role }]
-            })
+            //Refetch projects and update page.
+            fetchProjects();
         }
-        button.style.visibility = "visible";
         nameInput.value = "";
-        nameInput.style.visibility = "hidden";
     }
 
     function OnClickAddTask() {
-        const button = document.getElementsByClassName("button_addNewProject")[0];
-
         const nameInput = document.getElementsByClassName("textfield_projectName")[0];
+        console.log(nameInput)
+        if (nameInput)
+            nameInput.value = "";
 
-        nameInput.style.visibility = "visible";
+        SetAddProject((value) => !value);
     }
 
     function OnTaskNameEntered() {
@@ -56,14 +51,15 @@ export default function ProjectPage() {
     }
 
     return (<>
-        <Filter_project></Filter_project>
+        <div className="title-projectPage"><label>Projects |</label></div>
         <div className="project_page">
             <div className="container_projects">
-                {projectList.map((project) => <ProjectCard onClickCard={() => OnClickProject(project.id)} key={project.id} title={project.name + project.id}></ProjectCard>)}
+                {projectList.map((project) => <ProjectCard onClickCard={() => OnClickProject(project.id)} key={project.id} title={project.name}></ProjectCard>)}
 
-                <div className="button_addNewProject" onClick={OnClickAddTask}>
-                    <input className="textfield_projectName" type="text" onKeyDown={(event) => { if (event.key === "Enter") OnTaskNameEntered(); }} placeholder="Project's name.." style={{ visibility: "hidden" }} />
-                </div>
+                <div className="button_addNewProject" >
+                    {bAddProject && <input className="textfield_projectName" type="text" onKeyDown={(event) => { if (event.key === "Enter") OnTaskNameEntered(); }} placeholder="Project's name.." />
+                    }
+                    <img onClick={OnClickAddTask} src="/Frontend/Images/icon_plus.svg" alt="" /> </div>
             </div>
         </div>
     </>

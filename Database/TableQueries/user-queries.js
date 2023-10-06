@@ -6,10 +6,23 @@ const FindUserByEmail = async (email) => {
         if (!rows || rows.length == 0) {
             return null;
         } else {
+        return rows[0];
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const GetUserBasicInfo = async (email) => {
+    try {
+        const [rows] = await database.query('select username,email,fileName from jdi.users left join jdi.user_files on jdi.users.id=jdi.user_files.userID where email=?', email);
+        if (!rows || rows.length == 0) {
+            return null;
+        } else {
             return rows[0];
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 
@@ -28,7 +41,7 @@ const CreateUser = async (username, email, hashedPassowrd) => {
                 return null;
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 
@@ -41,9 +54,9 @@ const UploadUsersPP = async (aUserID, aFileName) => {
             return null;
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }
 
 
-module.exports = { FindUserByEmail, CreateUser, UploadUsersPP };
+module.exports = { FindUserByEmail, CreateUser, UploadUsersPP,GetUserBasicInfo };

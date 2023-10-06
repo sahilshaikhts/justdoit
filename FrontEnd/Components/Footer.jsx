@@ -1,9 +1,9 @@
 import React from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 export default function Footer() {
     return <>
-            <footer>
-                <ul className="col-100 nav_links">
+            <footer className="nav_links">
+                <ul className="nav_link_list">
                     {<li><Link to={'/user/projects'}>FAQ</Link></li>}
                     {<li><a>Contact us</a></li>}
                 </ul>

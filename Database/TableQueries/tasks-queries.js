@@ -14,7 +14,7 @@ async function CreateTask(user_id, project_id, priority, title, description) {
 
 async function GetProjectsTasks(project_id) {
     try {
-        const [result] = await database.query("select * from jdi.tasks where jdi.tasks.project_id=?", [project_id]);
+        const [result] = await database.query("select jdi.tasks.id,jdi.tasks.user_id,jdi.users.username,jdi.tasks.project_id,jdi.tasks.progress,jdi.tasks.priority,jdi.tasks.title,jdi.tasks.description from jdi.tasks left join jdi.users on jdi.tasks.user_id=jdi.users.id where jdi.tasks.project_id=?", [project_id]);
 
         if (!result || result.length == 0) {
             throw new Error("Error fetching tasks!");
@@ -41,7 +41,7 @@ async function UpdateTask(project_id, id, title, description, progress, priority
     try {
         const [result] = await database.query("update jdi.tasks set tasks.title=?,tasks.description=?,tasks.progress=?,tasks.priority=?,user_id=? where tasks.project_id=? && id=?", [title, description, progress, priority, user_id, project_id, id]);
 
-        if (!result || result.affectedRows==0) {
+        if (!result || result.affectedRows == 0) {
             throw new Error("Error updating tasks!");
         }
         return result;
@@ -53,7 +53,7 @@ async function SetTasksProgress(project_id, id, progress) {
     try {
         const [result] = await database.query("update jdi.tasks set tasks.progress=? where project_id=? && id=?", [progress, project_id, id]);
 
-        if (!result || result.affectedRows==0) {
+        if (!result || result.affectedRows == 0) {
             throw new Error("Error setting task's progress!");
         }
         return result;
@@ -62,4 +62,4 @@ async function SetTasksProgress(project_id, id, progress) {
     }
 }
 
-module.exports = { CreateTask, GetProjectsTask, GetProjectsTasks, UpdateTask,SetTasksProgress }
+module.exports = { CreateTask, GetProjectsTask, GetProjectsTasks, UpdateTask, SetTasksProgress }

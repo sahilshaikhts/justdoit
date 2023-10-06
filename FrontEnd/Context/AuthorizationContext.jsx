@@ -1,7 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import React from "react";
-import { Login, Logout } from "../scripts/API/user-sessionHandler";
-import { FetchAccessToken } from "../scripts/API/fetch-acessToken";
+import { Login, Logout,FetchAccessToken } from "../scripts/API/user-sessionHandler";
 
 const AuthorizationContext = createContext();
 

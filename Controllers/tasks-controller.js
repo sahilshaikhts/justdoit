@@ -46,7 +46,7 @@ const GetTask = TryCatch(async (req, res) => {
         res.status(400);
         ThrowErrorMissingField();
     }
-    const tasks = await DB_tasks_handler.GetProjectsTasks(15);
+    const tasks = await DB_tasks_handler.GetProjectsTask(project_id,task_id);
 
     if (tasks) {
         res.status(200).json(tasks);
@@ -65,7 +65,7 @@ const UpdateTask = TryCatch(async (req, res) => {
         res.status(400);
         ThrowErrorMissingField();
     }
-    const result = await DB_tasks_handler.UpdateTask(project_id, task_id,title,description,progress,priority,req.user.id);
+    const result = await DB_tasks_handler.UpdateTask(project_id, task_id,title,description,progress,priority,assignedUserID);
 
     if (result) {
         res.status(200).json(result);

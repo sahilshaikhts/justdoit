@@ -4,7 +4,7 @@ import Dropdown_2 from "../Utility/dd";
 import UnfocusHandler from "../Utility/UnFocusElementHandler";
 import { UpdateTask } from "../../scripts/API/access-projectsTasks";
 
-export function TaskDisplay({ taskID, projectID, title, description, priority, progress, oMemberList, assignedMemberListIndex, userRole, bCreating = false, handleCloseDisplay }) {
+export function TaskDisplay({ taskID, project_id, title, description, priority, progress, oMemberList, assignedMemberListIndex, userRole, bCreating = false, handleCloseDisplay }) {
     const [bEditingTitle, SetEditTitle] = useState(bCreating);
     const [bEditingDescription, SetEditDescription] = useState(bCreating);
 
@@ -28,7 +28,9 @@ export function TaskDisplay({ taskID, projectID, title, description, priority, p
                 }
                 return <div className="listItem_members" key={member.user_id}><span>{member.username}</span><img src={"/FrontEnd/Images/temp_preview_memberPP.webp"} /></div>
             });
-            setUserListItems(mappedUser);
+            //Set the list and add a None option
+            setUserListItems([<div className="listItem_members" key={-1}><span>None</span></div>
+            ,...mappedUser]);
         }
     }, [])
 
@@ -48,7 +50,7 @@ export function TaskDisplay({ taskID, projectID, title, description, priority, p
     function OnUserChange(listIndex) {
         setTaskObject(prevTaskObject => ({
             ...prevTaskObject,
-            assignedMemberListIndex: listIndex
+            assignedMemberListIndex: (listIndex-1)
         }));
     }
 
@@ -66,11 +68,21 @@ export function TaskDisplay({ taskID, projectID, title, description, priority, p
     }
 
     async function SaveTask() {
-        //Check for mandatory fields
-        console.log(taskObject.title, taskObject.assignedMemberListIndex)
-        if (taskObject.title && taskObject.assignedMemberListIndex != undefined) {
-            const response = await UpdateTask(taskID, projectID, taskObject.title, taskObject.description, taskObject.priority, taskObject.progress, oMemberList[taskObject.assignedMemberListIndex].user_id);
-
+        //Check if member set if not pass null
+        let assignedMemberID=null;
+        if(taskObject.assignedMemberListIndex!==0)
+        assignedMemberID=oMemberList[taskObject.assignedMemberListIndex].user_id;
+    
+        //Check for title(mandatory)
+        if (taskObject.title) {
+            const response = await UpdateTask(taskID, project_id, taskObject.title, taskObject.description, taskObject.priority, taskObject.progress,assignedMemberID );
+            if(response)
+            {
+                handleCloseDisplay();
+            }else
+            {
+                const msg_disp = document.getElementsByClassName("msg_display_form")[0];
+            }
         }
     }
 
@@ -102,5 +114,6 @@ export function TaskDisplay({ taskID, projectID, title, description, priority, p
                 }</div>
             <div className="taskDisplayButton-section"><button onClick={SaveTask} className="btn_save">Save</button>{userRole > 1 && <button className="btn_delete"><img src="/Frontend/Images/icon_delete.svg" /></button>}</div>
         </div>
+        <label className="msg_display_form"></label>
     </div>
 }
