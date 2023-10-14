@@ -1,12 +1,13 @@
-const { FindUserByEmail, CreateUser, UploadUsersPP,GetUserBasicInfo } = require("../Database/TableQueries/user-queries");
+const { FindUserByEmail, CreateUser, UploadUsersPP, GetUserBasicInfo, GetUserPPFileName } = require("../Database/TableQueries/user-queries");
 const TryCatch = require("../Utils/try-catch");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const fs = require("fs")
 const GenerateJWT = require("./jwt-generator");
+const path = require("path");
 
 const RegisterUser = TryCatch(async (req, res, next) => {
     const { username, email, password } = req.body;
-    console.log(req.file, req.image);
     //Check if user provided all data.
     if (!username || !email || !password) {
         throw new Error("All fields are mandatory!");
@@ -88,7 +89,7 @@ const LogoutUser = TryCatch(async (req, res) => {
 }
 );
 const FetchUserByEmail = TryCatch(async (req, res) => {
-    const email= req.query.email;
+    const email = req.query.email;
     if (email) {
         const user = await GetUserBasicInfo(email)
 
@@ -111,10 +112,46 @@ const UploadPP = TryCatch(async (req, res) => {
     if (!userId || !fileName) {
         console.error("Missing id or file name");
     } else {
-        const bResult = UploadUsersPP(userId, fileName);
+        if (req.file.mimetype === 'image/png' || req.file.mimetype === 'image/jpg') {
+            const bResult = UploadUsersPP(userId, fileName, req.file.mimetype);
+        } else {
+            console.error("User profile picture is of the wrong type!")
+        }
         return;
     }
-    console.error("Profile picture not uploaded");
+});
+const GetUserProfilePicture = TryCatch(async (req, res) => {
+    const user_id = req.query.user_id;
+    if (user_id !== null) {
+        const fileData = await GetUserPPFileName(user_id);
+        if (fileData !== null) {
+            //Set header type after checking for supported types.
+            if (fileData.fileType === 'image/png')
+                res.setHeader('content-type', 'image/png')
+            else
+                if (fileData.fileType === 'image/jpg')
+                    res.setHeader('content-type', 'image/jpg')
+                else {//Throw error if the uploded file is not of the supported type.
+                    res.status(500).json({ error: "Error fetching user image. Uploaded file is either wrong type or corrupted!" });
+                    throw new Error("Error fetching user image. Uploaded file is either wrong type or corrupted!");
+                }
+            const filePath = path.join('Uploads', 'ProfilePictures', fileData.fileName);
+
+            fs.readFile(filePath, (err, data) => {
+                if (err) {
+                    res.status(500).json({ error: "Server error:Cant load file on server." })
+                    throw new Error("Server error:Cant load file on server")
+                } else {
+                    if (data) {
+                        res.status(200).send(data);
+                    }
+                }
+            });
+        }
+    } else {
+        res.status(400).json({ error: "Missing user_id!" })
+        throw new Error("Missing user_id!")
+    }
 
 });
 
@@ -133,4 +170,4 @@ async function SetupTokens(tokenObject, res) {
 }
 
 
-module.exports = { RegisterUser, LoginUser, LogoutUser, FetchUserByEmail, UploadPP };
+module.exports = { RegisterUser, LoginUser, LogoutUser, FetchUserByEmail, UploadPP, GetUserProfilePicture };

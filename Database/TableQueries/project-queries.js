@@ -28,7 +28,6 @@ async function GetUserProjects(userId) {
 async function GetUserProject(user_id, project_id) {
     try {
         const [result] = await database.query(qr_getUsersProjects + " && jt_users_projects.project_id=?", [user_id, project_id]);
-        console.log(result)
         if (result && result.length > 0) {
             return result;
         } else {
@@ -40,7 +39,7 @@ async function GetUserProject(user_id, project_id) {
 }
 async function GetProjectsUsers(project_id) {
     try {
-        const [result] = await database.query(`select jdi.jt_users_projects.user_id,jdi.users.username,jdi.jt_users_projects.user_role, jdi.user_files.fileName from jdi.users INNER join jdi.jt_users_projects on jdi.users.id=jdi.jt_users_projects.user_id LEFT join jdi.user_files on jdi.users.id=jdi.user_files.userID where jdi.jt_users_projects.project_id=?`, [project_id]);
+        const [result] = await database.query(`select jdi.jt_users_projects.user_id,jdi.users.username,jdi.jt_users_projects.user_role from jdi.users INNER join jdi.jt_users_projects on jdi.users.id=jdi.jt_users_projects.user_id LEFT join jdi.user_files on jdi.users.id=jdi.user_files.userID where jdi.jt_users_projects.project_id=?`, [project_id]);
         if (result.length > 0) {
             return result
         } else {
@@ -111,6 +110,18 @@ async function AddUserToProject(user_id, project_id, user_role) {
         console.error(error);
     }
 }
+async function ChangeUsersProjectRole(user_id, project_id, user_role) {
+    try {
+        const [projectRecord] = await database.query("update jdi.jt_users_projects set user_role=? where project_id=? AND user_id=?", [user_role,project_id,user_id]);
+        if (projectRecord.affectedRows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
 async function GetUserProjectRole(user_id, project_id) {
     try {
         const result = await database.query("select * from jdi.jt_users_projects where jdi.jt_users_projects.user_id=? AND jdi.jt_users_projects.project_id=?", [user_id, project_id]);
@@ -124,4 +135,17 @@ async function GetUserProjectRole(user_id, project_id) {
     }
 }
 
-module.exports = { GetUserProjects, GetUserProject, GetProjectsUsers, CreateUserProject, SetProjectName, DeleteProject, GetUserProjectRole, AddUserToProject };
+const GetProjectUsersPPs = async (aProject_id) => {
+    try {
+        const [queryData] = await database.query("select jdi.user_files.fileName,jdi.user_files.fileType from  jdi.user_files join jdi.jt_users_projects on jdi.jt_users_projects.user_id=jdi.user_files.userID where jdi_where jt_users_projects.project_id=? ", [aProject_id])
+        if (queryData && queryData.length>0)
+            return queryData;
+        else
+            return null;
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+module.exports = { GetUserProjects, GetUserProject, GetProjectsUsers, CreateUserProject, SetProjectName, DeleteProject, GetUserProjectRole,GetProjectUsersPPs, AddUserToProject,ChangeUsersProjectRole };

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
-const { RegisterUser, LoginUser, LogoutUser, FetchUserByEmail, UploadPP } = require("../Controllers/user-controller");
+const { RegisterUser, LoginUser, LogoutUser, FetchUserByEmail, UploadPP,GetUserProfilePicture } = require("../Controllers/user-controller");
 
 const ppStorage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -17,13 +17,8 @@ const ppStorage = multer.diskStorage({
 
 const ppUploader = multer({ storage: ppStorage });
 
-//Add token verf and dbs update
-router.post("/uploadpp", (req, res) => {
-    console.log(req.file);
-    res.status(200).json({ message: "Profile picture uploaded!" });
-});
-
 router.get("/find", FetchUserByEmail);
+router.get("/profile-picutre", GetUserProfilePicture);
 
 router.post("/register", ppUploader.single("image"), RegisterUser, UploadPP);
 router.post("/login", LoginUser);

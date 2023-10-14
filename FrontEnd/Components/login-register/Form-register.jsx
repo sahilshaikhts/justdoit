@@ -20,7 +20,7 @@ export default function RegisterForm() {
 
     return <>
         <form  className="Form-section"  onSubmit={OnRegister} encType="multipartmultipart/form-data">
-            <input name="image" type="file" accept="image" onChange={(e) => setUserPicture(e.target.files[0])}></input>
+            <input name="image" type="file" accept="image/jpeg, image/png"  onChange={(e) => setUserPicture(e.target.files[0])}></input>
             <input name="username" placeholder="Username"></input>
             <input name="email" placeholder="Email"></input>
             <input name="password" placeholder="Password" type="password"></input>

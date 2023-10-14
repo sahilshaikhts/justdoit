@@ -164,12 +164,13 @@ button {
     cursor: pointer;
     max-height: 3em;
 }
-.details .button_dropdownmenu button
-{
+
+.details .button_dropdownmenu button {
     width: 1em;
     margin-left: 1.5em;
     margin-top: .3em;
 }
+
 .details .button_dropdownmenu img {
     width: 100%;
 }
@@ -201,26 +202,75 @@ button {
 }
 
 .details .dropDown_item {
-    background-color: rgb(24, 25, 23);
     border-bottom: solid .05em;
     border-color: rgba(255, 255, 255, 0.3);
+    cursor: default;
 }
-
+.details .dropDown_item:hover
+{
+    background-color: inherit;
+}
 .details .list_members span {
     font-size: 1.25em;
-    margin-right: 50%;
 }
 
 .details .list_members img {
-    width: 2.5em;
+    width: 3em;
+    border-radius: 5em;
 }
 
 .details .btn_kickUser {
     width: 2.5em;
 }
 
+.details .btn_kickUser:hover {
+    cursor: pointer;
+}
+
 .details .btn_kickUser img {
     width: 100%;
+}
+/*User role dropdown*/
+.menu_role
+{
+    display: flex;
+    width: 4.5em;
+    height:4.5em;
+    align-items: center;
+    justify-content: center;
+}
+.menu_role .dropdown
+{
+    display: flex;
+    justify-content: center;
+}
+.menu_role .dropdownmenu_list
+{
+   margin-top: 100%;
+}
+.menu_role .button_dropdownmenu
+{
+    min-width: 100%;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+}
+.menu_role .button_dropdownmenu::after
+{
+    background-image:none;
+}
+.menu_role .button_dropdownmenu img
+{
+    min-width: 100%;
+}
+.menu_role .dropDown_item
+{
+    display: flex;
+    justify-content: center;
+}
+.menu_role .dropDown_item:hover
+{
+    cursor: pointer;
+    background-color: #2d332e;
 }
 
 .button-leave {
@@ -253,28 +303,28 @@ button {
 }
 
 /*Add member diplay*/
-.display_addMember
-{
+.display_addMember {
     display: flex;
     position: absolute;
     flex-direction: column;
-    
+
     width: 50rem;
-    height:30rem;
+    height: 30rem;
     padding: 2em;
-    
+
     left: 50%;
     top: 300%;
 
-    transform: translate(-50%,0);
+    transform: translate(-50%, 0);
     z-index: 2;
     align-items: center;
     background-color: #a8b3a4;
-    
+
     font-size: 1.5rem;
     border-radius: 2rem;
 }
-.display_addMember .row{
+
+.display_addMember .row {
     display: flex;
     width: 100%;
     align-items: center;
@@ -282,15 +332,14 @@ button {
     margin-bottom: 1em;
 }
 
-.display_addMember input
-{
+.display_addMember input {
     width: 15em;
     height: 2.5em;
     appearance: none;
-    
+
     border: none;
     border-radius: .4em;
-    
+
     font-size: 2.25rem;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     margin-left: 1em;
@@ -299,44 +348,48 @@ button {
     background-color: #909d8c;
 
 }
+
 .display_addMember input:focus {
-    border: 3px solid rgb(65, 79, 59); 
+    border: 3px solid rgb(65, 79, 59);
 }
-.display_addMember .btn_search
-{
+
+.display_addMember .btn_search {
     width: 5rem;
     margin-left: 1em;
 }
-.display_addMember .btn_search img
-{
+
+.display_addMember .btn_search img {
     width: 100%;
 }
+
 .display_addMember .btn_search img:hover {
     cursor: pointer;
 }
-.display_addMember .msg_searchEmail
-{
+
+.display_addMember .msg_searchEmail {
     font-size: 2.5rem;
     font-family: Arial, Helvetica, sans-serif;
     color: #242a28;
 }
+
 .searchedMember {
     display: flex;
     width: 80%;
-    
+
     padding: 0 1em 0 1em;
     align-items: center;
     justify-content: space-between;
 
     background-color: rgb(88, 99, 77);
-    
+
     font-size: 2rem;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
-.searchedMember  img {
-width: 2.5em;
-margin: .5em;
-border-radius: 3em;
+
+.searchedMember img {
+    width: 2.5em;
+    margin: .5em;
+    border-radius: 3em;
 }
 
 .searchedMember span {
@@ -347,9 +400,11 @@ border-radius: 3em;
 .searchedMember button {
     width: 1.5em;
 }
+
 .searchedMember button:hover {
-cursor: pointer;
+    cursor: pointer;
 }
+
 .searchedMember button img {
     width: 100%;
 }
@@ -367,7 +422,7 @@ cursor: pointer;
 .task-container {
     display: flex;
     min-height: 17%;
-    width: 70%;
+    width: 32em;
     flex-shrink: 0;
     margin: 3em;
     margin-top: 4em;
@@ -377,7 +432,7 @@ cursor: pointer;
     overflow-x: hidden;
 
     background-color: rgb(128, 138, 132);
-    border-radius: 30px;
+    border-radius: 35px;
 }
 
 .container-title {
@@ -397,7 +452,7 @@ cursor: pointer;
     position: relative;
     display: flex;
     width: 90%;
-    min-height: 200px;
+    min-height: 250px;
     padding: 1em;
     margin-bottom: 2em;
     flex-direction: column;
@@ -410,7 +465,7 @@ cursor: pointer;
 
 .task-title {
     display: flex;
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-family: JosefinSans-reg;
 
     overflow: hidden;
@@ -491,8 +546,29 @@ cursor: pointer;
 
 
 .button_newTask {
-    width: 5rem;
-    background-color: black;
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 90%;
+    transform: translate(-50%, -50%);
+
+    width: 5.5rem;
+    height: 5.5rem;
+    background-color: #333a38;
+    border-radius: .7em;
+    justify-content: center;
+    align-items: center;
+    opacity: 90%;
+}
+
+.button_newTask:hover {
+    cursor: pointer;
+    opacity: 100%;
+}
+
+.button_newTask img {
+    width: 100%;
+    transform: translate(05%, 05%);
 }
 
 /*Task detailed display*/
@@ -574,10 +650,16 @@ cursor: pointer;
     filter: brightness(.4) sepia(1) hue-rotate(300deg);
 }
 
+.section-dropdown {
+    display: flex;
+    width: 100%;
+}
+
 /*Task progress dropdown*/
 .taskDisplay-section .dropdown {
     width: 40%;
     justify-content: left;
+    margin-right: 10rem;
 }
 
 .taskDisplay-section .button_dropdownmenu::after {
@@ -631,12 +713,14 @@ cursor: pointer;
     width: 100%;
 }
 
-.assignedUser {
-    display: flex;
+.taskDisplay-userInfo .button_dropdownmenu {
     padding: .5em;
-    background-color: #242a28;
-    align-items: center;
-    justify-content: space-between;
+}
+
+/*Dropdown button item*/
+.taskDisplay-userInfo .button_dropdownmenu .listItem_members {
+    justify-content: space-around;
+    margin-right: 2em;
 }
 
 .taskDisplay-userInfo span {
@@ -654,7 +738,7 @@ cursor: pointer;
 }
 
 .taskDisplay-userInfo img {
-    width: 2.25em;
+    width: 2.1em;
     border-radius: 2em;
 }
 
@@ -743,6 +827,14 @@ cursor: pointer;
         margin-right: 1em;
     }
 
+    .details .btn_kickUser {
+        width: 6em;
+    }
+.menu_role
+{
+    width: 4em;
+    height: 4em;
+}
     .card-header {
         padding: .5em;
         font-size: 1.2rem;
@@ -792,9 +884,17 @@ cursor: pointer;
         overflow: hidden;
     }
 
+    .button_newTask {
+        width: 3rem;
+        height: 3rem;
+        left: 94%;
+
+        opacity: 70%;
+    }
+
     .task-container {
         margin-top: 2em;
-        max-width: 15%;
+        max-width: 15em;
         border-radius: 17px;
     }
 

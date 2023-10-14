@@ -9,7 +9,7 @@ const TryCatch = require("../Utils/try-catch");
 //Param bAllowIfEqualOrHigher: when true,user roles equal or above will be considered valid otherwise only allow user with exact role.
 const CheckIfUserHaveAccess = (requiredRole, bAllowIfEqualOrHigher = false) => TryCatch(async (req, res, next) => {
     const user_id = req.user.id;
-    const project_id = req.params.project_id;
+    const project_id = req.query.project_id;
 
     if (!user_id || !project_id) {
         throw new Error("Missing data!");
@@ -38,8 +38,8 @@ function HandleOnNotAuthorized(res) {
 
 const CheckIfUserTaskOwner = TryCatch(async (req, res, next) => {
     const user_id = req.user.id;
-    const task_id = req.params.task_id;
-    const project_id = req.params.project_id;
+    const task_id = req.query.task_id;
+    const project_id = req.query.project_id;
 
     const task = await DB_tasks_handler.GetProjectsTask(project_id, task_id);
 

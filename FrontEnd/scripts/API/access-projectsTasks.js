@@ -1,5 +1,6 @@
 export async function FetchProjectTasks(aProjectID) {
-    const url = "http://localhost:8383/user/project/" + aProjectID + "/tasks"
+    const url = `http://localhost:8383/user/project/tasks?project_id=${encodeURIComponent(aProjectID)}`
+
     try {
         const response = await fetch(url,
             {
@@ -18,10 +19,10 @@ export async function FetchProjectTasks(aProjectID) {
     }
 }
 
-export async function AddNewTask(aProjectID, aTitle, aDescription, aPiority, aAssignedUserID) {
-    const url = "http://localhost:8383/user/project/" + aProjectID + "/tasks"
+export async function AddNewTask(aProjectID, aTitle, aDescription, aPiority,aProgress, aAssignedUserID) {
+    const url = `http://localhost:8383/user/project/tasks?project_id=${encodeURIComponent(aProjectID)}`
 
-    const data = { "title": aTitle, "description": aDescription, "priority": aPiority, "assignedUserID": aAssignedUserID };
+    const data = { "title": aTitle, "description": aDescription, "priority": aPiority,"progress":aProgress, "assignedUserID": aAssignedUserID };
     try {
         const response = await fetch(url,
             {
@@ -43,7 +44,7 @@ export async function AddNewTask(aProjectID, aTitle, aDescription, aPiority, aAs
 }
 
 export async function UpdateTask(aTaskId, aProjectID, aTitle, aDescription, aPiority, aProgress, aAssignedUserID) {
-    const url = "http://localhost:8383/user/project/" + aProjectID + "/" + aTaskId + "/update-task"
+    const url = `http://localhost:8383/user/project/update-task?project_id=${encodeURIComponent(aProjectID)}&task_id=${encodeURIComponent(aTaskId)}`
 
     const data = { "title": aTitle, "description": aDescription, "priority": aPiority, "progress": aProgress, "assignedUserID": aAssignedUserID }
     try {
@@ -66,8 +67,9 @@ export async function UpdateTask(aTaskId, aProjectID, aTitle, aDescription, aPio
 
 }
 
-export async function FetchProjectMembers(aProjectID) {
-    const url = "http://localhost:8383/user/project/" + aProjectID + "/get-members"
+export async function FetchProjectMembers(aProjectID) {   
+     const url = `http://localhost:8383/user/project/get-members?project_id=${encodeURIComponent(aProjectID)}`
+
     try {
         const response = await fetch(url,
             {
@@ -75,7 +77,8 @@ export async function FetchProjectMembers(aProjectID) {
                 credentials: "include",
             });
         if (response.ok) {
-            return await response.json();
+            const members=await response.json()
+            return members;
         } else {
             return null;
         }

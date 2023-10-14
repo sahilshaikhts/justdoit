@@ -33,11 +33,6 @@ export default function App() {
                             <ProjectPage />
                         </PrivateRoute>
                     } />
-                    <Route path='/user/projects' element={
-                        <PrivateRoute bCondition={bLoggedIn} fallbackRoute="/">
-                            <ProjectPage />
-                        </PrivateRoute>
-                    } />
                     <Route path='/user/project/:projectId/task' element={
                         <TaskPage />
                     } />

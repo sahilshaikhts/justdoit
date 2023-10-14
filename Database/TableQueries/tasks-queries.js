@@ -1,10 +1,9 @@
 const database = require("../connect-db");
 const { TaskProgress } = require("../../constants");
 
-async function CreateTask(user_id, project_id, priority, title, description) {
+async function CreateTask(user_id, project_id, priority,progress, title, description) {
     try {
-        console.log(user_id, project_id, priority, title, description)
-        const result = await database.query("insert into jdi.tasks(user_id,project_id,progress,priority,title,description)values(?,?,?,?,?,?)", [user_id, project_id, TaskProgress.Pending, priority, title, description]);
+        const result = await database.query("insert into jdi.tasks(user_id,project_id,progress,priority,title,description)values(?,?,?,?,?,?)", [user_id, project_id, progress, priority, title, description]);
         if (!result)
             throw new Error("Error creating task. Check for missing field data!")
     } catch (error) {
@@ -17,7 +16,7 @@ async function GetProjectsTasks(project_id) {
         const [result] = await database.query("select jdi.tasks.id,jdi.tasks.user_id,jdi.users.username,jdi.tasks.project_id,jdi.tasks.progress,jdi.tasks.priority,jdi.tasks.title,jdi.tasks.description from jdi.tasks left join jdi.users on jdi.tasks.user_id=jdi.users.id where jdi.tasks.project_id=?", [project_id]);
 
         if (!result || result.length == 0) {
-            throw new Error("Error fetching tasks!");
+            console.log("No tasks found!");
         }
         return result;
 
@@ -30,7 +29,7 @@ async function GetProjectsTask(project_id, id) {
         const [result] = await database.query("select * from jdi.tasks where project_id=? && id=?", [project_id, id]);
 
         if (!result || result.length == 0) {
-            throw new Error("Error fetching tasks!");
+            console.log("No tasks found!");
         }
         return result[0];
     } catch (error) {

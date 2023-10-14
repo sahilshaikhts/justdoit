@@ -45,9 +45,9 @@ const CreateUser = async (username, email, hashedPassowrd) => {
     }
 };
 
-const UploadUsersPP = async (aUserID, aFileName) => {
+const UploadUsersPP = async (aUserID, aFileName,aFileType) => {
     try {
-        const [queryData] = await database.query("insert into jdi.user_files(userID,fileName,fileType)values(?,?,?)", [aUserID, aFileName, "Image"])
+        const [queryData] = await database.query("insert into jdi.user_files(userID,fileName,fileType)values(?,?,?)", [aUserID, aFileName, aFileType])
         if (queryData.affectedRows === 1)
             return queryData;
         else
@@ -57,6 +57,18 @@ const UploadUsersPP = async (aUserID, aFileName) => {
         console.error(error);
     }
 }
+const GetUserPPFileName = async (aUserID) => {
+    try {
+        const [queryData] = await database.query("select jdi.user_files.fileName,jdi.user_files.fileType from  jdi.user_files where jdi.user_files.userID=?", [aUserID])
+        console.log(queryData)
+        if (queryData && queryData.length>0)
+            return queryData[0];
+        else
+            return null;
 
+    } catch (error) {
+        console.error(error);
+    }
+}
 
-module.exports = { FindUserByEmail, CreateUser, UploadUsersPP,GetUserBasicInfo };
+module.exports = { FindUserByEmail, CreateUser, UploadUsersPP,GetUserBasicInfo,GetUserPPFileName };

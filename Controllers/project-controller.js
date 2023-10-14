@@ -19,8 +19,7 @@ const GetProjects = TryCatch(async (req, res) => {
 });
 
 const GetProject = TryCatch(async (req, res) => {
-    const project_id = req.params.project_id;
-
+    const project_id = req.query.project_id;
     if (!req.user.id || !project_id) {
         res.status(400);
         ThrowErrorMissingField();
@@ -36,13 +35,12 @@ const GetProject = TryCatch(async (req, res) => {
 });
 
 const GetProjectMembers = TryCatch(async (req, res) => {
-    const project_id = req.params.project_id;
-    if (!project_id) {
+    const project_id = req.query.project_id;
+    if (project_id == null && project_id == undefined ) {
         res.status(400);
         throw new Error("No project_id found!");
     }
     const members = await DB_projects_handler.GetProjectsUsers(project_id);
-    console.log(members, project_id)
     if (members && members.length > 0) {
         res.status(200).json(members);
     } else {
@@ -51,7 +49,7 @@ const GetProjectMembers = TryCatch(async (req, res) => {
 });
 const AddNewUser = TryCatch(async (req, res) => {
     const { project_id, email, user_role } = req.body;
-    if (!project_id || !email) {
+    if (project_id == null && project_id == undefined  || email == null && email == undefined ) {
         res.status(400).json({ error: "Missing required fields!" });
         throw new Error("Either project_id or email missing!");
     }
@@ -74,9 +72,23 @@ const AddNewUser = TryCatch(async (req, res) => {
         res.status(400).json({ error: "User that you are adding doesn't exists!" });
     }
 });
+
+const ChangeUserRole = TryCatch(async (req, res) => {
+    const project_id = req.query.project_id;
+    const { user_role, user_id } = req.body;
+
+    if (project_id !== null && user_role !== null && user_id !== null && (user_role >= 0 || user_role < 4)) {
+        DB_projects_handler.ChangeUsersProjectRole(user_id, project_id,user_role)
+    } else {
+        res.status(400);
+        ThrowErrorMissingField();
+    }
+
+});
+
 const CreateProject = TryCatch(async (req, res) => {
     const { name, user_role } = req.body;
-    if (!req.user.id || !user_role || !name) {
+    if (req.user.id == null && req.user.id == undefined || user_role == null && user_role == undefined || !name) {
         res.status(400);
         ThrowErrorMissingField();
     }
@@ -94,7 +106,7 @@ const CreateProject = TryCatch(async (req, res) => {
 
 const ModifyProjectName = TryCatch(async (req, res) => {
     const { project_newName } = req.body;
-    const project_id = req.params.project_id;
+    const project_id = req.query.project_id;
     console.log(project_id);
     if (!project_newName || !project_id) {
         res.status(400);
@@ -109,7 +121,7 @@ const ModifyProjectName = TryCatch(async (req, res) => {
 });
 
 const DeleteProject = TryCatch(async (req, res) => {
-    const project_id = req.params.project_id;
+    const project_id = req.query.project_id;
 
     if (!project_id || !req.user.id) {
         res.status(400);
@@ -130,4 +142,4 @@ function ThrowErrorMissingField() {
     throw new Error("Missing field data!");
 }
 
-module.exports = { GetProject, GetProjects, GetProjectMembers, CreateProject, ModifyProjectName, DeleteProject, AddNewUser };
+module.exports = { GetProject, GetProjects, GetProjectMembers, CreateProject, ModifyProjectName, DeleteProject, AddNewUser, ChangeUserRole };

@@ -4,16 +4,15 @@ const DB_tasks_handler = require("../Database/TableQueries/tasks-queries");
 
 const CreateTask = TryCatch(async (req, res) => {
     const user_id = req.user.id;
-    const project_id = req.params.project_id;
-    const { title, description, priority } = req.body;
+    const project_id = req.query.project_id;
+    const { title, description, priority,progress } = req.body;
 
-
-    if (!user_id || !project_id || !title || !priority) {
+    if (user_id===undefined || project_id===undefined || progress===undefined || !title || priority===undefined) {
         res.status(400);
         ThrowErrorMissingField();
     }
 
-    const result = await DB_tasks_handler.CreateTask(user_id, project_id, priority, title, description);
+    const result = await DB_tasks_handler.CreateTask(user_id, project_id, priority,progress, title, description);
     if (!result) {
         res.status(200).json({ message: "Task created successfully." });
     } else {
@@ -23,26 +22,27 @@ const CreateTask = TryCatch(async (req, res) => {
 });
 
 const GetTasks = TryCatch(async (req, res) => {
-    const project_id = req.params.project_id;
+    const project_id = req.query.project_id;
 
-    if (!project_id) {
+    if (project_id===undefined) {
         res.status(400);
         ThrowErrorMissingField();
-    }
+    }   
+
     const tasks = await DB_tasks_handler.GetProjectsTasks(project_id);
+
     if (tasks) {
         res.status(200).json(tasks);
     } else {
-        res.status(400);
-        throw new Error("Error fetching project's tasks.")
+        res.status(202).end();
     }
 });
 
 const GetTask = TryCatch(async (req, res) => {
-    const project_id = req.params.project_id;
-    const task_id = req.params.task_id;
+    const project_id = req.query.project_id;
+    const task_id = req.query.task_id;
 
-    if (!task_id || !project_id) {
+    if (task_id===undefined || project_id===undefined) {
         res.status(400);
         ThrowErrorMissingField();
     }
@@ -51,17 +51,16 @@ const GetTask = TryCatch(async (req, res) => {
     if (tasks) {
         res.status(200).json(tasks);
     } else {
-        res.status(400);
-        throw new Error("Error fetching project's tasks.")
+        res.status(202).end();
     }
 });
 
 const UpdateTask = TryCatch(async (req, res) => {
-    const project_id = req.params.project_id;
-    const task_id = req.params.task_id;
+    const project_id = req.query.project_id;
+    const task_id = req.query.task_id;
     const {title,description,priority,progress,assignedUserID}=req.body;
  
-    if (!project_id || !title) {
+    if (project_id===undefined || title===undefined) {
         res.status(400);
         ThrowErrorMissingField();
     }
@@ -71,16 +70,16 @@ const UpdateTask = TryCatch(async (req, res) => {
         res.status(200).json(result);
     } else {
         res.status(400);
-        throw new Error("Error fetching project's tasks.")
+        throw new Error("Error updating project's tasks.")
     }
 });
 
 const SetTaskProgress = TryCatch(async (req, res) => {
-    const project_id = req.params.project_id;
-    const task_id = req.params.task_id;
+    const project_id = req.query.project_id;
+    const task_id = req.query.task_id;
     const progress = req.body.progress;//[int] 0:low. 1: Med. 2: High.
 
-    if (!task_id || !project_id || !progress) {
+    if (task_id===undefined || project_id===undefined || progress===undefined) {
         res.status(400);
         ThrowErrorMissingField();
     }
