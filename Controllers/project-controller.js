@@ -56,10 +56,8 @@ const AddNewUser = TryCatch(async (req, res) => {
 
     const userExist = await FindUserByEmail(email);
     if (userExist) {
-        console.log(userExist)
         const alreadyMember = await DB_projects_handler.GetUserProject(userExist.id, project_id)
         if (alreadyMember == null) {
-            console.log(alreadyMember)
 
             const result = await DB_projects_handler.AddUserToProject(userExist.id, project_id, user_role)
             if (result) {
@@ -107,7 +105,7 @@ const CreateProject = TryCatch(async (req, res) => {
 const ModifyProjectName = TryCatch(async (req, res) => {
     const { project_newName } = req.body;
     const project_id = req.query.project_id;
-    console.log(project_id);
+    
     if (!project_newName || !project_id) {
         res.status(400);
         ThrowErrorMissingField();
@@ -129,7 +127,7 @@ const DeleteProject = TryCatch(async (req, res) => {
     }
 
     const result = await DB_projects_handler.DeleteProject(project_id);
-    console.log(result);
+    
     if (!result) {
         res.status(500);
         throw new Error("Error deleting project!");

@@ -67,6 +67,27 @@ export async function UpdateTask(aTaskId, aProjectID, aTitle, aDescription, aPio
 
 }
 
+export async function DeleteTask(aTaskId,aProjectID) {
+    const url = `http://localhost:8383/user/project/delete-task?project_id=${encodeURIComponent(aProjectID)}&task_id=${encodeURIComponent(aTaskId)}`
+
+    try {
+        const response = await fetch(url,
+            {
+                method: "PUT",
+                credentials: "include",
+                headers: { "content-Type": "application/json" },
+            }
+        );
+        if (response.ok) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.error(error);
+    }
+
+}
 export async function FetchProjectMembers(aProjectID) {   
      const url = `http://localhost:8383/user/project/get-members?project_id=${encodeURIComponent(aProjectID)}`
 

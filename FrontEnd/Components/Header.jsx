@@ -5,12 +5,13 @@ import UnfocusHandler from "./Utility/UnFocusElementHandler";
 
 export default function Header() {
     const { bLoggedIn, LogoutUser } = useAuthContext();
+    
     function UnFocusElement(event) {
         const element = document.getElementsByClassName('nav_link_list')[0];
         if (element.classList.contains("active"))
             element.classList.remove("active")
     }
-    console.log(bLoggedIn)
+
     return <>
         <nav>
             <div className="header_logo" to='/'>

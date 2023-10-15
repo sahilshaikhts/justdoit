@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import DropDownMenu from "../Utility/Dropdown";
-import { AddNewTask, UpdateTask } from "../../scripts/API/access-projectsTasks";
+import { AddNewTask, DeleteTask, UpdateTask } from "../../scripts/API/access-projectsTasks";
 import MemberContext from "../../Context/ProjectMemberContext";
 
 export function TaskDisplay({ taskID, project_id, title, description, priority, progress, assignedMemberID = -1, userRole, bCreating = false, handleCloseDisplay }) {
-    const  projectMembers  = useContext(MemberContext);
+    const projectMembers = useContext(MemberContext);
 
     const [bEditingTitle, SetEditTitle] = useState(bCreating);
     const [bEditingDescription, SetEditDescription] = useState(bCreating);
@@ -117,25 +117,37 @@ export function TaskDisplay({ taskID, project_id, title, description, priority, 
             }
         }
     }
-
+  async function HandleDeleteTask()
+  {
+    if(userRole>1)
+    {
+        const response=await DeleteTask(taskID,project_id)
+        if(response==false)
+        {
+            console.error("Error deleting task!")
+        }
+        handleCloseDisplay();
+    }
+  }
     return <div className="display-task">
         {taskObject && <>
             <div className="taskDisplay-section">
-                {bEditingTitle ? (<input onChange={OnTitleChange} className="field_title" type="text" maxLength={32} placeholder={taskObject.title}></input>) :
+                {(bEditingTitle && userRole > 1) ? (<input onChange={OnTitleChange} className="field_title" type="text" maxLength={32} placeholder={taskObject.title}></input>) :
                     (<h1>{taskObject.title}</h1>)}
-                <img className="btn_edit" onClick={() => SetEditTitle(!bEditingTitle)} src="/Frontend/Images/icon_pen.svg" />
+                {userRole > 1 && <img className="btn_edit" onClick={() => SetEditTitle(!bEditingTitle)} src="/Frontend/Images/icon_pen.svg" />}
                 <button className="btn_close" onClick={handleCloseDisplay} ><img src="/FrontEnd/Images/icon_cross.svg" /></button>
             </div>
 
             <div className="taskDisplay-section">
-                {bEditingDescription ? (<textarea onChange={OnDescriptionChange} className="field_description" maxLength={128} placeholder={taskObject.description}></textarea>) :
-                    (<p>{taskObject.description}</p>)}<img className="btn_edit" onClick={() => SetEditDescription(!bEditingDescription)} src="/Frontend/Images/icon_pen.svg" />
+                {(bEditingDescription && userRole > 1) ? (<textarea onChange={OnDescriptionChange} className="field_description" maxLength={128} placeholder={taskObject.description}></textarea>) :
+                    (<p>{taskObject.description}</p>)}
+                {userRole > 1 && <img className="btn_edit" onClick={() => SetEditDescription(!bEditingDescription)} src="/Frontend/Images/icon_pen.svg" />}
             </div>
 
             <div className="taskDisplay-section">
                 <div className="section-dropdown">
                     {taskObject && <DropDownMenu items={progress_strList} startIndex={taskObject.progress} button={<label>{progress_strList[taskObject.progress]}</label>} OnChange={OnProgressChange}></DropDownMenu>}
-                    {taskObject && <DropDownMenu items={priority_strList} startIndex={taskObject.priority} button={<label>{priority_strList[taskObject.priority]}</label>} OnChange={OnPriorityChange}></DropDownMenu>}
+                    {(taskObject && userRole > 1) && <DropDownMenu items={priority_strList} startIndex={taskObject.priority} button={<label>{priority_strList[taskObject.priority]}</label>} OnChange={OnPriorityChange}></DropDownMenu>}
                 </div>
             </div>
             <div className="taskDisplay-section">
@@ -145,7 +157,10 @@ export function TaskDisplay({ taskID, project_id, title, description, priority, 
                         (taskObject && userListItems && <DropDownMenu html_items={userListItems} startIndex={taskObject.assignedMemberListIndex} button={userListItems[taskObject.assignedMemberListIndex]} OnChange={OnUserChange}></DropDownMenu>)
                         : (userAssgined && <div className="assignedUser"><span>{userAssgined.username}</span><img src={userAssgined.photoURL} /></div>)
                     }</div>
-                <div className="taskDisplayButton-section"><button onClick={SaveTask} className="btn_save">Save</button>{userRole > 1 && <button className="btn_delete"><img src="/Frontend/Images/icon_delete.svg" /></button>}</div>
+                <div className="taskDisplayButton-section">
+                    <button onClick={SaveTask} className="btn_save">Save</button>
+                    {userRole > 1 && <button className="btn_delete" onClick={HandleDeleteTask}><img src="/Frontend/Images/icon_delete.svg" /></button>}
+                </div>
             </div>
         </>
         }

@@ -3,15 +3,16 @@ import Filter_project from "./Filter-project";
 import ProjectCard from "./project-card";
 import { FetchUsersProject, CreateNewProject } from "../../scripts/API/user-projects";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../Context/AuthorizationContext";
 
 
 export default function ProjectPage() {
     const [projectList, SetProjectList] = useState([]);
     const [bAddProject, SetAddProject] = useState(false);
+    const {currentUser}=useAuthContext();
     const navigate = useNavigate();
     //Load user's projects
     useEffect(() => {
-
         fetchProjects();
     }, []);
 
@@ -23,7 +24,9 @@ export default function ProjectPage() {
     }
 
     function OnClickProject(aProjectID) {
-        navigate("/user/project/" + aProjectID + "/task")
+        console.log(currentUser)
+        if(currentUser && currentUser.id!==undefined)
+        navigate("/user/"+currentUser.id+"/project/" + aProjectID + "/task")
     }
 
     async function AddNewTask() {
@@ -32,14 +35,13 @@ export default function ProjectPage() {
 
         if (newProject) {
             //Refetch projects and update page.
-            fetchProjects();
+            await fetchProjects();
         }
         nameInput.value = "";
     }
 
     function OnClickAddTask() {
         const nameInput = document.getElementsByClassName("textfield_projectName")[0];
-        console.log(nameInput)
         if (nameInput)
             nameInput.value = "";
 

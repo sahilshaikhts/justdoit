@@ -33,7 +33,7 @@ export default function App() {
                             <ProjectPage />
                         </PrivateRoute>
                     } />
-                    <Route path='/user/project/:projectId/task' element={
+                    <Route path='/user/:currentUserId/project/:projectId/task' element={
                         <TaskPage />
                     } />
                 </Routes>

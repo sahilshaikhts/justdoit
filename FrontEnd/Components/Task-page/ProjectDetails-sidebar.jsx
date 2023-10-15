@@ -4,7 +4,7 @@ import { ChangeUserProjectRole, FetchUserWithEmail } from "../../scripts/API/use
 import { AddMemberToProject } from "../../scripts/API/user-projects";
 import MemberContext from "../../Context/ProjectMemberContext";
 
-export default function ProjectDetailsSideBar({ project_id, userRole = 2 }) {
+export default function ProjectDetailsSideBar({ project_id, userRole}) {
     const projectMembers = useContext(MemberContext);
 
     const [memberListItems, SetMemberListItems] = useState(null);
@@ -17,7 +17,7 @@ export default function ProjectDetailsSideBar({ project_id, userRole = 2 }) {
             let mappedUser=[]
              projectMembers.forEach((member, key) => { 
                 mappedUser.push( <div className="list_members" key={key}><img src={ projectMembers.get(key).image_url } /><span>{member.username}</span>
-                    {userRole >= 2 && 
+                    {userRole  >= 2 && 
                     <div className="menu_role">
                         <DropDownMenu startIndex={member.user_role}items={userRole_strList} OnChange={(index)=>ChangeUserRole(index,key)} button={<img src="/Frontend/Images/icon_role.svg" alt="kick" />}></DropDownMenu>
                     </div>
@@ -25,7 +25,6 @@ export default function ProjectDetailsSideBar({ project_id, userRole = 2 }) {
                     {userRole >= 2 && <button className="btn_kickUser"><img src="/Frontend/Images/icon_kickUser.svg" alt="kick" /></button>}
                 </div>);
             });
-            console.log(mappedUser)
             SetMemberListItems(mappedUser);
     }, [projectMembers]);
 

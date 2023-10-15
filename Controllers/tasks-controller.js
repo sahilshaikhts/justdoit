@@ -73,7 +73,23 @@ const UpdateTask = TryCatch(async (req, res) => {
         throw new Error("Error updating project's tasks.")
     }
 });
+const DeleteTask = TryCatch(async (req, res) => {
+    const project_id = req.query.project_id;
+    const task_id = req.query.task_id;
+ 
+    if (project_id===undefined || task_id===undefined) {
+        res.status(400);
+        ThrowErrorMissingField();
+    }
+    const result = await DB_tasks_handler.DeleteTask(project_id, task_id);
 
+    if (result) {
+        res.status(200).json({message:"Task deleted."});
+    } else {
+        res.status(400);
+        throw new Error("Error updating project's tasks.")
+    }
+});
 const SetTaskProgress = TryCatch(async (req, res) => {
     const project_id = req.query.project_id;
     const task_id = req.query.task_id;
@@ -98,4 +114,4 @@ function ThrowErrorMissingField() {
     throw new Error("Missing required data!");
 }
 
-module.exports = { CreateTask, GetTasks, GetTask,UpdateTask,SetTaskProgress  };
+module.exports = { CreateTask, GetTasks, GetTask,UpdateTask,DeleteTask,SetTaskProgress  };

@@ -15,7 +15,7 @@ const FindUserByEmail = async (email) => {
 
 const GetUserBasicInfo = async (email) => {
     try {
-        const [rows] = await database.query('select username,email,fileName from jdi.users left join jdi.user_files on jdi.users.id=jdi.user_files.userID where email=?', email);
+        const [rows] = await database.query('select jdi.users.id,jdi.users.username,jdi.users.email from jdi.users where email=?', email);
         if (!rows || rows.length == 0) {
             return null;
         } else {
