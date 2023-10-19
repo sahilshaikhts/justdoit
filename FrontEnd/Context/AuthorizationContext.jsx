@@ -7,15 +7,14 @@ const AuthorizationContext = createContext();
 
 function UserAuthProvider({ children }) {
     const [bLoggedIn, setLoggedIn] = useState(false);
-    const [currentUser, SetCurrentUser] = useState();
+    const [currentUser, SetCurrentUser] = useState();//{id,username,email,url_image}
 
     async function LoginUser(email, password) {
         //Check if successfull and make sure state is set with appropriate type.
         if (await Login(email, password) === true) {
-            bLoginSuccess = true;
-            setLoggedIn(true);
             const user = await FetchUserWithEmail(email);
             await SetCurrentUserDetails(user);
+            setLoggedIn(true);
             return true;
         } else {
             setLoggedIn(false);
@@ -25,9 +24,9 @@ function UserAuthProvider({ children }) {
     async function LoginWithToken() {
         const response = await FetchAccessToken();
         if (response) {
-            setLoggedIn(true);
             const user = await FetchUserWithEmail(response.email);
             await SetCurrentUserDetails(user);
+            setLoggedIn(true);
         } else
             setLoggedIn(false);
     }
@@ -39,12 +38,6 @@ function UserAuthProvider({ children }) {
         } else
             setLoggedIn(true);
     }
-
-    return (
-        <AuthorizationContext.Provider value={{ bLoggedIn, currentUser, LoginUser, LogoutUser, LoginWithToken }}>
-            {children}
-        </AuthorizationContext.Provider>
-    );
     async function SetCurrentUserDetails(user) {
         if (user) {
             //Setup currentUser state
@@ -56,6 +49,13 @@ function UserAuthProvider({ children }) {
             SetCurrentUser({ ...user, url_image: "/FrontEnd/Images/temp_preview_memberPP.webp" });
         }
     }
+
+    return (
+        <AuthorizationContext.Provider value={{ bLoggedIn, currentUser, LoginUser, LogoutUser, LoginWithToken }}>
+            {children}
+        </AuthorizationContext.Provider>
+    );
+  
 }
 function useAuthContext() {
     const context = useContext(AuthorizationContext);

@@ -2,10 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import DropDownMenu from "../Utility/Dropdown";
 import { AddNewTask, DeleteTask, UpdateTask } from "../../scripts/API/access-projectsTasks";
 import MemberContext from "../../Context/ProjectMemberContext";
+import { useAuthContext } from "../../Context/AuthorizationContext";
 
 export function TaskDisplay({ taskID, project_id, title, description, priority, progress, assignedMemberID = -1, userRole, bCreating = false, handleCloseDisplay }) {
-    const projectMembers = useContext(MemberContext);
-
+    const {projectMembers} = useContext(MemberContext);
+    const { currentUser } = useAuthContext();
+    const [bUserTaskOwner, setBUserTaskOwner] = useState(false)
     const [bEditingTitle, SetEditTitle] = useState(bCreating);
     const [bEditingDescription, SetEditDescription] = useState(bCreating);
 
@@ -20,7 +22,9 @@ export function TaskDisplay({ taskID, project_id, title, description, priority, 
     useEffect(() => {
         //Setup state object with passed in values or set to default if undefined or null/-1
         setTaskObject({ title: title || "", description: description || "", priority: priority || 0, progress: progress || 0, assignedMemberID: assignedMemberID, assignedMemberListIndex: 0 });
-
+        if (currentUser.id == assignedMemberID) {
+            setBUserTaskOwner(true)
+        }
         //Setup list of elemets for member list with profile pictures.
         if (projectMembers) {
             let mappedUser = [<div className="listItem_members" key={-1}><span>None</span></div>];
@@ -28,13 +32,16 @@ export function TaskDisplay({ taskID, project_id, title, description, priority, 
             let index = 1, selectIndex = 0;
 
             projectMembers.forEach((member, key) => {
-                //Find assigned user and set the state
-                if (key === assignedMemberID) {
-                    selectIndex = index;
+                //Only add members to the dropdown that are not viewers.
+                if (member.user_role > 0) {
+                    //Find assigned user and set the state
+                    if (key === assignedMemberID) {
+                        selectIndex = index;
+                    }
+                    mappedUserId.push(key);
+                    mappedUser.push(<div className="listItem_members" key={key} ><span>{member.username}</span>{<img src={member.image_url} />}</div>)
+                    index++;
                 }
-                mappedUserId.push(key);
-                mappedUser.push(<div className="listItem_members" key={key} ><span>{member.username}</span>{<img src={member.image_url} />}</div>)
-                index++;
             });
             setTaskObject(prevTaskObject => ({
                 ...prevTaskObject,
@@ -117,18 +124,15 @@ export function TaskDisplay({ taskID, project_id, title, description, priority, 
             }
         }
     }
-  async function HandleDeleteTask()
-  {
-    if(userRole>1)
-    {
-        const response=await DeleteTask(taskID,project_id)
-        if(response==false)
-        {
-            console.error("Error deleting task!")
+    async function HandleDeleteTask() {
+        if (userRole > 1) {
+            const response = await DeleteTask(taskID, project_id)
+            if (response == false) {
+                console.error("Error deleting task!")
+            }
+            handleCloseDisplay();
         }
-        handleCloseDisplay();
     }
-  }
     return <div className="display-task">
         {taskObject && <>
             <div className="taskDisplay-section">
@@ -146,16 +150,22 @@ export function TaskDisplay({ taskID, project_id, title, description, priority, 
 
             <div className="taskDisplay-section">
                 <div className="section-dropdown">
-                    {taskObject && <DropDownMenu items={progress_strList} startIndex={taskObject.progress} button={<label>{progress_strList[taskObject.progress]}</label>} OnChange={OnProgressChange}></DropDownMenu>}
-                    {(taskObject && userRole > 1) && <DropDownMenu items={priority_strList} startIndex={taskObject.priority} button={<label>{priority_strList[taskObject.priority]}</label>} OnChange={OnPriorityChange}></DropDownMenu>}
+                    {((bUserTaskOwner || userRole > 1) && taskObject) ?
+                        <DropDownMenu items={progress_strList} startIndex={taskObject.progress} button={<label>{progress_strList[taskObject.progress]}</label>} OnChange={OnProgressChange}></DropDownMenu>
+                        : <label className="label_taskProgress">{progress_strList[taskObject.progress]}</label>
+                    }
+                    {((bUserTaskOwner || userRole > 1) && taskObject) ?
+                        <DropDownMenu items={priority_strList} startIndex={taskObject.priority} button={<label>{priority_strList[taskObject.priority]}</label>} OnChange={OnPriorityChange}></DropDownMenu>
+                        : <label className="label_taskPriority">{priority_strList[taskObject.priority]}</label>
+                    }
                 </div>
             </div>
             <div className="taskDisplay-section">
                 <div className="taskDisplay-userInfo">
                     <h2>Assigned to</h2>
-                    {true ?
-                        (taskObject && userListItems && <DropDownMenu html_items={userListItems} startIndex={taskObject.assignedMemberListIndex} button={userListItems[taskObject.assignedMemberListIndex]} OnChange={OnUserChange}></DropDownMenu>)
-                        : (userAssgined && <div className="assignedUser"><span>{userAssgined.username}</span><img src={userAssgined.photoURL} /></div>)
+                    {((bUserTaskOwner || userRole > 1) && taskObject && userListItems) ?
+                        <DropDownMenu html_items={userListItems} startIndex={taskObject.assignedMemberListIndex} button={userListItems[taskObject.assignedMemberListIndex]} OnChange={OnUserChange}></DropDownMenu>
+                        : (userListItems && <label className="label_taskUser">{userListItems[taskObject.assignedMemberListIndex]}</label>)
                     }</div>
                 <div className="taskDisplayButton-section">
                     <button onClick={SaveTask} className="btn_save">Save</button>

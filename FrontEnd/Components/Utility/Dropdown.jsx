@@ -19,7 +19,7 @@ export default function DropDownMenu({ items = null, html_items = null, startInd
         {bListOpen &&
             <div className="dropdownmenu_list">
 
-                {items != null && items.map((item, index) => <div key={index} data-user-if={item.userId || 69}
+                {items != null && items.map((item, index) => <div key={index} 
                     onClick={(event) => { OnSelectChange(index,event) }} className={filterSelectIndex === index ? 'dropDown_item selected' : 'dropDown_item'}><span>{item}</span></div>
                 )}
 

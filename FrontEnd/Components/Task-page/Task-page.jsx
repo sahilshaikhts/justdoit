@@ -42,12 +42,6 @@ export default function TaskPage() {
         if (members) {
             SetProjectMembers(members);
             SetupCurrentUser(members);
-            //Try Fetch image for each user and update the array.
-            const updatedMembers = await GetMembersWProfileImage(members);
-
-            if (updatedMembers) {
-                SetProjectMembers(updatedMembers);
-            }
         }
     }
 
@@ -81,10 +75,10 @@ export default function TaskPage() {
             console.error("Missing projectMembers!!");
     }
 
-    function OnCloseDisplay() {
+    async function OnCloseDisplay() {
         SetTaskToDisplay(null);
         SetIsTaskDisplayOn(false);
-        InitializePage();
+        await InitializePage();
     }
 
     async function CreateNewTasks() {
@@ -93,7 +87,7 @@ export default function TaskPage() {
         SetIsTaskDisplayOn(true);
     }
 
-    return <MemberContext.Provider value={projectMembers}>
+    return <MemberContext.Provider value={{ projectMembers, RefetchProjectData: InitializePage }}>
         {currentUser && bTaskDisplayOn && oTaskToDisplay && <TaskDisplay project_id={project_id} taskID={oTaskToDisplay.id} handleCloseDisplay={OnCloseDisplay} assignedMemberID={oTaskToDisplay.assignedMemberID} title={oTaskToDisplay.title} description={oTaskToDisplay.description} priority={oTaskToDisplay.priority}
             userRole={currentUser.role} bCreating={!oTaskToDisplay.id} progress={oTaskToDisplay.progress} />}
         <div className="task-page">
@@ -123,8 +117,7 @@ export default function TaskPage() {
                     })}
                 </div>
             </div>
-            <button className="button_newTask" onClick={CreateNewTasks}><img src="/Frontend/Images/icon_addTask.svg" alt="" /></button>
-        </div>
+            {bTaskDisplayOn === false && <button className="button_newTask" onClick={CreateNewTasks}><img src="/Frontend/Images/icon_addTask.svg" alt="" /></button>}        </div>
     </MemberContext.Provider>
 
 }

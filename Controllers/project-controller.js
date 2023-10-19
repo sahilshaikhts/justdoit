@@ -20,7 +20,7 @@ const GetProjects = TryCatch(async (req, res) => {
 
 const GetProject = TryCatch(async (req, res) => {
     const project_id = req.query.project_id;
-    if (!req.user.id || !project_id) {
+    if ((req.user.id === null && req.user.id === undefined) || (project_id === null && project_id === undefined)) {
         res.status(400);
         ThrowErrorMissingField();
     }
@@ -36,11 +36,12 @@ const GetProject = TryCatch(async (req, res) => {
 
 const GetProjectMembers = TryCatch(async (req, res) => {
     const project_id = req.query.project_id;
-    if (project_id == null && project_id == undefined ) {
+    if (project_id === null && project_id === undefined ) {
         res.status(400);
         throw new Error("No project_id found!");
     }
     const members = await DB_projects_handler.GetProjectsUsers(project_id);
+    
     if (members && members.length > 0) {
         res.status(200).json(members);
     } else {
@@ -49,7 +50,7 @@ const GetProjectMembers = TryCatch(async (req, res) => {
 });
 const AddNewUser = TryCatch(async (req, res) => {
     const { project_id, email, user_role } = req.body;
-    if (project_id == null && project_id == undefined  || email == null && email == undefined ) {
+    if (project_id === null && project_id === undefined  || email === null && email === undefined ) {
         res.status(400).json({ error: "Missing required fields!" });
         throw new Error("Either project_id or email missing!");
     }
@@ -61,13 +62,61 @@ const AddNewUser = TryCatch(async (req, res) => {
 
             const result = await DB_projects_handler.AddUserToProject(userExist.id, project_id, user_role)
             if (result) {
-                res.status(200);
+                res.status(200).end();
             } else {
                 res.status(400).json({ error: "Error adding user to project!" });
             }
         }
     } else {
         res.status(400).json({ error: "User that you are adding doesn't exists!" });
+    }
+});
+const RemoveUser = TryCatch(async (req, res) => {
+    const { project_id, user_id } = req.body;
+
+    if (project_id === null && project_id === undefined || user_id === null && user_id === undefined) {
+        res.status(400).json({ error: "Missing required fields!" });
+        throw new Error("Either project_id or user_id missing!");
+    }
+
+    const userToRemove = await DB_projects_handler.GetProjectsUser(project_id, user_id);
+
+    if (userToRemove) {
+        let bAnotherAdminExists = false;
+
+        console.log("Role ",userToRemove)
+        if (userToRemove.user_role === 3) {
+            console.log("333333333333333333333333333333333333333")
+            bAnotherAdminExists = false;//reinitialize it to false.
+            const allMembers = await DB_projects_handler.GetProjectsUsers(project_id);
+
+            //Check all the other members for admin role.
+            for (let index = 0; index < allMembers.length; index++) {
+                const member = allMembers[index];
+
+                //Check if its not the same user as the one being removed.
+                if (member.user_id !== userToRemove.user_id) {
+                    if (member.user_role === 3) {
+                        bAnotherAdminExists = true;
+                        break;
+                    }
+                }
+            }
+        }else
+        bAnotherAdminExists=true;
+        
+        if (bAnotherAdminExists) {
+            const result = await DB_projects_handler.RemoveUserFromProject(user_id, project_id)
+            if (result) {
+                res.status(200).end();
+            } else {
+                res.status(202).json({ Message: "User doesn't exists in the project!" });
+            }
+        } else
+            res.status(400).json({ Error: "Make sure there is another admin in the project if removing an admin user." });
+    }else
+    {
+        res.status(202).json({ Message: "User doesn't exists in the project!" });
     }
 });
 
@@ -140,4 +189,4 @@ function ThrowErrorMissingField() {
     throw new Error("Missing field data!");
 }
 
-module.exports = { GetProject, GetProjects, GetProjectMembers, CreateProject, ModifyProjectName, DeleteProject, AddNewUser, ChangeUserRole };
+module.exports = { GetProject, GetProjects, GetProjectMembers, CreateProject, ModifyProjectName, DeleteProject, AddNewUser,RemoveUser, ChangeUserRole };

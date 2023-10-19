@@ -149,8 +149,7 @@ const GetUserProfilePicture = TryCatch(async (req, res) => {
             });
         }
     } else {
-        res.status(400).json({ error: "Missing user_id!" })
-        throw new Error("Missing user_id!")
+        res.status(202).json({ mesage: "User doesnt have a profile picture." })
     }
 
 });

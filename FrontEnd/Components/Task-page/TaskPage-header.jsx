@@ -1,9 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import ProjectDetailsSideBar from "./ProjectDetails-sidebar";
-import MemberContext from "../../Context/ProjectMemberContext";
 
-export default function TaskPageHeader({ project_id, project_title, userRole }) {
-    const projectMembers = useContext(MemberContext);
+export default function TaskPageHeader({ project_id=undefined, project_title, userRole }) {
 
     return <div className="taskPage-header">
         <h1>{project_title}</h1>

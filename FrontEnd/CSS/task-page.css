@@ -197,7 +197,7 @@ button {
     display: flex;
     width: 100%;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     padding: 0 1em 0 1em;
 }
 
@@ -206,10 +206,11 @@ button {
     border-color: rgba(255, 255, 255, 0.3);
     cursor: default;
 }
-.details .dropDown_item:hover
-{
+
+.details .dropDown_item:hover {
     background-color: inherit;
 }
+
 .details .list_members span {
     font-size: 1.25em;
 }
@@ -230,62 +231,63 @@ button {
 .details .btn_kickUser img {
     width: 100%;
 }
+
 /*User role dropdown*/
-.menu_role
-{
+.menu_role {
     display: flex;
     width: 4.5em;
-    height:4.5em;
+    height: 4.5em;
     align-items: center;
     justify-content: center;
 }
-.menu_role .dropdown
-{
+
+.menu_role .dropdown {
     display: flex;
     justify-content: center;
 }
-.menu_role .dropdownmenu_list
-{
-   margin-top: 100%;
+
+.menu_role .dropdownmenu_list {
+    margin-top: 100%;
 }
-.menu_role .button_dropdownmenu
-{
+
+.menu_role .button_dropdownmenu {
     min-width: 100%;
     background-color: rgba(255, 255, 255, 0);
     border: none;
 }
-.menu_role .button_dropdownmenu::after
-{
-    background-image:none;
+
+.menu_role .button_dropdownmenu::after {
+    background-image: none;
 }
-.menu_role .button_dropdownmenu img
-{
+
+.menu_role .button_dropdownmenu img {
     min-width: 100%;
 }
-.menu_role .dropDown_item
-{
+
+.menu_role .dropDown_item {
     display: flex;
     justify-content: center;
 }
-.menu_role .dropDown_item:hover
-{
+
+.menu_role .dropDown_item:hover {
     cursor: pointer;
     background-color: #2d332e;
 }
 
-.button-leave {
+.section_leaveButtons {
     display: flex;
-    width: 100%;
+    width: 90%;
     height: 100%;
     align-items: end;
+    justify-content: center;
 }
 
-.button-leave button {
+.button-leave{
     display: flex;
     position: relative;
     flex-direction: row;
-    width: 100%;
-    margin: 1em;
+    width: 80%;
+    height: 5em;
     padding: 1.5em;
     background-color: rgb(76, 85, 73);
     border: none;
@@ -297,11 +299,24 @@ button {
 }
 
 .button-leave h2 {
-    font-size: 2.2rem;
-    padding-top: .5em;
+    font-size: 2.5rem;
+    padding-top: .2em;
     padding-left: .5em;
 }
+.button-nuke {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 5em;
+    height: 5em;
+    padding: 1em;
+    background-color: #cea347ff;
+}
 
+.button-nuke img {
+    width: 3.5em;
+    height: 3.5em;
+}
 /*Add member diplay*/
 .display_addMember {
     display: flex;
@@ -656,7 +671,9 @@ button {
 }
 
 /*Task progress dropdown*/
-.taskDisplay-section .dropdown {
+.taskDisplay-section .dropdown,
+.label_taskPriority,
+.label_taskProgress {
     width: 40%;
     justify-content: left;
     margin-right: 10rem;
@@ -682,7 +699,8 @@ button {
     padding: .5em 0 .5em 0.5em;
 }
 
-.taskDisplay-section .button_dropdownmenu {
+.taskDisplay-section .button_dropdownmenu,
+label {
     box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.366);
     background-color: rgb(24, 25, 23);
 
@@ -718,7 +736,8 @@ button {
 }
 
 /*Dropdown button item*/
-.taskDisplay-userInfo .button_dropdownmenu .listItem_members {
+.taskDisplay-userInfo .button_dropdownmenu .listItem_members,
+.label_taskUser {
     justify-content: space-around;
     margin-right: 2em;
 }
@@ -728,6 +747,21 @@ button {
     font-family: RobotoCondensed-Bold;
     letter-spacing: 3px;
     color: var(--text-color-light);
+}
+
+.label_taskUser {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.label_taskUser span {
+    font-size: 1em;
+}
+
+.label_taskUser img {
+    width: 2em;
+    margin-right: 1em;
 }
 
 .listItem_members {
@@ -830,11 +864,12 @@ button {
     .details .btn_kickUser {
         width: 6em;
     }
-.menu_role
-{
-    width: 4em;
-    height: 4em;
-}
+
+    .menu_role {
+        width: 4em;
+        height: 4em;
+    }
+
     .card-header {
         padding: .5em;
         font-size: 1.2rem;
@@ -852,9 +887,9 @@ button {
         width: 1.3rem;
     }
 
-    .button-leave button {
-        margin: .5em;
-        padding: .5rem;
+    .button-leave {
+        height: 4rem;
+        align-items: center;
     }
 
     .button-leave img {
@@ -865,17 +900,24 @@ button {
     .button-leave h2 {
         font-size: 1rem;
         white-space: nowrap;
+        margin-right: 30%;
+        margin-bottom: .25em;
     }
 
     .button-leave button:hover {
         filter: brightness(.8) sepia(1) hue-rotate(310deg);
     }
 
-    .button-leave h2 {
-        margin-right: 30%;
-        margin-bottom: .7rem;
-    }
-
+        .button-nuke {
+            width: 4rem;
+            height: 4rem;
+            align-items: center;
+        }
+        .button-nuke img{
+            width: 3rem;
+            height: 3rem;
+            align-items: center;
+        }
 
     .task-sections-container {
         width: auto;
@@ -953,8 +995,11 @@ button {
         font-size: 1rem;
     }
 
-    .taskDisplay-section .dropdown {
+    .taskDisplay-section .dropdown,
+    .label_taskPriority,
+    .label_taskProgress {
         width: 25%;
+        margin-right: 10em;
     }
 
     .taskDisplay-section .button_dropdownmenu label {

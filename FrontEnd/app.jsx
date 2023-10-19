@@ -11,12 +11,12 @@ import ProjectPage from './Components/Project-page/project-page';
 
 import PrivateRoute from "./Components/Utility/PrivateRoute";
 
-import { useAuthContext } from "./Context/AuthorizationContext";
+import { UserAuthProvider, useAuthContext } from "./Context/AuthorizationContext";
 import Footer from "./Components/Footer";
 import TaskPage from "./Components/Task-page/Task-page";
 
 export default function App() {
-    const { bLoggedIn, LoginWithToken } = useAuthContext();
+    const { bLoggedIn, LoginWithToken, currentUser } = useAuthContext();
 
     useEffect(() => {
         LoginWithToken();

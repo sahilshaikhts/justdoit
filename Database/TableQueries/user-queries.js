@@ -60,7 +60,6 @@ const UploadUsersPP = async (aUserID, aFileName,aFileType) => {
 const GetUserPPFileName = async (aUserID) => {
     try {
         const [queryData] = await database.query("select jdi.user_files.fileName,jdi.user_files.fileType from  jdi.user_files where jdi.user_files.userID=?", [aUserID])
-        console.log(queryData)
         if (queryData && queryData.length>0)
             return queryData[0];
         else

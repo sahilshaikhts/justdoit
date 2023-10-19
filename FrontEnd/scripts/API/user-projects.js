@@ -11,7 +11,6 @@ export async function FetchUsersProject() {
         if (response.ok) {
             const projects = await response.json();
             if (projects) {
-                console.log(projects);
                 return projects;
             }
         }
@@ -51,21 +50,42 @@ export async function CreateNewProject(aProjectName, aUser_role = 3) {
 }
 
 
-export async function AddMemberToProject(aProjectID, aEmail,aUser_role) {
+export async function AddMemberToProject(aProjectID, aEmail, aUser_role) {
     const url = "http://localhost:8383/user/project/add-member"
-    const data = { project_id: aProjectID, email: aEmail ,user_role:aUser_role}
+    const data = { project_id: aProjectID, email: aEmail, user_role: aUser_role }
     try {
         const response = await fetch(url,
             {
-                method: "put",
+                method: "PUT",
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
-        if (response.ok) {
+            
+        if (response && response.ok) {
             return true;
         } else
-            throw new Error("Error updating ")
+            return false;
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+export async function RemoveMemberFromProject(aProjectID, user_id) {
+    const url = "http://localhost:8383/user/project/remove-member"
+    const data = { project_id: aProjectID, user_id: user_id}
+    try {
+        const response = await fetch(url,
+            {
+                method: "PUT",
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            
+        if (response && response.ok) {
+            return true;
+        }
     } catch (error) {
         console.error(error);
     }

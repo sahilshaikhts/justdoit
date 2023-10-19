@@ -14,7 +14,6 @@ where jt_users_projects.user_id = ?`
 async function GetUserProjects(userId) {
     try {
         [result] = await database.query(qr_getUsersProjects, userId);
-        console.log(result)
         if (result.length > 0) {
             return result;
         } else {
@@ -40,8 +39,22 @@ async function GetUserProject(user_id, project_id) {
 async function GetProjectsUsers(project_id) {
     try {
         const [result] = await database.query(`select jdi.jt_users_projects.user_id,jdi.users.username,jdi.jt_users_projects.user_role from jdi.users INNER join jdi.jt_users_projects on jdi.users.id=jdi.jt_users_projects.user_id LEFT join jdi.user_files on jdi.users.id=jdi.user_files.userID where jdi.jt_users_projects.project_id=?`, [project_id]);
+       
         if (result.length > 0) {
             return result
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+async function GetProjectsUser(project_id,user_id) {
+    try {
+        const [result] = await database.query(`select jdi.jt_users_projects.user_id,jdi.users.username,jdi.jt_users_projects.user_role from jdi.users INNER join jdi.jt_users_projects on jdi.users.id=jdi.jt_users_projects.user_id LEFT join jdi.user_files on jdi.users.id=jdi.user_files.userID where jdi.jt_users_projects.project_id=? AND jdi.jt_users_projects.user_id=?`, [project_id,user_id]);
+        
+        if (result.length > 0) {
+            return result[0]
         } else {
             return null;
         }
@@ -110,6 +123,20 @@ async function AddUserToProject(user_id, project_id, user_role) {
         console.error(error);
     }
 }
+
+async function RemoveUserFromProject(user_id, project_id) {
+    try {
+        const [projectRecord] = await database.query("delete from jdi.jt_users_projects where user_id=? AND project_id=?", [user_id, project_id]);
+        const [taskRecordUpdate] = await database.query("update jdi.tasks set user_id=null where project_id=? AND user_id=?", [project_id,user_id]);
+        if (projectRecord.affectedRows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
 async function ChangeUsersProjectRole(user_id, project_id, user_role) {
     try {
         const [projectRecord] = await database.query("update jdi.jt_users_projects set user_role=? where project_id=? AND user_id=?", [user_role,project_id,user_id]);
@@ -148,4 +175,4 @@ const GetProjectUsersPPs = async (aProject_id) => {
     }
 }
 
-module.exports = { GetUserProjects, GetUserProject, GetProjectsUsers, CreateUserProject, SetProjectName, DeleteProject, GetUserProjectRole,GetProjectUsersPPs, AddUserToProject,ChangeUsersProjectRole };
+module.exports = { GetUserProjects, GetUserProject, GetProjectsUsers,GetProjectsUser, CreateUserProject, SetProjectName, DeleteProject, GetUserProjectRole,GetProjectUsersPPs, AddUserToProject,RemoveUserFromProject,ChangeUsersProjectRole };

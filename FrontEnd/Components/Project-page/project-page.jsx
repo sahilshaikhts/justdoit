@@ -24,7 +24,6 @@ export default function ProjectPage() {
     }
 
     function OnClickProject(aProjectID) {
-        console.log(currentUser)
         if(currentUser && currentUser.id!==undefined)
         navigate("/user/"+currentUser.id+"/project/" + aProjectID + "/task")
     }

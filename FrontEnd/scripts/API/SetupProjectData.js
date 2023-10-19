@@ -11,13 +11,14 @@ import { GetUserProfilePicture } from "../../scripts/API/user-data-api";
 export async function GetProjectMembersData(project_id) {
     const defaultImageUrl = "/FrontEnd/Images/temp_preview_memberPP.webp";
     const members_array = await FetchProjectMembers(project_id);
-
+    
     let members_map = new Map()
     if (members_array && members_array.length > 0) {
         for (let index = 0; index < members_array.length; index++) {
             const member = members_array[index];
+            const userImageURL = await GetUserProfilePicture(member.user_id);
             
-            members_map.set(member.user_id, { username: member.username, user_role: member.user_role, image_url: defaultImageUrl });
+            members_map.set(member.user_id, { username: member.username, user_role: member.user_role, image_url: userImageURL?userImageURL:defaultImageUrl });
         }
     }
     return members_map;
@@ -32,6 +33,7 @@ export async function GetMembersWProfileImage(members) {
     
     let members_map = new Map();
     if (members) {
+        
         members.forEach(async (member, key) => {
             const userImageURL = await GetUserProfilePicture(key);
             if (userImageURL !== null) {
