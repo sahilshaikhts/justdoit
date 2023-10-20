@@ -73,7 +73,7 @@ async function CreateUserProject(project_name, user_id, user_role = UserRoles.Ad
             } else {
                 //Delete the new project as it won't have any owner.
                 await database.query("delete from jdi.projects where id=?", [newProject.insertId]);
-                throw Error("Error creating record of user's project into users-projects J-table");
+return false;
             }
 
         } else {
@@ -89,9 +89,9 @@ async function SetProjectName(project_newName, project_id) {
         const [result] = await database.query("update jdi.projects set name=? where id=?", [project_newName, project_id]);
 
         if (result.affectedRows === 1) {
-            return result;
+            return true;
         } else {
-            throw Error("Error changing project's name!");
+            return false
         }
     } catch (error) {
         console.error(error);
@@ -103,9 +103,9 @@ async function DeleteProject(project_id) {
         const [result] = await database.query("delete from jdi.projects where id=?", project_id);
 
         if (result.affectedRows === 1) {
-            return result;
+            return true;
         } else {
-            throw Error("Error deleting record!");
+            return false
         }
     } catch (error) {
         console.error(error);
@@ -128,6 +128,18 @@ async function RemoveUserFromProject(user_id, project_id) {
     try {
         const [projectRecord] = await database.query("delete from jdi.jt_users_projects where user_id=? AND project_id=?", [user_id, project_id]);
         const [taskRecordUpdate] = await database.query("update jdi.tasks set user_id=null where project_id=? AND user_id=?", [project_id,user_id]);
+        if (projectRecord.affectedRows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+async function RemoveAllUsersFromProject(project_id) {
+    try {
+        const [projectRecord] = await database.query("delete from jdi.jt_users_projects where project_id=?", [project_id]);
         if (projectRecord.affectedRows > 0) {
             return true;
         } else {
@@ -175,4 +187,4 @@ const GetProjectUsersPPs = async (aProject_id) => {
     }
 }
 
-module.exports = { GetUserProjects, GetUserProject, GetProjectsUsers,GetProjectsUser, CreateUserProject, SetProjectName, DeleteProject, GetUserProjectRole,GetProjectUsersPPs, AddUserToProject,RemoveUserFromProject,ChangeUsersProjectRole };
+module.exports = { GetUserProjects, GetUserProject, GetProjectsUsers,GetProjectsUser, CreateUserProject, SetProjectName, DeleteProject, GetUserProjectRole,GetProjectUsersPPs, AddUserToProject,RemoveAllUsersFromProject,RemoveUserFromProject,ChangeUsersProjectRole };

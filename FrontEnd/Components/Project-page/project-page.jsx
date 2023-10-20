@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Filter_project from "./Filter-project";
 import ProjectCard from "./project-card";
-import { FetchUsersProject, CreateNewProject } from "../../scripts/API/user-projects";
+import { FetchUsersProjects, CreateNewProject } from "../../scripts/API/user-projects";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../Context/AuthorizationContext";
 
@@ -17,7 +17,7 @@ export default function ProjectPage() {
     }, []);
 
     async function fetchProjects() {
-        const projects = await FetchUsersProject();
+        const projects = await FetchUsersProjects();
         if (projects) {
             SetProjectList(projects);
         }

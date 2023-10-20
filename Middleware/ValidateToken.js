@@ -9,7 +9,7 @@ const VerifyAccessToken = TryCatch((req, res, next) => {
             (error, decoded) => {
                 if (error) {
                     res.status(401);
-                    throw new Error("Access token invalid!")
+                    console.error("Access token invalid!")
                 }
                 req.user = decoded.user;
 
@@ -18,28 +18,28 @@ const VerifyAccessToken = TryCatch((req, res, next) => {
             });
     } else {
         res.status(401);
-        throw new Error("Access token invalid!");
+        console.error("Access token invalid!");
     }
 });
 
 const VerifyRefreshToken = TryCatch((req, res, next) => {
     const token = req.cookies.token_refresh;
     console.log("verrifying ref_token");
-    
+
     if (token) {
         jwt.verify(token, process.env.SECRET_REFRESH_KEY,
             (error, decoded) => {
                 if (error) {
-                    res.status(401).json({message:"Refresh token expired or doesn't exists!"})
-                    throw new Error("Refresh token not valid!");
+                    res.status(401).json({ error: "Refresh token expired or doesn't exists!" })
+                    console.error("Refresh token not valid!");
                 }
                 console.log("verrifed: ", decoded.user.username);
                 req.user = decoded.user;
                 next();
             });
     } else {
-        res.status(401).json({message:"Refresh token doesn't exists!"})
-        throw new Error("Refresh token doesn't exists!");
+        res.status(401).json({ error: "Refresh token doesn't exists!" })
+        console.error("Refresh token doesn't exists!");
     }
 });
 

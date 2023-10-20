@@ -1,4 +1,6 @@
 const DB_projects_handler = require("../Database/TableQueries/project-queries");
+const DB_tasks_handler = require("../Database/TableQueries/tasks-queries");
+
 const { FindUserByEmail } = require("../Database/TableQueries/user-queries");
 const TryCatch = require("../Utils/try-catch");
 
@@ -71,6 +73,7 @@ const AddNewUser = TryCatch(async (req, res) => {
         res.status(400).json({ error: "User that you are adding doesn't exists!" });
     }
 });
+
 const RemoveUser = TryCatch(async (req, res) => {
     const { project_id, user_id } = req.body;
 
@@ -86,7 +89,7 @@ const RemoveUser = TryCatch(async (req, res) => {
 
         console.log("Role ",userToRemove)
         if (userToRemove.user_role === 3) {
-            console.log("333333333333333333333333333333333333333")
+           
             bAnotherAdminExists = false;//reinitialize it to false.
             const allMembers = await DB_projects_handler.GetProjectsUsers(project_id);
 
@@ -124,13 +127,12 @@ const ChangeUserRole = TryCatch(async (req, res) => {
     const project_id = req.query.project_id;
     const { user_role, user_id } = req.body;
 
-    if (project_id !== null && user_role !== null && user_id !== null && (user_role >= 0 || user_role < 4)) {
+    if (project_id !== undefined && user_role !== undefined && user_id !== undefined && (user_role >= 0 || user_role < 4)) {
         DB_projects_handler.ChangeUsersProjectRole(user_id, project_id,user_role)
     } else {
         res.status(400);
         ThrowErrorMissingField();
     }
-
 });
 
 const CreateProject = TryCatch(async (req, res) => {
@@ -167,21 +169,28 @@ const ModifyProjectName = TryCatch(async (req, res) => {
     }
 });
 
-const DeleteProject = TryCatch(async (req, res) => {
+const NukeProject = TryCatch(async (req, res) => {
     const project_id = req.query.project_id;
 
-    if (!project_id || !req.user.id) {
+    if (project_id === null  || project_id === undefined ) {
         res.status(400);
         ThrowErrorMissingField();
     }
-
-    const result = await DB_projects_handler.DeleteProject(project_id);
     
-    if (!result) {
-        res.status(500);
-        throw new Error("Error deleting project!");
-    } else {
-        res.status(200).json(result);
+    const bUsersRemoved = await DB_projects_handler.RemoveAllUsersFromProject(project_id);
+    
+    if (bUsersRemoved) {
+        const bTaskRemoved = await DB_tasks_handler.DeleteAllProjectTask(project_id);
+        if (bTaskRemoved) {
+            const bProjectRemoved = await DB_projects_handler.DeleteProject(project_id);
+            if (bProjectRemoved) {
+                res.status(200).json({ message: "Project succesfully nuked!!" });
+            }
+        }
+    }
+    if(bUsersRemoved || bTaskRemoved || bProjectRemoved) {
+        res.status(500).json({ error: "Fatal error: Error removing project's users and or tasks" });
+        throw new Error("Fatal error: Error removing project's users and or tasks. Check records to remove floating or corrupt records.");
     }
 });
 
@@ -189,4 +198,4 @@ function ThrowErrorMissingField() {
     throw new Error("Missing field data!");
 }
 
-module.exports = { GetProject, GetProjects, GetProjectMembers, CreateProject, ModifyProjectName, DeleteProject, AddNewUser,RemoveUser, ChangeUserRole };
+module.exports = { GetProject, GetProjects, GetProjectMembers, CreateProject, ModifyProjectName, NukeProject, AddNewUser,RemoveUser, ChangeUserRole };

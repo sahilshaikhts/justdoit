@@ -2,6 +2,7 @@ import { createContext, useContext, useState } from "react";
 import React from "react";
 import { Login, Logout, FetchAccessToken } from "../scripts/API/user-sessionHandler";
 import { FetchUserWithEmail, GetUserProfilePicture } from "../scripts/API/user-data-api";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const AuthorizationContext = createContext();
 
@@ -10,27 +11,41 @@ function UserAuthProvider({ children }) {
     const [currentUser, SetCurrentUser] = useState();//{id,username,email,url_image}
 
     async function LoginUser(email, password) {
-        //Check if successfull and make sure state is set with appropriate type.
-        if (await Login(email, password) === true) {
-            const user = await FetchUserWithEmail(email);
-            await SetCurrentUserDetails(user);
-            setLoggedIn(true);
-            return true;
-        } else {
-            setLoggedIn(false);
-            return false;
-        }
-    }
-    async function LoginWithToken() {
-        const response = await FetchAccessToken();
-        if (response) {
-            const user = await FetchUserWithEmail(response.email);
-            await SetCurrentUserDetails(user);
-            setLoggedIn(true);
-        } else
-            setLoggedIn(false);
+        return new Promise(async (resolve, reject) => {
+
+            //Check if successfull and make sure state is set with appropriate type.
+            if (await Login(email, password) === true) {
+                const user = await FetchUserWithEmail(email);
+                await SetCurrentUserDetails(user);
+                setLoggedIn(true);
+                resolve(true);
+
+            } else {
+                setLoggedIn(false);
+                setBLoginInProgress(false);
+                reject(false);
+
+            }
+        });
     }
 
+    function LoginWithToken() {
+
+        return new Promise(async (resolve, reject) => {
+            const response = await FetchAccessToken();
+
+            if (response) {
+                const user = await FetchUserWithEmail(response.email);
+                await SetCurrentUserDetails(user);
+                setLoggedIn(true);
+                resolve(true);
+            } else {
+                setLoggedIn(false);
+                setBLoginInProgress(false);
+                reject(false);
+            }
+        });
+    }
     async function LogoutUser() {
         const bLoggedOut = await Logout();
         if (bLoggedOut) {
@@ -38,6 +53,8 @@ function UserAuthProvider({ children }) {
         } else
             setLoggedIn(true);
     }
+
+
     async function SetCurrentUserDetails(user) {
         if (user) {
             //Setup currentUser state
@@ -45,8 +62,8 @@ function UserAuthProvider({ children }) {
             //Fetch user's image or set default.
             if (imageUrl) {
                 SetCurrentUser({ ...user, url_image: imageUrl });
-            }else
-            SetCurrentUser({ ...user, url_image: "/FrontEnd/Images/temp_preview_memberPP.webp" });
+            } else
+                SetCurrentUser({ ...user, url_image: "/FrontEnd/Images/temp_preview_memberPP.webp" });
         }
     }
 
@@ -55,7 +72,7 @@ function UserAuthProvider({ children }) {
             {children}
         </AuthorizationContext.Provider>
     );
-  
+
 }
 function useAuthContext() {
     const context = useContext(AuthorizationContext);
@@ -64,7 +81,6 @@ function useAuthContext() {
     } else
         return context;
 }
-
 
 
 export { useAuthContext, UserAuthProvider };

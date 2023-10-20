@@ -61,6 +61,7 @@ export async function ChangeUserProjectRole(project_id, user_id, role) {
  */
 export async function GetUserProfilePicture(user_id) {
     const url = `http://localhost:8383/user/profile-picutre?user_id=${encodeURIComponent(user_id)}`;
+    const defaultImage="/FrontEnd/Images/temp_preview_memberPP.webp"
     try {
 
         const response = await fetch(url, {
@@ -68,11 +69,15 @@ export async function GetUserProfilePicture(user_id) {
             credentials: "include",
             headers: { 'content-type': 'application/json' },
         });
-        if (response.ok) {
+        if (response.status===200) {
             const imageBlob = await response.blob()
             if (imageBlob)
                 return URL.createObjectURL(imageBlob);
-        }
+            else
+            return defaultImage;
+        }else
+        return defaultImage;
+
     } catch (error) {
         console.error(error);
     }

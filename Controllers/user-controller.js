@@ -122,8 +122,10 @@ const UploadPP = TryCatch(async (req, res) => {
 });
 const GetUserProfilePicture = TryCatch(async (req, res) => {
     const user_id = req.query.user_id;
+
     if (user_id !== null) {
         const fileData = await GetUserPPFileName(user_id);
+
         if (fileData !== null) {
             //Set header type after checking for supported types.
             if (fileData.fileType === 'image/png')
@@ -147,9 +149,12 @@ const GetUserProfilePicture = TryCatch(async (req, res) => {
                     }
                 }
             });
+        }else {
+            res.status(202).json({ mesage: "User doesnt have a profile picture." })
         }
-    } else {
-        res.status(202).json({ mesage: "User doesnt have a profile picture." })
+    } 
+    else {
+        res.status(400).json({ error: "Missing user_id in query!" })
     }
 
 });

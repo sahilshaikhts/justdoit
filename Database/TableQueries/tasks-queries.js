@@ -60,6 +60,19 @@ async function DeleteTask(project_id, id) {
         console.error(error);
     }
 }
+async function DeleteAllProjectTask(project_id) {
+    try {
+        const [result] = await database.query("delete from jdi.tasks where tasks.project_id=?", [project_id]);
+
+        if (!result || result.affectedRows == 0) {
+            throw new Error("Error updating tasks!");
+        }
+        return result;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function SetTasksProgress(project_id, id, progress) {
     try {
         const [result] = await database.query("update jdi.tasks set tasks.progress=? where project_id=? && id=?", [progress, project_id, id]);
@@ -73,4 +86,4 @@ async function SetTasksProgress(project_id, id, progress) {
     }
 }
 
-module.exports = { CreateTask, GetProjectsTask, GetProjectsTasks, UpdateTask,DeleteTask, SetTasksProgress }
+module.exports = { CreateTask, GetProjectsTask, GetProjectsTasks, UpdateTask,DeleteTask,DeleteAllProjectTask, SetTasksProgress }

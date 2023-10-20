@@ -16,11 +16,15 @@ import Footer from "./Components/Footer";
 import TaskPage from "./Components/Task-page/Task-page";
 
 export default function App() {
-    const { bLoggedIn, LoginWithToken, currentUser } = useAuthContext();
+    const { bLoggedIn, LoginWithToken, currentUser, GetLoginStatusPromise } = useAuthContext();
+
+    const [loggingInPromise, setLogginInPromise] = useState();
 
     useEffect(() => {
-        LoginWithToken();
-    }, []);//Check when user open the site for the first time.
+        const promise=LoginWithToken()
+        setLogginInPromise(promise);
+    }, []);//Check for refresh token when user open the site for the first time.
+
 
     return (
         <>
@@ -28,8 +32,8 @@ export default function App() {
                 <Header />
                 <Routes>
                     <Route path='/' element={<Home />}></Route>
-                    <Route path='/user/projects' element={
-                        <PrivateRoute bCondition={bLoggedIn} fallbackRoute="/">
+                    <Route path='/user/projects' element={loggingInPromise &&
+                        <PrivateRoute PromisedCondition={loggingInPromise} fallbackRoute="/">
                             <ProjectPage />
                         </PrivateRoute>
                     } />

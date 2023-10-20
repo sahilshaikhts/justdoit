@@ -7,6 +7,7 @@ import { TaskDisplay } from "./NewTask-from";
 import DOMPurify from "dompurify";
 import MemberContext from "../../Context/ProjectMemberContext";
 import { GetProjectMembersData, GetMembersWProfileImage } from "../../scripts/API/SetupProjectData";
+import { FetchUsersProject } from "../../scripts/API/user-projects";
 
 export default function TaskPage() {
     const [currentUser, SetCurrentUser] = useState();//{id,user_role}
@@ -15,6 +16,7 @@ export default function TaskPage() {
     const currentUser_id = parseInt(DOMPurify.sanitize(urlParam.currentUserId));
 
     const [task_list, setTaskList] = useState([]);
+    const [project_name, setProjectName] = useState('');
     const [projectMembers, SetProjectMembers] = useState(new Map());
 
     const [bTaskDisplayOn, SetIsTaskDisplayOn] = useState(false);
@@ -27,8 +29,16 @@ export default function TaskPage() {
     }, []);
 
     async function InitializePage() {
+        FetchProjectName();
         FetchTasks();
         SetMembersData();
+    }
+    async function FetchProjectName() {
+        const project= await FetchUsersProject(project_id);
+        if(project)
+        {
+            setProjectName(project.name);
+        }
     }
 
     async function FetchTasks() {
@@ -38,11 +48,13 @@ export default function TaskPage() {
 
     async function SetMembersData() {
         const members = await GetProjectMembersData(project_id);
+        
         //Set the basic member data with default user image.
         if (members) {
             SetProjectMembers(members);
             SetupCurrentUser(members);
-        }
+        }else
+        console.error("Error fetching projects members")
     }
 
     function SetupCurrentUser(members) {
@@ -91,31 +103,34 @@ export default function TaskPage() {
         {currentUser && bTaskDisplayOn && oTaskToDisplay && <TaskDisplay project_id={project_id} taskID={oTaskToDisplay.id} handleCloseDisplay={OnCloseDisplay} assignedMemberID={oTaskToDisplay.assignedMemberID} title={oTaskToDisplay.title} description={oTaskToDisplay.description} priority={oTaskToDisplay.priority}
             userRole={currentUser.role} bCreating={!oTaskToDisplay.id} progress={oTaskToDisplay.progress} />}
         <div className="task-page">
-            {currentUser && <TaskPageHeader userRole={currentUser.role} project_id={project_id} project_title={"project_title"}></TaskPageHeader>}            <div className="task-sections-container">
-                <div className="task-container"><div className="container-title"><h2>Pending</h2></div>
-                    {task_list && task_list.map((task) => {
-                        if (task.progress == progress.pending)
-                            return <TaskCard key={task.id} task_title={task.title} task_priority={task.priority} username={task.username} user_id={task.user_id} onClick={() => OnClickTaskCard(task.id)}></TaskCard>
-                    })}
-                </div>
-                <div className="task-container"><div className="container-title"><h2>InProgress</h2></div>
-                    {task_list && task_list.map((task) => {
-                        if (task.progress == progress.inProgress)
-                            return <TaskCard key={task.id} task_title={task.title} task_priority={task.priority} username={task.username} user_id={task.user_id} onClick={() => OnClickTaskCard(task.id)}></TaskCard>
-                    })}
-                </div>
-                <div className="task-container"><div className="container-title"><h2>InReview</h2></div>
-                    {task_list && task_list.map((task) => {
-                        if (task.progress == progress.inReview)
-                            return <TaskCard key={task.id} task_title={task.title} task_priority={task.priority} username={task.username} user_id={task.user_id} onClick={() => OnClickTaskCard(task.id)}></TaskCard>
-                    })}
-                </div>
-                <div className="task-container"><div className="container-title"><h2>Completed</h2></div>
-                    {task_list && task_list.map((task) => {
-                        if (task.progress == progress.completed)
-                            return <TaskCard key={task.id} task_title={task.title} task_priority={task.priority} username={task.username} user_id={task.user_id} onClick={() => OnClickTaskCard(task.id)}></TaskCard>
-                    })}
-                </div>
+            {currentUser && <TaskPageHeader userRole={currentUser.role} project_id={project_id} project_title={project_name}></TaskPageHeader>}            <div className="task-sections-container">
+                {projectMembers && task_list && <>
+                    <div className="task-container"><div className="container-title"><h2>Pending</h2></div>
+                        {task_list.map((task) => {
+                            if (task.progress == progress.pending)
+                                return <TaskCard key={task.id} task_title={task.title} task_priority={task.priority} username={task.username} user_id={task.user_id} onClick={() => OnClickTaskCard(task.id)}></TaskCard>
+                        })}
+                    </div>
+                    <div className="task-container"><div className="container-title"><h2>InProgress</h2></div>
+                        {task_list.map((task) => {
+                            if (task.progress == progress.inProgress)
+                                return <TaskCard key={task.id} task_title={task.title} task_priority={task.priority} username={task.username} user_id={task.user_id} onClick={() => OnClickTaskCard(task.id)}></TaskCard>
+                        })}
+                    </div>
+                    <div className="task-container"><div className="container-title"><h2>InReview</h2></div>
+                        {task_list.map((task) => {
+                            if (task.progress == progress.inReview)
+                                return <TaskCard key={task.id} task_title={task.title} task_priority={task.priority} username={task.username} user_id={task.user_id} onClick={() => OnClickTaskCard(task.id)}></TaskCard>
+                        })}
+                    </div>
+                    <div className="task-container"><div className="container-title"><h2>Completed</h2></div>
+                        {task_list.map((task) => {
+                            if (task.progress == progress.completed)
+                                return <TaskCard key={task.id} task_title={task.title} task_priority={task.priority} username={task.username} user_id={task.user_id} onClick={() => OnClickTaskCard(task.id)}></TaskCard>
+                        })}
+                    </div>
+                </>
+                }
             </div>
             {bTaskDisplayOn === false && <button className="button_newTask" onClick={CreateNewTasks}><img src="/Frontend/Images/icon_addTask.svg" alt="" /></button>}        </div>
     </MemberContext.Provider>

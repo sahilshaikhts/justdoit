@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import DropDownMenu from "../Utility/Dropdown";
 import { ChangeUserProjectRole, FetchUserWithEmail } from "../../scripts/API/user-data-api";
-import { AddMemberToProject, RemoveMemberFromProject } from "../../scripts/API/user-projects";
+import { AddMemberToProject, NukeProject, RemoveMemberFromProject } from "../../scripts/API/user-projects";
 import MemberContext from "../../Context/ProjectMemberContext";
 import { useAuthContext } from "../../Context/AuthorizationContext";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,7 @@ export default function ProjectDetailsSideBar({ project_id = undefined, userRole
     const [bShowAddMember, SetShowAddMember] = useState(false)
     const [searchedUser, setSearchedUser] = useState(false)
     const [txt_msgDisplay, SetTxtMsgDisplay] = useState("");
-    const navigate=useNavigate();
+    const navigate = useNavigate();
     const userRole_strList = ["Viewer", "Member", "Moderator", "Admin"]
 
     useEffect(() => {
@@ -35,7 +35,7 @@ export default function ProjectDetailsSideBar({ project_id = undefined, userRole
         }
     }, [currentUser, projectMembers]);
 
-   async function ChangeUserRole(index, user_id) {
+    async function ChangeUserRole(index, user_id) {
 
         if (user_id !== null && project_id !== null) {
             if (index >= 0 && index < 4) {
@@ -99,9 +99,9 @@ export default function ProjectDetailsSideBar({ project_id = undefined, userRole
         if (member.user_role !== 3) {
             const result = await RemoveMemberFromProject(project_id, user_id)
             if (result)
-                    RefetchProjectData();
+                RefetchProjectData();
 
-                    return true;
+            return true;
         } else {
             let bAnotherAdmisExists = false;
 
@@ -116,17 +116,23 @@ export default function ProjectDetailsSideBar({ project_id = undefined, userRole
             });
             if (bAnotherAdmisExists) {
                 const result = await RemoveMemberFromProject(project_id, user_id)
-                if (result){
+                if (result) {
                     RefetchProjectData();
                     return true;
-                
+
                 }
             } else
                 window.alert("Please add another admin before leaving the project!")
         }
     }
     async function HandleButtonNuke() {
-
+        if (userRole === 3) {
+            const response = await NukeProject(project_id);
+            if (!response) {
+                console.error("Error deleting project");
+            } else
+                navigate("/user/projects/");
+        }
     }
     async function HandleButtonLeave() {
         let member;
@@ -142,7 +148,7 @@ export default function ProjectDetailsSideBar({ project_id = undefined, userRole
 
     return <>
         <div className="details-sidebar">
-            <div className="button-closeSideBar"><span>Project details</span><img src="/FrontEnd/Images/icon_cross.svg" onClick={() => CloseSideBar('details-sidebar')} /></div>
+            <div className="button-close"><span>Project details</span><img src="/FrontEnd/Images/icon_cross.svg" onClick={() => CloseSideBar('details-sidebar')} /></div>
             <div className="details">
                 {<DropDownMenu html_items={memberListItems} button={<><h2>Members</h2>
                     {userRole >= 2 && <button><img onClick={() => SetShowAddMember(!bShowAddMember)} src="/Frontend/Images/icon_plus.svg" alt="+" /></button>}</>}></DropDownMenu>
@@ -156,6 +162,7 @@ export default function ProjectDetailsSideBar({ project_id = undefined, userRole
         {
             bShowAddMember &&
             <div className="display_addMember">
+                <div className="button-close"><img src="/FrontEnd/Images/icon_cross.svg" onClick={() => SetShowAddMember(false)} /></div>
                 <div className="row"><input className="inpt_addMember" placeholder="Enter user's email"></input><button className="btn_search" onClick={HandleSearchMember}><img src="/Frontend/Images/icon_search.svg" alt="" /></button></div>
                 {txt_msgDisplay && < label className="msg_display">{txt_msgDisplay}</label>}
                 {searchedUser &&
