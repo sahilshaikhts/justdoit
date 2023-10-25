@@ -1,7 +1,8 @@
 import HandleNetworkError from "../NetworkErrorHandler"
+import { base_url } from "../constants";
 
 export async function FetchUsersProjects() {
-    const url = "http://localhost:8383/user/project/"
+    const url = `${base_url}/user/project/`
 
     try {
         const response = await fetch(url,
@@ -27,7 +28,7 @@ export async function FetchUsersProjects() {
     }
 }
 export async function FetchUsersProject(project_id) {
-    const url = `http://localhost:8383/user/project/get-project?project_id=${encodeURIComponent(project_id)}`
+    const url =`${base_url}/user/project/get-project?project_id=${encodeURIComponent(project_id)}`
 
     try {
         const response = await fetch(url,
@@ -54,7 +55,7 @@ export async function FetchUsersProject(project_id) {
     }
 }
 export async function CreateNewProject(aProjectName, aUser_role = 3) {
-    const url = "http://localhost:8383/user/project/"
+    const url = `${base_url}/user/project/`
 
     if (!aProjectName) {
         console.error("Project name empty!");
@@ -88,7 +89,7 @@ export async function CreateNewProject(aProjectName, aUser_role = 3) {
 
 
 export async function AddMemberToProject(aProjectID, aEmail, aUser_role) {
-    const url = `http://localhost:8383/user/project/add-member?project_id=${encodeURIComponent(aProjectID)}`
+    const url = `${base_url}/user/project/add-member?project_id=${encodeURIComponent(aProjectID)}`
     const data = { project_id: aProjectID, email: aEmail, user_role: aUser_role }
     try {
         const response = await fetch(url,
@@ -112,7 +113,7 @@ export async function AddMemberToProject(aProjectID, aEmail, aUser_role) {
     }
 }
 export async function RemoveMemberFromProject(aProjectID, user_id) {
-    const url = `http://localhost:8383/user/project/remove-member?project_id=${encodeURIComponent(aProjectID)}`
+    const url = `${base_url}/user/project/remove-member?project_id=${encodeURIComponent(aProjectID)}`
     const data = { project_id: aProjectID, user_id: user_id }
     try {
         const response = await fetch(url,
@@ -135,7 +136,7 @@ export async function RemoveMemberFromProject(aProjectID, user_id) {
 }
 
 export async function NukeProject(aProjectID) {
-    const url = `http://localhost:8383/user/project/delete-project?project_id=${encodeURIComponent(aProjectID)}`
+    const url = `${base_url}/user/project/delete-project?project_id=${encodeURIComponent(aProjectID)}`
     const data = { project_id: aProjectID }
     try {
         const response = await fetch(url,

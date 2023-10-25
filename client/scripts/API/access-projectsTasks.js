@@ -1,5 +1,7 @@
+import { base_url } from "../constants";
+
 export async function FetchProjectTasks(aProjectID) {
-    const url = `http://localhost:8383/user/project/tasks?project_id=${encodeURIComponent(aProjectID)}`
+    const url = `${base_url}/user/project/tasks?project_id=${encodeURIComponent(aProjectID)}`
 
     try {
         const response = await fetch(url,
@@ -19,7 +21,7 @@ export async function FetchProjectTasks(aProjectID) {
 }
 
 export async function AddNewTask(aProjectID, aTitle, aDescription, aPiority, aProgress, aAssignedUserID) {
-    const url = `http://localhost:8383/user/project/tasks?project_id=${encodeURIComponent(aProjectID)}`
+    const url = `${base_url}/user/project/tasks?project_id=${encodeURIComponent(aProjectID)}`
 
     const data = { "title": aTitle, "description": aDescription, "priority": aPiority, "progress": aProgress, "assignedUserID": aAssignedUserID };
     try {
@@ -46,7 +48,7 @@ export async function AddNewTask(aProjectID, aTitle, aDescription, aPiority, aPr
 }
 
 export async function UpdateTask(aTaskId, aProjectID, aTitle, aDescription, aPiority, aProgress, aAssignedUserID) {
-    const url = `http://localhost:8383/user/project/update-task?project_id=${encodeURIComponent(aProjectID)}&task_id=${encodeURIComponent(aTaskId)}`
+    const url = `${base_url}/user/project/update-task?project_id=${encodeURIComponent(aProjectID)}&task_id=${encodeURIComponent(aTaskId)}`
 
     const data = { "title": aTitle, "description": aDescription, "priority": aPiority, "progress": aProgress, "assignedUserID": aAssignedUserID }
     try {
@@ -70,7 +72,7 @@ export async function UpdateTask(aTaskId, aProjectID, aTitle, aDescription, aPio
 }
 
 export async function DeleteTask(aTaskId, aProjectID) {
-    const url = `http://localhost:8383/user/project/delete-task?project_id=${encodeURIComponent(aProjectID)}&task_id=${encodeURIComponent(aTaskId)}`
+    const url = `${base_url}/user/project/delete-task?project_id=${encodeURIComponent(aProjectID)}&task_id=${encodeURIComponent(aTaskId)}`
 
     try {
         const response = await fetch(url,
@@ -91,7 +93,7 @@ export async function DeleteTask(aTaskId, aProjectID) {
 
 }
 export async function FetchProjectMembers(aProjectID) {
-    const url = `http://localhost:8383/user/project/get-members?project_id=${encodeURIComponent(aProjectID)}`
+    const url = `${base_url}/user/project/get-members?project_id=${encodeURIComponent(aProjectID)}`
 
     try {
         const response = await fetch(url,

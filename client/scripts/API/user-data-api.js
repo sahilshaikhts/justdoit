@@ -1,5 +1,7 @@
+import { base_url } from "../constants";
+
 export async function RegisterUser(formData) {
-    const registerUser = "http://localhost:8383/user/register";
+    const registerUser = `${base_url}/user/register`;
 
     try {
         const response = await fetch(registerUser,
@@ -19,7 +21,7 @@ export async function RegisterUser(formData) {
 
 }
 export async function FetchUserWithEmail(aEmail) {
-    const url = `http://localhost:8383/user/find?email=${encodeURIComponent(aEmail)}`;
+    const url = `${base_url}/user/find?email=${encodeURIComponent(aEmail)}`;
     try {
         const response = await fetch(url, {
             method: 'GET',
@@ -37,7 +39,7 @@ export async function FetchUserWithEmail(aEmail) {
 }
 
 export async function ChangeUserProjectRole(project_id, user_id, role) {
-    const url = `http://localhost:8383/user/project/change-role?project_id=${encodeURIComponent(project_id)}`;
+    const url = `${base_url}/user/project/change-role?project_id=${encodeURIComponent(project_id)}`;
     const data = { user_id: user_id, user_role: role }
     try {
         const response = await fetch(url, {
@@ -60,7 +62,7 @@ export async function ChangeUserProjectRole(project_id, user_id, role) {
  * @returns Returns Object url of fetched image or null.
  */
 export async function GetUserProfilePicture(user_id) {
-    const url = `http://localhost:8383/user/profile-picutre?user_id=${encodeURIComponent(user_id)}`;
+    const url = `${base_url}/user/profile-picutre?user_id=${encodeURIComponent(user_id)}`;
     const defaultImage="/Client/Images/temp_preview_memberPP.webp"
     try {
 

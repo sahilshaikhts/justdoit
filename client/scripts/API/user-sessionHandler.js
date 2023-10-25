@@ -1,7 +1,9 @@
 import HandleNetworkError from "../NetworkErrorHandler"
+import { base_url } from "../constants";
 
 export async function Login(email, password) {
-    const loginURL = "http://localhost:8383/user/login";
+    const loginURL = `${base_url}/user/login`;
+    
     const data = { 'email': email, 'password': password }
     try {
         const response = await fetch(loginURL, {
@@ -22,7 +24,7 @@ export async function Login(email, password) {
     }
 }
 export async function Logout() {
-    const logoutURL = "http://localhost:8383/user/logout";
+    const logoutURL = `${base_url}/user/logout`;
     try {
         const response = await fetch(logoutURL, {
             method: 'DELETE',
@@ -41,7 +43,7 @@ export async function Logout() {
     }
 }
 export async function FetchAccessToken() {
-    const url = "http://localhost:8383/api/get-accessToken"
+    const url = `${base_url}/api/get-accessToken`
     try {
         const response = await fetch(url, {
             method: "GET",
