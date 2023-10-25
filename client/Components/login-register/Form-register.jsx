@@ -6,16 +6,30 @@ export default function RegisterForm() {
     const [userPicture, setUserPicture] = useState(null);
     const [bFailedRegistration, setFailedRegistration] = useState(false);
     const fileInputRef = useRef(null);
+
     async function OnRegister(event) {
         event.preventDefault()
         const form = new FormData(event.target);
-        //Add a saftey check for userPicture, check if what's stored is an image.
-        const bSuccesful = await RegisterUser(form, userPicture);
+        const email = form.get("email");
+        let verifyEmail = /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        console.log(verifyEmail.test(email))
+        if (verifyEmail.test(email)) {
 
-        if (bSuccesful)
-            await Login(form.get("email"), form.get("password"));
-        else
+            //Add a saftey check for userPicture, check if what's stored is an image.
+            const bSuccesful = await RegisterUser(form, userPicture);
+
+            if (bSuccesful) {
+                const bSuccesful = await Login(form.get("email"), form.get("password"));
+                if (bSuccesful) {
+                    window.location.replace('/');
+                } 
+                setFailedRegistration(true)
+
+            } else
+                setFailedRegistration(true)
+        } else
             setFailedRegistration(true)
+
     }
 
     return <>
@@ -28,7 +42,7 @@ export default function RegisterForm() {
             <input className="field" name="email" placeholder="Email"></input>
             <input className="field" name="password" placeholder="Password" type="password"></input>
             <button type="submit">Register</button>
-            {bFailedRegistration && <a style={{ color: "red", marginLeft: "10px", fontFamily: "arial", fontSize: "13px" }}>Error registering ,email may already be in use.</a>}
+            {bFailedRegistration === true && <a style={{ color: "#e63d23", marginLeft: "10px", fontFamily: "arial", fontSize: "13px" }}>Error registering ,invalid or email may already be in use.</a>}
         </form>
     </>
 }

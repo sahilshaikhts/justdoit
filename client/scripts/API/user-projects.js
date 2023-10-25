@@ -10,7 +10,7 @@ export async function FetchUsersProjects() {
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' }
             });
-        if (response.ok) {
+        if (response.status == 200) {
             const projects = await response.json();
             if (projects) {
                 return projects;
@@ -36,7 +36,7 @@ export async function FetchUsersProject(project_id) {
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' }
             });
-        if (response.ok) {
+        if (response.status == 200) {
             const project = await response.json();
             if (project) {
                 return project;

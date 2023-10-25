@@ -18,10 +18,9 @@ import TaskPage from "./Components/Task-page/Task-page";
 export default function App() {
     const { bLoggedIn, LoginWithToken, currentUser } = useAuthContext();
 
-
     useEffect(() => {
         LoginWithToken();
-    },[]);//Check for refresh token when user open the site for the first time.
+    }, []);//Check for refresh token when user open the site for the first time.
 
     function CheckAndTryLoggingIn() {
         return new Promise(async (resolve, reject) => {
@@ -30,7 +29,6 @@ export default function App() {
                 resolve(true);
             } else {
                 const result = await LoginWithToken();
-                console.log(result)
                 if (result == true)
                     resolve(true)
                 else
