@@ -12,8 +12,8 @@ import { FetchUsersProject } from "../../scripts/API/user-projects";
 export default function TaskPage() {
     const [currentUser, SetCurrentUser] = useState();//{id,user_role}
     const urlParam = useParams();
-    const project_id = parseInt(DOMPurify.sanitize(urlParam.projectId));
-    const currentUser_id = parseInt(DOMPurify.sanitize(urlParam.currentUserId));
+    const project_id = DOMPurify.sanitize(urlParam.projectId);
+    const currentUser_id = DOMPurify.sanitize(urlParam.currentUserId);
 
     const [task_list, setTaskList] = useState([]);
     const [project_name, setProjectName] = useState('');
@@ -34,9 +34,8 @@ export default function TaskPage() {
         SetMembersData();
     }
     async function FetchProjectName() {
-        const project= await FetchUsersProject(project_id);
-        if(project)
-        {
+        const project = await FetchUsersProject(project_id);
+        if (project) {
             setProjectName(project.name);
         }
     }
@@ -48,13 +47,13 @@ export default function TaskPage() {
 
     async function SetMembersData() {
         const members = await GetProjectMembersData(project_id);
-        
+
         //Set the basic member data with default user image.
         if (members) {
             SetProjectMembers(members);
             SetupCurrentUser(members);
-        }else
-        console.error("Error fetching projects members")
+        } else
+            console.error("Error fetching projects members")
     }
 
     function SetupCurrentUser(members) {
@@ -132,7 +131,7 @@ export default function TaskPage() {
                 </>
                 }
             </div>
-            {bTaskDisplayOn === false && <button className="button_newTask" onClick={CreateNewTasks}><img src="/client/Images/icon_addTask.svg" alt="" /></button>}        </div>
+            {currentUser && currentUser.role > 1 && bTaskDisplayOn === false && <button className="button_newTask" onClick={CreateNewTasks}><img src="/client/Images/icon_addTask.svg" alt="" /></button>}        </div>
     </MemberContext.Provider>
 
 }

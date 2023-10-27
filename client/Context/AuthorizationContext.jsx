@@ -53,6 +53,7 @@ function UserAuthProvider({ children }) {
 
     async function SetCurrentUserDetails(user) {
         if (user) {
+
             //Setup currentUser state
             const imageUrl = await GetUserProfilePicture(user.id);
             //Fetch user's image or set default.

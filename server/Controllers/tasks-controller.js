@@ -59,7 +59,7 @@ const UpdateTask = TryCatch(async (req, res) => {
     const project_id = req.query.project_id;
     const task_id = req.query.task_id;
     const {title,description,priority,progress,assignedUserID}=req.body;
- 
+ console.log(assignedUserID," : ",req.user.id)
     if (project_id===undefined || title===undefined) {
         res.status(400);
         ThrowErrorMissingField();

@@ -94,7 +94,6 @@ export async function DeleteTask(aTaskId, aProjectID) {
 }
 export async function FetchProjectMembers(aProjectID) {
     const url = `${base_url}/user/project/get-members?project_id=${encodeURIComponent(aProjectID)}`
-
     try {
         const response = await fetch(url,
             {

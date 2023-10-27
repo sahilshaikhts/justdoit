@@ -132,10 +132,11 @@ button {
     cursor: pointer;
     filter: brightness(.6) sepia(1) hue-rotate(60deg);
 }
-.display_addMember .button-close
-{
+
+.display_addMember .button-close {
     padding: 0 0 1em 0;
 }
+
 /* Task-page sidebar's lists*/
 
 .details {
@@ -270,10 +271,10 @@ button {
 }
 
 .menu_role .button_dropdownmenu img {
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
     object-fit: fill;
-    margin:0;
+    margin: 0;
 }
 
 .menu_role .dropDown_item {
@@ -295,7 +296,7 @@ button {
     justify-content: center;
 }
 
-.button-leave{
+.button-leave {
     display: flex;
     position: relative;
     flex-direction: row;
@@ -316,6 +317,7 @@ button {
     padding-top: .2em;
     padding-left: .5em;
 }
+
 .button-nuke {
     display: flex;
     justify-content: center;
@@ -330,10 +332,11 @@ button {
     width: 3.5em;
     height: 3.5em;
 }
-.button-nuke:hover
-{
+
+.button-nuke:hover {
     background-color: rgb(217, 82, 82);
 }
+
 /*Add member diplay*/
 .display_addMember {
     display: flex;
@@ -524,13 +527,16 @@ button {
 
 .img_asignee {
     width: 3em;
+    height: 3em;
+    border: #dce7d8 solid 2px;
+    border-radius: 50%;
 }
 
 .img_asignee img {
     width: 100%;
-    border-radius: 90px;
-
+    height: 100%;
     object-fit: cover;
+    border-radius: 5em;
 }
 
 .priority_indicator {
@@ -790,7 +796,7 @@ button {
 
 .taskDisplay-userInfo img {
     width: 2.1em;
-    height:  2.1em;
+    height: 2.1em;
     object-fit: cover;
     border-radius: 2em;
 }
@@ -889,7 +895,7 @@ button {
         width: 4em;
         height: 4em;
     }
-   
+
     .card-header {
         padding: .5em;
         font-size: 1.2rem;
@@ -928,16 +934,17 @@ button {
         filter: brightness(.8) sepia(1) hue-rotate(310deg);
     }
 
-        .button-nuke {
-            width: 4rem;
-            height: 4rem;
-            align-items: center;
-        }
-        .button-nuke img{
-            width: 3rem;
-            height: 3rem;
-            align-items: center;
-        }
+    .button-nuke {
+        width: 4rem;
+        height: 4rem;
+        align-items: center;
+    }
+
+    .button-nuke img {
+        width: 3rem;
+        height: 3rem;
+        align-items: center;
+    }
 
     .task-sections-container {
         width: auto;
@@ -1002,6 +1009,7 @@ button {
 
     .img_asignee {
         width: 1.5em;
+        height: 1.5em;
     }
 
     /*Task detailed display/form */

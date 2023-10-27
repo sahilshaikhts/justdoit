@@ -10,13 +10,12 @@ const TryCatch = require("../Utils/try-catch");
 const CheckIfUserHaveAccess = (requiredRole, bAllowIfEqualOrHigher = false) => TryCatch(async (req, res, next) => {
     const user_id = req.user.id;
     const project_id = req.query.project_id;
-    console.log(user_id,project_id)
+    
     if (user_id===undefined || project_id===undefined) {
         throw new Error("Missing data!");
     } else {
         const user_role = await GetUserProjectRole(user_id, project_id);
-
-        if (bAllowIfEqualOrHigher === true && user_role >= requiredRole) {
+        if (user_role && bAllowIfEqualOrHigher === true && user_role >= requiredRole) {
             next();
             return;
         } else

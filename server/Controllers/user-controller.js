@@ -8,6 +8,7 @@ const path = require("path");
 
 const RegisterUser = TryCatch(async (req, res, next) => {
     const { username, email, password } = req.body;
+    const emailToCheck=email.toLowerCase();
     //Check if user provided all data.
     if (!username || !email || !password) {
         throw new Error("All fields are mandatory!");
@@ -16,21 +17,21 @@ const RegisterUser = TryCatch(async (req, res, next) => {
     }
 
     //Check if user already exists
-    const bUserExists = await FindUserByEmail(email)
+    const bUserExists = await FindUserByEmail(emailToCheck)
     if (bUserExists) {
         res.status(409).json({ message: "User with this email already exists" });
         throw new Error("User with this email already exists!");
     } else {
         const hashed_password = await bcrypt.hash(password, 12);
-        const userCreated = await CreateUser(username, email, hashed_password);
-
+        const userCreated = await CreateUser(username, emailToCheck, hashed_password);
+        
         //check if createuser was succesfull or not.
         if (userCreated) {
             const currentUser = {
                 user: {
                     "username": username,
-                    "email": email,
-                    "id": userCreated.insertId
+                    "email": emailToCheck,
+                    "id": userCreated.id
                 }
             }
             req.user = currentUser.user;
@@ -49,7 +50,9 @@ const RegisterUser = TryCatch(async (req, res, next) => {
 
 const LoginUser = TryCatch(async (req, res) => {
     const { email, password } = req.body;
-    const req_user = await FindUserByEmail(email);
+    const emailToCheck=email.toLowerCase();
+
+    const req_user = await FindUserByEmail(emailToCheck);
     //Check if user with given email exists.
     if (req_user) {
         //Check user's password with saved encrypted paswword.
@@ -59,7 +62,7 @@ const LoginUser = TryCatch(async (req, res) => {
                 {
                     user: {
                         "username": req_user.username,
-                        "email": email,
+                        "email": emailToCheck,
                         "id": req_user.id
                     }
                 }
@@ -89,7 +92,7 @@ const LogoutUser = TryCatch(async (req, res) => {
 }
 );
 const FetchUserByEmail = TryCatch(async (req, res) => {
-    const email = req.query.email;
+    const email = req.query.email.toLowerCase();
     if (email) {
         const user = await GetUserBasicInfo(email)
 
@@ -108,7 +111,7 @@ const FetchUserByEmail = TryCatch(async (req, res) => {
 const UploadPP = TryCatch(async (req, res) => {
     const userId = req.user.id;
     const fileName = req.uploadedFName;
-    console.log("fNama: ", fileName, req.file.mimetype)
+
     if (!userId || !fileName) {
         console.error("Missing id or file name");
     } else {
@@ -122,11 +125,10 @@ const UploadPP = TryCatch(async (req, res) => {
 });
 const GetUserProfilePicture = TryCatch(async (req, res) => {
     const user_id = req.query.user_id;
-
+    
     if (user_id !== null) {
         const fileData = await GetUserPPFileName(user_id);
-
-        if (fileData !== null) {
+        if (fileData) {
             //Set header type after checking for supported types.
             if (fileData.fileType === 'image/png')
                 res.setHeader('content-type', 'image/png')

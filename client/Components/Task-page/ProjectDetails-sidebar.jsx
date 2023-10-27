@@ -79,7 +79,7 @@ export default function ProjectDetailsSideBar({ project_id = undefined, userRole
     async function HandleAddMember() {
         const email = searchedUser.email;
         const role_level = 0;
-        console.log(email, project_id)
+
         if (email && project_id !== undefined) {
             const response = await AddMemberToProject(project_id, email, role_level);
 
@@ -90,14 +90,13 @@ export default function ProjectDetailsSideBar({ project_id = undefined, userRole
             else {
                 SetTxtMsgDisplay("Something went wrong! Error adding user.");
             }
-        } else
-            console.log("falseeeee")
-
+        }
     }
     async function HandleRemoveMember(member, user_id) {
         //Check if member being removed is not admin.
         if (member.user_role !== 3) {
             const result = await RemoveMemberFromProject(project_id, user_id)
+
             if (result)
                 RefetchProjectData();
 

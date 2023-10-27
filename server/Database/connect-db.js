@@ -1,13 +1,13 @@
-const sql = require("mysql2");
+const mongoDB = require("mongoose")
 
-const pool = sql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
+const ConnectDB = async () => {
+    try {
+        const connect = await mongoDB.connect(process.env.DB_CONNECTION_STRING);
+        console.log("DB connected: " + connect.connection.host + connect.connection.name)
+
+    } catch (error) {
+        console.log(error);
+        process.exit(1);
+    }
 }
-).promise();
-
-module.exports=pool;
-
-
+module.exports=ConnectDB;
