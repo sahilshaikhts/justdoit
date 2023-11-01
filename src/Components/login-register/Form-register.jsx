@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Login } from "../../scripts/API/user-sessionHandler.js";
 import { RegisterUser } from "../../scripts/API/user-data-api.js";
+import default_userImage from '../../Images/temp_preview_memberPP.webp'
 
 export default function RegisterForm() {
     const [userPicture, setUserPicture] = useState(null);
@@ -35,7 +36,7 @@ export default function RegisterForm() {
     return <>
         <form className="Form-section" onSubmit={OnRegister} encType="multipartmultipart/form-data">
             <div className="input_image" onClick={() => { fileInputRef.current.click() }}>
-                <img src={userPicture ? URL.createObjectURL(userPicture) : "/client/Images/temp_preview_memberPP.webp"}></img>
+                <img src={userPicture ? URL.createObjectURL(userPicture) : default_userImage}></img>
                 <input ref={fileInputRef} name="image" type="file" accept="image/jpeg, image/png" onChange={(e) => { console.log(e.target.files[0]); setUserPicture(e.target.files[0]) }} />
             </div>
             <input className="field" name="username" placeholder="Username"></input>

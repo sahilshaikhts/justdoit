@@ -8,6 +8,7 @@ import DOMPurify from "dompurify";
 import MemberContext from "../../Context/ProjectMemberContext";
 import { GetProjectMembersData } from "../../scripts/API/SetupProjectData";
 import { FetchUsersProject } from "../../scripts/API/user-projects";
+import icon_addTask from '../../Images/icon_addTask.svg'
 
 export default function TaskPage() {
     const [currentUser, SetCurrentUser] = useState();//{id,user_role}
@@ -131,7 +132,7 @@ export default function TaskPage() {
                 </>
                 }
             </div>
-            {currentUser && currentUser.role > 1 && bTaskDisplayOn === false && <button className="button_newTask" onClick={CreateNewTasks}><img src="/client/Images/icon_addTask.svg" alt="" /></button>}        </div>
+            {currentUser && currentUser.role > 1 && bTaskDisplayOn === false && <button className="button_newTask" onClick={CreateNewTasks}><img src={icon_addTask} alt="" /></button>}        </div>
     </MemberContext.Provider>
 
 }

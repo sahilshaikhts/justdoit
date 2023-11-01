@@ -4,6 +4,7 @@ import ProjectCard from "./project-card";
 import { FetchUsersProjects, CreateNewProject } from "../../scripts/API/user-projects";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../Context/AuthorizationContext";
+import icon_plus from '../../Images/icon_plus.svg'
 
 
 export default function ProjectPage() {
@@ -61,7 +62,7 @@ export default function ProjectPage() {
                 <div className="button_addNewProject" >
                     {bAddProject && <input className="textfield_projectName" type="text" onKeyDown={(event) => { if (event.key === "Enter") OnTaskNameEntered(); }} placeholder="Project's name.." />
                     }
-                    <img onClick={OnClickAddTask} src="/client/Images/icon_plus.svg" alt="" /> </div>
+                    <img onClick={OnClickAddTask} src={icon_plus} alt="" /> </div>
             </div>}
         </div>
     </>

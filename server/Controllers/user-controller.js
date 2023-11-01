@@ -5,10 +5,13 @@ const jwt = require("jsonwebtoken");
 const fs = require("fs")
 const GenerateJWT = require("./jwt-generator");
 const path = require("path");
+const admin = require('../firebase-admin-init.js');
+const https = require('https'); // Node.js module for making HTTP requests
+const { response } = require("express");
 
 const RegisterUser = TryCatch(async (req, res, next) => {
     const { username, email, password } = req.body;
-    const emailToCheck=email.toLowerCase();
+    const emailToCheck = email.toLowerCase();
     //Check if user provided all data.
     if (!username || !email || !password) {
         throw new Error("All fields are mandatory!");
@@ -24,7 +27,7 @@ const RegisterUser = TryCatch(async (req, res, next) => {
     } else {
         const hashed_password = await bcrypt.hash(password, 12);
         const userCreated = await CreateUser(username, emailToCheck, hashed_password);
-        
+
         //check if createuser was succesfull or not.
         if (userCreated) {
             const currentUser = {
@@ -50,7 +53,7 @@ const RegisterUser = TryCatch(async (req, res, next) => {
 
 const LoginUser = TryCatch(async (req, res) => {
     const { email, password } = req.body;
-    const emailToCheck=email.toLowerCase();
+    const emailToCheck = email.toLowerCase();
 
     const req_user = await FindUserByEmail(emailToCheck);
     //Check if user with given email exists.
@@ -109,50 +112,49 @@ const FetchUserByEmail = TryCatch(async (req, res) => {
 );
 
 const UploadPP = TryCatch(async (req, res) => {
+
+    if (req.file == undefined)
+        return;
+
     const userId = req.user.id;
-    const fileName = req.uploadedFName;
+    const bucket = admin.storage().bucket();
+
+    const fileName = "pp" + "_" + Date.now() + path.extname(req.file.originalname);
+    const fileUpload = bucket.file(fileName);
+
+    fileUpload.save(req.file.buffer);
 
     if (!userId || !fileName) {
         console.error("Missing id or file name");
     } else {
         if (req.file.mimetype === 'image/png' || req.file.mimetype === 'image/jpg' || req.file.mimetype === 'image/jpeg') {
-            const bResult = UploadUsersPP(userId, fileName, req.file.mimetype);
+            const bResult = UploadUsersPP(userId, fileUpload.name, req.file.mimetype);
         } else {
             console.error("User profile picture is of the wrong type!")
         }
         return;
     }
 });
+
 const GetUserProfilePicture = TryCatch(async (req, res) => {
     const user_id = req.query.user_id;
-    
+    const bucket = admin.storage().bucket();
+
     if (user_id !== null) {
         const fileData = await GetUserPPFileName(user_id);
-        if (fileData) {
-            //Set header type after checking for supported types.
-            if (fileData.fileType === 'image/png')
-                res.setHeader('content-type', 'image/png')
-            else
-                if (fileData.fileType === 'image/jpg')
-                    res.setHeader('content-type', 'image/jpg')
-                else if (fileData.fileType === 'image/jpeg')
-                    res.setHeader('content-type', 'image/jpeg')
-                else {//Throw error if the uploded file is not of the supported type.
-                    res.status(500).json({ error: "Error fetching user image. Uploaded file is either wrong type or corrupted!" });
-                    throw new Error("Error fetching user image. Uploaded file is either wrong type or corrupted!");
-                }
-            const filePath = path.join('Uploads', 'ProfilePictures', fileData.fileName);
-
-            fs.readFile(filePath, (err, data) => {
-                if (err) {
-                    res.status(500).json({ error: "Server error:Cant load file on server." })
-                    throw new Error("Server error:Cant load file on server")
-                } else {
-                    if (data) {
-                        res.status(200).send(data);
-                    }
-                }
-            });
+        
+        if (fileData && fileData.fileName) {
+            const file = bucket.file(fileData.fileName);
+            const [exists] = await file.exists();
+            if (exists) {
+                const readStream = file.createReadStream();
+                readStream.on('error', (error) => {
+                    console.error('Error reading file:', error);
+                    res.status(500).json({ error: 'Internal Server Error' });
+                });
+                res.setHeader('Content-Type', fileData.fileType); 
+                readStream.pipe(res);
+            }
         } else {
             res.status(202).json({ mesage: "User doesnt have a profile picture." })
         }

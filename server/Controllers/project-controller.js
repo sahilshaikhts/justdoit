@@ -187,15 +187,13 @@ const NukeProject = TryCatch(async (req, res) => {
             bProjectRemoved = await DB_projects_handler.DeleteProject(project_id);
             if (bProjectRemoved) {
                 res.status(200).json({ message: "Project succesfully nuked!!" });
-                return;
             }
         } else
             if (!bTaskRemoved || !bProjectRemoved) {
                 res.status(500).json({ error: "Fatal error: Error removing project's users and or tasks" });
                 throw new Error("Fatal error: Error removing project's users and or tasks. Check records to remove floating or corrupt records.");
             }
-    }
-    if (!bUsersRemoved) {
+    } else {
         res.status(500).json({ error: "Fatal error: Error removing project's users and or tasks" });
         throw new Error("Fatal error: Error removing project's users and or tasks. Check records to remove floating or corrupt records.");
     }

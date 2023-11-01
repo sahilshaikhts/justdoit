@@ -3,6 +3,9 @@ import DropDownMenu from "../Utility/Dropdown";
 import { AddNewTask, DeleteTask, UpdateTask } from "../../scripts/API/access-projectsTasks";
 import MemberContext from "../../Context/ProjectMemberContext";
 import { useAuthContext } from "../../Context/AuthorizationContext";
+import icon_pen from '../../Images/icon_pen.svg'
+import icon_cross from '../../Images/icon_cross.svg'
+import icon_delete from '../../Images/icon_delete.svg'
 
 export function TaskDisplay({ taskID, project_id, title, description, priority, progress, assignedMemberID = -1, userRole, bCreating = false, handleCloseDisplay }) {
     const {projectMembers} = useContext(MemberContext);
@@ -138,14 +141,14 @@ export function TaskDisplay({ taskID, project_id, title, description, priority, 
             <div className="taskDisplay-section">
                 {(bEditingTitle && userRole > 1) ? (<input onChange={OnTitleChange} className="field_title" type="text" maxLength={32} placeholder={taskObject.title}></input>) :
                     (<h1>{taskObject.title}</h1>)}
-                {userRole > 1 && <img className="btn_edit" onClick={() => SetEditTitle(!bEditingTitle)} src="/client/Images/icon_pen.svg" />}
-                <button className="btn_close" onClick={handleCloseDisplay} ><img src="/client/Images/icon_cross.svg" /></button>
+                {userRole > 1 && <img className="btn_edit" onClick={() => SetEditTitle(!bEditingTitle)} src={icon_pen} />}
+                <button className="btn_close" onClick={handleCloseDisplay} ><img src={icon_cross} /></button>
             </div>
 
             <div className="taskDisplay-section">
                 {(bEditingDescription && userRole > 1) ? (<textarea onChange={OnDescriptionChange} className="field_description" maxLength={128} placeholder={taskObject.description}></textarea>) :
                     (<p>{taskObject.description}</p>)}
-                {userRole > 1 && <img className="btn_edit" onClick={() => SetEditDescription(!bEditingDescription)} src="/client/Images/icon_pen.svg" />}
+                {userRole > 1 && <img className="btn_edit" onClick={() => SetEditDescription(!bEditingDescription)} src={icon_pen} />}
             </div>
 
             <div className="taskDisplay-section">
@@ -169,7 +172,7 @@ export function TaskDisplay({ taskID, project_id, title, description, priority, 
                     }</div>
                 <div className="taskDisplayButton-section">
                     <button onClick={SaveTask} className="btn_save">Save</button>
-                    {userRole > 1 && <button className="btn_delete" onClick={HandleDeleteTask}><img src="/client/Images/icon_delete.svg" /></button>}
+                    {userRole > 1 && <button className="btn_delete" onClick={HandleDeleteTask}><img src={icon_delete} /></button>}
                 </div>
             </div>
         </>

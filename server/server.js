@@ -1,6 +1,6 @@
 const express = require("express");
 const { VerifyAccessToken, VerifyRefreshToken } = require("./Middleware/ValidateToken");
-require('dotenv').config();
+require('dotenv').config({path:'./server/config/.env'});
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const app = express();
@@ -15,7 +15,7 @@ mongoDB.connect(process.env.DB_connect).then((result) => {
 });
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://jusdoit.net',
     credentials: true,
 }));
 

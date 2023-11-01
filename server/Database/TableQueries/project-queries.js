@@ -109,7 +109,7 @@ async function SetProjectName(project_newName, project_id) {
 
 async function DeleteProject(project_id) {
     try {
-        const result =await projectsDB.deleteOne({project_id:project_id});
+        const result =await projectsDB.deleteOne({_id:project_id});
 
         if (result.deletedCount>0) {
             return true;

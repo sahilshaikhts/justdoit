@@ -44,7 +44,7 @@ const UploadUsersPP = async (aUserID, aFileName, aFileType) => {
         console.error(error);
     }
 }
-const GetUserPPFileName = async (aUserID) => {
+const GetUserPPFileName= async (aUserID) => {
     try {
         const userFile = await UserFile.findOne({ user_id: aUserID }).select('fileName fileType');
         return userFile;

@@ -1,26 +1,26 @@
 @font-face {
     font-family: Dosis-ExtraLight;
-    src: url('../client/Fonts/Dosis-ExtraLight.ttf');
+    src: url('/src/Fonts/Dosis-ExtraLight.ttf');
 }
 
 @font-face {
     font-family: JosefinSans-Light;
-    src: url('../Fonts/JosefinSans-Light.ttf');
+    src: url('/src/Fonts/JosefinSans-Light.ttf');
 }
 
 @font-face {
     font-family: JosefinSans-reg;
-    src: url('../Fonts/JosefinSans-Regular.ttf');
+    src: url('/src/Fonts/JosefinSans-Regular.ttf');
 }
 
 @font-face {
     font-family: RobotoCondensed-Regular;
-    src: url('../Fonts/RobotoCondensed-Regular.ttf');
+    src: url('/src/Fonts/RobotoCondensed-Regular.ttf');
 }
 
 @font-face {
     font-family: RobotoCondensed-light;
-    src: url('../Fonts/RobotoCondensed-Light.ttf');
+    src: url('/src/Fonts/RobotoCondensed-Light.ttf');
 }
 
 /* Reset button*/
@@ -189,7 +189,7 @@ button {
     position: absolute;
     left: 90%;
     top: 40%;
-    background-image: url('/client/Images/icon_arrow_down.svg');
+    background-image: url('/src/Images/icon_arrow_down.svg');
     background-size: contain;
     background-repeat: no-repeat;
     width: 1em;
@@ -639,7 +639,10 @@ button {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
-
+.field_description
+{
+    resize: none;
+}
 .field_description,
 .taskDisplay-section p {
     width: 80%;
@@ -709,7 +712,7 @@ button {
     position: absolute;
     left: 80%;
     top: 40%;
-    background-image: url('/client/Images/icon_arrow_down.svg');
+    background-image: url('/src/Images/icon_arrow_down.svg');
     background-size: contain;
     background-repeat: no-repeat;
     width: 1em;

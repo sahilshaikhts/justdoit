@@ -1,5 +1,5 @@
-import { FetchProjectMembers } from "../../scripts/API/access-projectsTasks";
-import { GetUserProfilePicture } from "../../scripts/API/user-data-api";
+import { FetchProjectMembers } from "./access-projectsTasks";
+import { GetUserProfilePicture } from "./user-data-api";
 
 //Two separate function to fetch and use member's basic data right away and use the other function to load image while rest of the site is still useable.
 

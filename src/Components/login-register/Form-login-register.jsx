@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useAuthContext } from "../../Context/AuthorizationContext";
 
-import RegisterForm from "../login-register/Form-register";
-import LoginForm from "../login-register/Form-login";
+import RegisterForm from "./Form-register";
+import LoginForm from "./Form-login";
 
 //Display either login or register form based on bDisplayRegsiterForm
 //Register Form

@@ -8,7 +8,7 @@ const mongoose=require('mongoose')
     },
     fileName:{
         type:String,
-        required:[true,"Name required"]
+        required:[true,"URL required"]
     },
     fileType:{
         type:String,

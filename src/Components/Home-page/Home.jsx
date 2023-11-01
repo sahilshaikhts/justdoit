@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import FormloginRegister from "../login-register/Form-login-register";
-
+import disp_banner from '../../Images/temp_homebanner.jpg'
 
 export default function Home() {
     return (
@@ -8,7 +8,7 @@ export default function Home() {
             <section className="container">
                 <div className="column col-70">
                     <div className="img-display">
-                        <img src="/client\Images\temp_homebanner.jpg" alt="" />
+                        <img src={disp_banner} alt="" />
                     </div>
                 </div>
                 <div className="column col-30">
@@ -18,7 +18,7 @@ export default function Home() {
             <section className="container">
                 <div className="column col-100">
                     <div className="img-display">
-                        <img src="/client\Images\temp_homebanner.jpg" alt="" />
+                        <img src={disp_banner} alt="" />
                     </div>
                 </div>
             </section>

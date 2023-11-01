@@ -60,7 +60,7 @@ function UserAuthProvider({ children }) {
             if (imageUrl) {
                 SetCurrentUser({ ...user, url_image: imageUrl });
             } else
-                SetCurrentUser({ ...user, url_image: "/client/Images/temp_preview_memberPP.webp" });
+                SetCurrentUser({ ...user, url_image: "/src/Images/temp_preview_memberPP.webp" });
         }
     }
 

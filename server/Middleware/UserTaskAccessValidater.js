@@ -15,6 +15,7 @@ const CheckIfUserHaveAccess = (requiredRole, bAllowIfEqualOrHigher = false) => T
         throw new Error("Missing data!");
     } else {
         const user_role = await GetUserProjectRole(user_id, project_id);
+        console.log("Role:",user_role)
         if (user_role && bAllowIfEqualOrHigher === true && user_role >= requiredRole) {
             next();
             return;
