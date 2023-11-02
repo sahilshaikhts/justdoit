@@ -32,7 +32,6 @@ function UserAuthProvider({ children }) {
             const user = await FetchUserWithEmail(response.email);
             await SetCurrentUserDetails(user);
             setLoggedIn(true);
-            console.log("Logged toke:",user)
             return true;
         } else {
             setLoggedIn(false);
@@ -50,7 +49,6 @@ function UserAuthProvider({ children }) {
 
     async function SetCurrentUserDetails(user) {
         if (user) {
-
             //Setup currentUser state
             const imageUrl = await GetUserProfilePicture(user.id);
             //Fetch user's image or set default.

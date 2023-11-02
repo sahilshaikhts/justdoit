@@ -38,10 +38,8 @@ export default function PrivateRoute({ CheckCondition, AsyncConditionFunction, b
     async function CheckAsyncCondition() {
 
         AsyncConditionFunction().then(() => {
-            console.log("Routing...");
                 setBResult(true);
         }, () => {
-            console.log("ReRouting...");
             setBResult(false);
         });
     }
