@@ -1,8 +1,7 @@
+require('dotenv').config({path:'./server/config/.env'});
 const admin=require('firebase-admin');
-const serviceAccount=require('./config/just-do-it-bc070-firebase-adminsdk-2tdlw-344b4a2a8f.json')
-
 admin.initializeApp({
-    credential:admin.credential.cert(serviceAccount),
+    credential:admin.credential.cert(JSON.parse(process.env.FIREBASE_ADMIN_KEY)),
         storageBucket:'just-do-it-bc070.appspot.com'
 
 })
