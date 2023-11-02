@@ -32,6 +32,7 @@ function UserAuthProvider({ children }) {
             const user = await FetchUserWithEmail(response.email);
             await SetCurrentUserDetails(user);
             setLoggedIn(true);
+            console.log("Logged toke:",user)
             return true;
         } else {
             setLoggedIn(false);
