@@ -1,6 +1,11 @@
 const express = require("express");
 const { VerifyAccessToken, VerifyRefreshToken } = require("./Middleware/ValidateToken");
-require('dotenv').config({path:'./server/config/.env'});
+//if deployed use env from host settings
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config({path:'/etc/secrets/.env'});
+} else {
+    require('dotenv').config({ path: './server/config/.env' });
+}
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const app = express();
@@ -9,7 +14,7 @@ const mongoDB = require("mongoose")
 const PORT = process.env.PORT || 8383;
 
 mongoDB.connect(process.env.DB_connect).then((result) => {
-    app.listen(PORT, () => { console.log("Running on port:" + PORT); });
+    app.listen(PORT, () => { console.log("Running on port:" + process.env.NODE_ENV); });
 }).catch((error) => {
     console.error(error);
 });
