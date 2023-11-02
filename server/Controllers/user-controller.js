@@ -171,7 +171,7 @@ async function SetupTokens(tokenObject, res) {
     const accessToken = await GenerateJWT(tokenObject, process.env.SECRET_ACCESS_KEY, process.env.AGE_ACCESSTOKEN);
 
     if (refreshToken && accessToken) {
-        res.cookie("token_refresh", refreshToken, { httpOnly: false, maxAge: 3 * 24 * 60 * 60000, sameSite: "none" });//Age: 3 days
+        res.cookie("token_refresh", refreshToken, { httpOnly: false, maxAge: 3 * 24 * 60 * 60000, sameSite: "none" ,secure: true});//Age: 3 days
         res.cookie("token_access", accessToken, JSON.parse(process.env.CONFIG_COKI_ACCESSTOKEN));//Age: 10 min
         return true;
     } else {
