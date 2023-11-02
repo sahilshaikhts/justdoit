@@ -14,7 +14,7 @@ mongoDB.connect(process.env.DB_connect).then((result) => {
 });
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://jusdoit.net',
     credentials: true,
 }));
 
