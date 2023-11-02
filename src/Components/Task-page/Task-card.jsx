@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import MemberContext from "../../Context/ProjectMemberContext";
 
-export default function TaskCard({ task_title, task_progress, task_priority, username, user_id, onClick }) {
+export default function TaskCard({ task_title, task_priority, username, user_id, onClick }) {
     const priorityClassList = ["low", "normal", "high"];
     const {projectMembers} = useContext(MemberContext);
 

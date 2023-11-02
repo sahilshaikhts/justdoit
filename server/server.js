@@ -5,7 +5,6 @@ const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const app = express();
 const mongoDB = require("mongoose")
-console.log("ENV:  \n",process.env)
 const PORT = process.env.PORT || 8383;
 
 mongoDB.connect(process.env.DB_connect).then((result) => {
@@ -15,7 +14,7 @@ mongoDB.connect(process.env.DB_connect).then((result) => {
 });
 
 app.use(cors({
-    origin: 'https://jusdoit.net',
+    origin: 'http://localhost:5173',
     credentials: true,
 }));
 
