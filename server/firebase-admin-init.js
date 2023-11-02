@@ -1,5 +1,5 @@
 //if deployed use env from host settings
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV == 'production') {
     require('dotenv').config({path:'/etc/secrets/.env'});
 } else {
     require('dotenv').config({ path: './server/config/.env' });
