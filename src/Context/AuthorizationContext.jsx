@@ -11,21 +11,17 @@ function UserAuthProvider({ children }) {
     const [currentUser, SetCurrentUser] = useState();//{id,username,email,url_image}
 
     async function LoginUser(email, password) {
-        return new Promise(async (resolve, reject) => {
+        //Check if successfull and make sure state is set with appropriate type.
+        if (await Login(email, password) === true) {
+            const user = await FetchUserWithEmail(email);
+            await SetCurrentUserDetails(user);
+            setLoggedIn(true);
+            return true;
+        } else {
+            setLoggedIn(false);
+            return false;
 
-            //Check if successfull and make sure state is set with appropriate type.
-            if (await Login(email, password) === true) {
-                const user = await FetchUserWithEmail(email);
-                await SetCurrentUserDetails(user);
-                setLoggedIn(true);
-                resolve(true);
-
-            } else {
-                setLoggedIn(false);
-                reject(false);
-
-            }
-        });
+        }
     }
 
     async function LoginWithToken() {

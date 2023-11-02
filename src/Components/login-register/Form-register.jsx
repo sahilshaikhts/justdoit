@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Login } from "../../scripts/API/user-sessionHandler.js";
 import { RegisterUser } from "../../scripts/API/user-data-api.js";
-import default_userImage from '../../Images/temp_preview_memberPP.webp'
+import default_userImage from '../../Images/default_user_image.png'
 
 export default function RegisterForm() {
     const [userPicture, setUserPicture] = useState(null);

@@ -8,8 +8,8 @@ import { GetUserProfilePicture } from "./user-data-api";
 * @param {int} project_id - Provide id of the project you wanna get the data of.
 * @returns {Array[object]} Returns array(map) of object containing member's data.({username,user_role,image_url=defaultImage})
 */
+import defaultImageUrl from '../../Images/default_user_image.png'
 export async function GetProjectMembersData(project_id) {
-    const defaultImageUrl = "/FrontEnd/Images/temp_preview_memberPP.webp";
     const members_array = await FetchProjectMembers(project_id);
     
     let members_map = new Map()

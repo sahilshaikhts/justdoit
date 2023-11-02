@@ -1,4 +1,5 @@
 import { base_url } from "../constants";
+import defaultImageUrl from '../../Images/default_user_image.png'
 
 export async function RegisterUser(formData) {
     const registerUser = `${base_url}/user/register`;
@@ -63,7 +64,7 @@ export async function ChangeUserProjectRole(project_id, user_id, role) {
  */
 export async function GetUserProfilePicture(user_id) {
     const url = `${base_url}/user/profile-picutre?user_id=${encodeURIComponent(user_id)}`;
-    const defaultImage="/Client/Images/temp_preview_memberPP.webp"
+    
     try {
 
         const response = await fetch(url, {
@@ -76,9 +77,9 @@ export async function GetUserProfilePicture(user_id) {
             if (imageBlob)
                 return URL.createObjectURL(imageBlob);
             else
-            return defaultImage;
+            return defaultImageUrl;
         }else
-        return defaultImage;
+        return defaultImageUrl;
 
     } catch (error) {
         console.error(error);

@@ -5,13 +5,14 @@ import { AddMemberToProject, NukeProject, RemoveMemberFromProject } from "../../
 import MemberContext from "../../Context/ProjectMemberContext";
 import { useAuthContext } from "../../Context/AuthorizationContext";
 import { useNavigate } from "react-router-dom";
-import default_userImage from '../../Images/temp_preview_memberPP.webp'
+import default_userImage from '../../Images/default_user_image.png'
 import icon_role from '../../Images/icon_role.svg'
 import icon_kickUser from '../../Images/icon_kickUser.svg'
 import icon_cross from '../../Images/icon_cross.svg'
 import icon_plus from '../../Images/icon_plus.svg'
 import icon_exit from '../../Images/icon_exit.svg'
 import icon_nuke from '../../Images/icon_nuke.svg'
+import icon_search from '../../Images/icon_search.svg'
 
 export default function ProjectDetailsSideBar({ project_id = undefined, userRole }) {
     const { projectMembers, RefetchProjectData } = useContext(MemberContext);
@@ -174,11 +175,11 @@ export default function ProjectDetailsSideBar({ project_id = undefined, userRole
             bShowAddMember &&
             <div className="display_addMember">
                 <div className="button-close"><img src={icon_cross} onClick={() => SetShowAddMember(false)} /></div>
-                <div className="row"><input className="inpt_addMember" placeholder="Enter user's email"></input><button className="btn_search" onClick={HandleSearchMember}><img src="/src/Images/icon_search.svg" alt="" /></button></div>
+                <div className="row"><input className="inpt_addMember" onKeyDown={(event) => { if (event.key === "Enter") HandleSearchMember(); }} placeholder="Enter user's email"></input><button className="btn_search" onClick={HandleSearchMember}><img src={icon_search} alt="" /></button></div>
                 {txt_msgDisplay && < label className="msg_display">{txt_msgDisplay}</label>}
                 {searchedUser &&
                     <div className="row">
-                        <div className="searchedMember"><img src={{default_userImage}} />
+                        <div className="searchedMember"><img src={default_userImage} />
                             <span>{searchedUser.username}</span>
                             <button className="btn_kickUser" onClick={HandleAddMember}><img src={{icon_plus}} alt="Add" /></button>
                         </div>
