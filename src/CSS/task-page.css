@@ -639,10 +639,11 @@ button {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
-.field_description
-{
+
+.field_description {
     resize: none;
 }
+
 .field_description,
 .taskDisplay-section p {
     width: 80%;

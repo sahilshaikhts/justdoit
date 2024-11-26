@@ -12,8 +12,8 @@ export default function HandleNetworkError(aErrorCode, aNetworkErrorMsg)
             console.error(aErrorCode,": "+aNetworkErrorMsg);
             break;
         case 403:
-            window.location.replace('/');
             console.error(aErrorCode,": "+aNetworkErrorMsg);
+            window.location.replace('/');
             break;
         case 404:
             console.error(aErrorCode,": "+aNetworkErrorMsg);

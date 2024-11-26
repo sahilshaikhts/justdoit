@@ -24,9 +24,7 @@ export default function App() {
 
     function CheckAndTryLoggingIn() {
         return new Promise(async (resolve, reject) => {
-            console.log("Already logged: ", bLoggedIn);
             if (bLoggedIn) {
-                console.log("resolving: ", bLoggedIn);
                 resolve(true);
             } else {
                 const result = await LoginWithToken();
